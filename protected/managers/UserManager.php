@@ -17,9 +17,14 @@ class UserManager{
         return $userList;
     }
 
+    /**
+     * 新增帳號
+     * @param unknown $userAddFormVO
+     * @throws UserException
+     */
     public function add($userAddFormVO)
     {
-
+        // 基本檢查: password正確, active狀態, account不重複
         if($userAddFormVO->password != $userAddFormVO->confirmPassword){
             throw new UserException(UserException::ERR_PASSWORD_DIFFERENT);
         }
@@ -33,7 +38,6 @@ class UserManager{
         if($userVO->setData((array) $userAddFormVO) === false){
             throw new UserException(UserException::ERR_VALUE_IS_EMPTY);
         }
-
         $userDAO = new UserDAO;
         $row = $userDAO->findAccount($userAddFormVO->account);
         if(!empty($row)){
@@ -43,7 +47,42 @@ class UserManager{
         $userVO->password = $this->getHashPassword($userVO->password, $userVO->privateKey);
         $userDAO->addUser($userVO);
     }
-    
+
+    public function findUser($userId){
+        $userDAO = new UserDAO;
+        $row = $userDAO->findUserId($userId);
+        if(empty($row)){
+            throw new UserException(UserException::ERR_LOGIN_FAILED);
+        }
+        // set user data
+        $userVO = new UserVO();
+        if($userVO->setData($row) === false){
+            throw new UserException(UserException::ERR_LOGIN_FAILED);
+        }
+        return $userVO;
+    }
+
+    public function edit($userVO, $editUserId, $userAddFormVO){
+        if($userVO->isActive != 2){
+            throw new UserException(UserException::ERR_POWER);
+        }
+        if($userAddFormVO->password != $userAddFormVO->confirmPassword){
+            throw new UserException(UserException::ERR_PASSWORD_DIFFERENT);
+        }
+        $editUserVO = $this->findUser($editUserId);
+        $editUserVO->isActive = $userAddFormVO->isActive;
+        $editUserVO->name = $userAddFormVO->name;
+
+        $userDAO = new UserDAO;
+        if($userAddFormVO->confirmPassword != ''){
+            $editUserVO->privateKey = $this->createPrivateKey();
+            $editUserVO->password = $this->getHashPassword($userAddFormVO->confirmPassword, $editUserVO->privateKey);
+            $userDAO->editUser($editUserVO, 1);
+        } else {
+            $userDAO->editUser($editUserVO);
+        }
+    }
+
     /**
      * 確認後登入
      * @param string $account

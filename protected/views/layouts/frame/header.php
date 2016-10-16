@@ -38,12 +38,12 @@
         <div class="app-grid" >
             <ul>
                 <li class="grid-picture" >
-                    <a href="<?=Yii::app()->request->baseUrl ?>/article/index" >
+                    <a href="<?=Yii::app()->request->baseUrl ?>/menu/index" >
                         <img src="<?=Yii::app()->request->baseUrl ?>/images/90x90.jpg" />
                     </a>
                 </li>
                 <li class="grid-name">
-                    <a href="<?=Yii::app()->request->baseUrl ?>/article/index" >
+                    <a href="<?=Yii::app()->request->baseUrl ?>/menu/index" >
                         菜單管理
                     </a>
                 </li>

@@ -4,9 +4,10 @@ class UserController extends FrameController
     
     public $layout='//layouts/frame';
 
+    private $activeList = [ -1 => 'delete', 0 => 'close', 1 => 'normal', 2 => 'root'];
+
     public function __construct(){
         $this->setCSS('/css/user/user.css');
-        $this->setJS('/js/user/user.js');
         
         $userManager = new UserManager;
         
@@ -20,7 +21,7 @@ class UserController extends FrameController
     }
     
     /**
-     * member index page
+     * 首頁
      */
     public function actionIndex(){
         
@@ -28,13 +29,15 @@ class UserController extends FrameController
         $userVO = $userManager->getLogin();
         $userList = $userVO->isActive == 2 ? $userManager->findUserList(): [];
 
+        $this->setJS('/js/user/user.js');
         $this->layout('user/index', array(
             'userList' => $userList,
+            'activeList' => $this->activeList
         ));
     }
     
     /**
-     * member index page
+     * 新增帳號
      */
     public function actionAdd(){
 
@@ -52,14 +55,44 @@ class UserController extends FrameController
             }
         }
 
-        $this->BreadCrumbs['last'] = '新增帳號';
+        $this->BreadCrumbs['last'] = '建立帳號';
         $this->setJS('/js/user/add.js');
 
         $this->layout('user/add', array(
             'userAddFormVO' => $userAddFormVO,
         ));
     }
-    
+
+    /**
+     * 編輯帳號
+     * @param integer $editUserId
+     */
+    public function actionEdit($id = 0){
+        if($id < 1){
+            $this->actionloginPage();
+        }
+
+        $userManager = new UserManager;
+        $userAddFormVO = new UserAddFormVO;
+        try {
+            $editUserVO = $userManager->findUser($id);
+            $userVO = $userManager->getLogin();
+            if($_POST['edit'] == 1){
+                $userAddFormVO->setData($_POST);
+                $userManager->edit($userVO, $id, $userAddFormVO);
+                $this->actionloginPage();
+            }
+        }catch (UserException $e){
+            $userAddFormVO->errorCode = $e->getMessage();
+        }
+        $this->BreadCrumbs['last'] = '編輯帳號';
+        $this->setJS('/js/user/add.js');
+        $this->layout('user/add', array(
+            'editUserVO'    => $editUserVO,
+            'userAddFormVO' => $userAddFormVO
+        ));
+    }
+
 
     /**
      * 登入頁
