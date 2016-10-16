@@ -47,7 +47,7 @@ if(isset($editUserVO)){
                     <option value="0" <?php if($isActive=='0') echo 'selected="selected"'; ?> >close</option>
                     <option value="1" <?php if($isActive=='1') echo 'selected="selected"'; ?> >normal</option>
                     <option value="2" <?php if($isActive=='2') echo 'selected="selected"'; ?> >root</option>
-                    <option value="-1" <?php if($isActive=='2') echo 'selected="selected"'; ?> >delete</option>
+                    <option value="-1" <?php if($isActive=='-1') echo 'selected="selected"'; ?> >delete</option>
                 </select>
             </td>
         </tr>
