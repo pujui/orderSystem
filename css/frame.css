@@ -74,6 +74,11 @@ span.error{
     color: red;
 }
 
+.headbtn{
+    width: 90px;
+    height: 110px;
+}
+
 /*
  * test
  */

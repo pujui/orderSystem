@@ -1,6 +1,13 @@
 <?php
 class MenuController extends FrameController{
 
+    private $sellStatusList = [
+        -1  => '已刪除',
+         0  => '販賣中',
+         1  => '暫停販賣'
+    ];
+    
+    
     public function __construct(){
 
         $userManager = new UserManager;
@@ -10,7 +17,7 @@ class MenuController extends FrameController{
         if($isLogin === true){
             $this->setVariable('user', $userManager->getLogin());
         }else{
-            $this->actionloginPage();
+            $this->actionErrorPage();
         }
 
         $this->BreadCrumbs[Yii::app()->request->baseUrl] = '首頁';
@@ -37,7 +44,8 @@ class MenuController extends FrameController{
         $this->pageTitle = '菜單管理：列表';
 
         $this->layout('menu/index', array(
-            'menuListPage' => $menuListPage
+            'menuListPage'      => $menuListPage,
+            'sellStatusList'   => $this->sellStatusList,
         ));
     }
 

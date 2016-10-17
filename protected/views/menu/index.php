@@ -34,7 +34,7 @@
             }
         }
         ?></td>
-        <td><?=$row->isCancel ?></td>
+        <td><?=$sellStatusList[$row->isCancel] ?></td>
         <td><?=$row->createTime ?></td>
         <td>
             <?=$row->updateTime ?><br/>

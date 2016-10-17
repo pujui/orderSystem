@@ -22,12 +22,12 @@ class OrderDAO extends BaseDAO{
             ->queryAll();
         }else{
             $row = $this->getCommand(
-                    "SELECT COUNT(ol.orderId) AS count "
+                    "SELECT COUNT(ol.orderId) AS count, SUM(ol.priceTotal) price "
                     .$FROM
                     .$WHERE
             )
             ->queryRow();
-            return (empty($row))? 0: $row['count'];
+            return (empty($row))? []: $row;
         }
     }
 

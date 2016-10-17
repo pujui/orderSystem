@@ -14,43 +14,33 @@
         <div class="app-grid" >
             <ul>
                 <li class="grid-picture" >
-                    <a href="<?=Yii::app()->request->baseUrl ?>/order/index" >
-                        <img src="<?=Yii::app()->request->baseUrl ?>/images/90x90.jpg" />
-                    </a>
+                    <input type="button" class="headbtn" onclick="location.href='<?=Yii::app()->request->baseUrl; ?>/user/index';" value="使用者管理" />
                 </li>
-                <li class="grid-name">
-                    <a href="<?=Yii::app()->request->baseUrl ?>/order/index" >
-                        訂單管理
-                    </a>
-                </li>
+                <li class="grid-name"></li>
             </ul>
         </div>
         <div class="app-grid" >
             <ul>
                 <li class="grid-picture" >
-                    <a href="<?=Yii::app()->request->baseUrl ?>/menu/index" >
-                        <img src="<?=Yii::app()->request->baseUrl ?>/images/90x90.jpg" />
-                    </a>
+                    <input type="button" class="headbtn" onclick="location.href='<?=Yii::app()->request->baseUrl; ?>/order/index';" value="訂單管理" />
                 </li>
-                <li class="grid-name">
-                    <a href="<?=Yii::app()->request->baseUrl ?>/menu/index" >
-                        菜單管理
-                    </a>
-                </li>
+                <li class="grid-name"></li>
             </ul>
         </div>
         <div class="app-grid" >
             <ul>
                 <li class="grid-picture" >
-                    <a href="<?=Yii::app()->request->baseUrl ?>/order/add" >
-                        <img src="<?=Yii::app()->request->baseUrl ?>/images/90x90.jpg" />
-                    </a>
+                    <input type="button" class="headbtn" onclick="location.href='<?=Yii::app()->request->baseUrl; ?>/menu/index';" value="菜單管理" />
                 </li>
-                <li class="grid-name">
-                    <a href="<?=Yii::app()->request->baseUrl ?>/order/add" >
-                        建立訂單
-                    </a>
+                <li class="grid-name"></li>
+            </ul>
+        </div>
+        <div class="app-grid" >
+            <ul>
+                <li class="grid-picture" >
+                    <input type="button" class="headbtn" onclick="location.href='<?=Yii::app()->request->baseUrl; ?>/order/add';" value="建立訂單" />
                 </li>
+                <li class="grid-name"></li>
             </ul>
         </div>
     </div>

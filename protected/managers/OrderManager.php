@@ -8,7 +8,9 @@ class OrderManager{
      */
     public function findOrderList($pageVO){
         $orderDAO = new OrderDAO();
-        $pageVO->total = $orderDAO->findOrderList($pageVO, 'TOTAL');
+        $result = $orderDAO->findOrderList($pageVO, 'TOTAL');
+        $pageVO->total = empty($result)? 0: $result['count'];
+        $pageVO->price = empty($result)? 0: $result['price'];
         $pageVO->createStartRange();
     
         $list = $orderDAO->findOrderList($pageVO, 'PAGE');

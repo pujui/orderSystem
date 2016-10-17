@@ -6,24 +6,40 @@
 <form method="get">
     <table class="detail-list" width="770">
         <tr>
-            <th colspan="2">搜尋條件</th>
-        </tr>
-        <tr>
             <td>
                 <div>
+                    處理狀態：<select>
+                        <option value="0" >全部</option>
+                        <option value="1" >未處理</option>
+                        <option value="2" >已處理</option>
+                    </select>
                     <input type="text" name="start" value="" readonly="readonly" placeholder="開始 <?=date('Y-m-d') ?>" />
                     <input type="text" name="end" value="" readonly="readonly" placeholder="結束 <?=date('Y-m-d') ?>" />
+                    <input type="submit" value="搜尋" />
+                    <input type="button" value="預設搜尋" onclick="location.href='?'"/>
                 </div>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2">
-                <input type="submit" value="搜尋" />
-                <input type="button" value="返回列表" onclick="location.href='?'"/>
             </td>
         </tr>
     </table>
 </form>
+<table class="detail-list" width="770">
+    <tr>
+        <th>今日已訂單數</th>
+        <th>昨日訂單數</th>
+        <th>本月訂單數</th>
+        <th>上月訂單數</th>
+    </tr>
+    <tr>
+        <td>100</td>
+        <td>100</td>
+        <td>2100</td>
+        <td>3100</td>
+    </tr>
+    <tr>
+        <td>查詢結果</td>
+        <td colspan="3">查詢訂單數:&nbsp;<?=$orderListPage->pageVO->total ?>&nbsp;&nbsp;總金額:<?=$orderListPage->pageVO->price ?></td>
+    </tr>
+</table>
 <?php if(empty($orderListPage->details)){ ?>
 <table class="detail-list">
     <tr>
