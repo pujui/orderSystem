@@ -1,6 +1,11 @@
 <?php
 class OrderManager{
 
+    /**
+     * 訂單列表
+     * @param unknown $pageVO
+     * @return OrderListPage
+     */
     public function findOrderList($pageVO){
         $orderDAO = new OrderDAO();
         $pageVO->total = $orderDAO->findOrderList($pageVO, 'TOTAL');
@@ -10,6 +15,7 @@ class OrderManager{
         $orderListPage = new OrderListPage;
         $orderListPage->pageVO = $pageVO;
         foreach ($list as $row){
+            $row['details'] = $orderDAO->findDetail($row['orderId']);
             $orderVO = new OrderVO;
             $orderVO->setData($row);
             $orderListPage->details[] = $orderVO;

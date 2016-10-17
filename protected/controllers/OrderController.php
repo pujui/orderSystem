@@ -1,6 +1,12 @@
 <?php
 class OrderController extends FrameController{
 
+    private $statusList = [
+        -1  => '已刪除',
+         0  => '未處理',
+         1  => '已處理'
+    ];
+    
     public function __construct(){
         $this->setCSS('/css/order.css');
     
@@ -31,9 +37,16 @@ class OrderController extends FrameController{
         $this->BreadCrumbs['last'] = '訂單管理';
         
         $this->pageTitle = '訂單管理：列表';
+
+        $this->setCSS('/js/jquery/jquery-ui-1.10.3.custom/ui-lightness/jquery-ui-1.10.3.custom.min.css');
+        
+        $this->setJS('/js/jquery/jquery.blockUI.js');
+        
+        $this->setJS('/js/order/index.js');
         
         $this->layout('order/index', array(
-            'orderListPage' => $orderListPage
+            'orderListPage' => $orderListPage,
+            'statusList'    => $this->statusList
         ));
     }
 
@@ -47,7 +60,6 @@ class OrderController extends FrameController{
                 $userVO = UserManager::getLogin();
                 $orderManager = new OrderManager;
                 $orderManager->add($userVO, $_POST);
-                exit;
                 $this->redirect(Yii::app()->request->baseUrl.'/order/');
             }
         }catch (MenuException $e){

@@ -42,10 +42,14 @@
         <div class="app-grid" >
             <ul>
                 <li class="grid-picture" >
+                    <a href="<?=Yii::app()->request->baseUrl ?>/order/add" >
                         <img src="<?=Yii::app()->request->baseUrl ?>/images/90x90.jpg" />
+                    </a>
                 </li>
                 <li class="grid-name">
-                        帳務管理
+                    <a href="<?=Yii::app()->request->baseUrl ?>/order/add" >
+                        建立訂單
+                    </a>
                 </li>
             </ul>
         </div>

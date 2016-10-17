@@ -20,6 +20,8 @@ class OrderVO{
         $this->priceTotal = $row['priceTotal'];
         $this->createTime = $row['createTime'];
         $this->updateTime = $row['updateTime'];
+        
+        $this->details = $row['details'];
     }
 
 }

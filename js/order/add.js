@@ -10,6 +10,8 @@ $(document).ready(function(){
         $('#addItemBtn').click($.proxy(this.addItemBtn, this));
         $(document).on("click", ".delItem", $.proxy(this.delItem, this));
         $(document).on("click", ".addCount", $.proxy(this.calculate, this));
+        
+        
     }
 
     orderAddForm.prototype.delItem = function(e){

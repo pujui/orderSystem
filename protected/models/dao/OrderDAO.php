@@ -30,7 +30,24 @@ class OrderDAO extends BaseDAO{
             return (empty($row))? 0: $row['count'];
         }
     }
-    
+
+    public function findDetail($orderId){
+        $FROM = "FROM
+                    ordersystem.orderdetail AS od ";
+        $WHERE = "WHERE
+                    od.orderId=:orderId ";
+        return $this->getCommand(
+                    "SELECT od.* "
+                    .$FROM
+                    .$WHERE
+                    ."ORDER BY od.memo " ,
+                    array(
+                        ':orderId' => $orderId
+                    )
+                )
+                ->queryAll();
+    }
+
     public function add($main, $insert){
         $transaction = $this->db->beginTransaction();
         try
@@ -55,8 +72,6 @@ class OrderDAO extends BaseDAO{
                 $bind[":memo{$key}"] = $row['memo'];
             }
             $this->bindQuery($sql . implode(',', $sqlList), $bind);
-            
-           //.... other SQL executions
            $transaction->commit();
            return true;
         }
