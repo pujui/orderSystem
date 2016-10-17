@@ -162,5 +162,5 @@ class UserManager{
     public static function logout(){
         unset(Yii::app()->session['user']);
     }
-    
+
 }

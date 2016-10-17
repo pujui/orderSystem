@@ -11,11 +11,7 @@ class MenuDAO extends BaseDAO{
                     "SELECT m.firstClass "
                     .$FROM
                     .$WHERE
-                    ." GROUP BY m.firstClass " ,
-                    array(
-                            ':start' => $pageVO->start,
-                            ':limit' => $pageVO->limit
-                    )
+                    ." GROUP BY m.firstClass " 
                 )
                 ->queryAll();
     }
@@ -26,8 +22,17 @@ class MenuDAO extends BaseDAO{
                 ";
         $WHERE = "WHERE
                     m.isCancel!=-1 ";
-
-        if($action == 'PAGE'){
+        if($action == 'SHOW'){
+            $WHERE = "WHERE
+                        m.isCancel=0 ";
+            return $this->getCommand(
+                    "SELECT m.* "
+                    .$FROM
+                    .$WHERE
+                    ."ORDER BY m.firstClass DESC " 
+            )
+            ->queryAll();
+        }else if($action == 'PAGE'){
             return $this->getCommand(
                     "SELECT m.* "
                     .$FROM
@@ -35,8 +40,8 @@ class MenuDAO extends BaseDAO{
                     ."ORDER BY m.firstClass DESC "
                     ."LIMIT :start, :limit " ,
                     array(
-                            ':start' => $pageVO->start,
-                            ':limit' => $pageVO->limit
+                        ':start' => $pageVO->start,
+                        ':limit' => $pageVO->limit
                     )
             )
             ->queryAll();
@@ -171,4 +176,5 @@ class MenuDAO extends BaseDAO{
                 array(':menuId' => $menuId)
         );
     }
+
 }

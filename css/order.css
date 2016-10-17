@@ -1,0 +1,9 @@
+@CHARSET "UTF-8";
+
+.inputItem{
+    width: 140px;
+}
+.inputItemPrice{
+    width: 25px;
+    text-align: right;
+}

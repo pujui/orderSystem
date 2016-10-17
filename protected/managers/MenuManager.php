@@ -1,6 +1,27 @@
 <?php
 class MenuManager{
     
+    public function show(){
+        $menuDAO = new MenuDAO();
+        $list = $menuDAO->findMenuList(NULL, 'SHOW');
+        
+        $showList = [];
+        foreach ($list as $row){
+            if(!isset($showList[$row['firstClass']])){
+                $showList[$row['firstClass']] = [];
+            }
+            $priceList = [];
+            for($i=1; $i < 11; $i++){
+                if($row['className'.$i] != '' && $row['classPrice'.$i] > 0){
+                    $priceList[] = [$row['className'.$i], $row['classPrice'.$i]];
+                }
+            }
+            $row['priceList'] = $priceList;
+            $showList[$row['firstClass']][] = $row;
+        }
+        return $showList;
+    }
+    
     public function findMenuList($pageVO){
         $menuDAO = new MenuDAO();
         $pageVO->total = $menuDAO->findMenuList($pageVO, 'TOTAL');

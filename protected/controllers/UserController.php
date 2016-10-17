@@ -1,6 +1,5 @@
 <?php
-class UserController extends FrameController
-{
+class UserController extends FrameController{
     
     public $layout='//layouts/frame';
 
@@ -18,6 +17,8 @@ class UserController extends FrameController
         }
         
         $this->BreadCrumbs[Yii::app()->request->baseUrl] = '首頁';
+
+        parent::__construct();
     }
     
     /**

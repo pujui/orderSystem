@@ -1,6 +1,6 @@
 <div id="login">
     <?php if($isLogin === false){ ?>
-    <h1>您目前未登入，請由此<a href="<?=Yii::app()->request->baseUrl; ?>/user/login" >登入</a></h1>
+    <h1>您目前未登入訂單管理系統，請由此<a href="<?=Yii::app()->request->baseUrl; ?>/user/login" >登入</a></h1>
     <?php }else if($user->isActive == 2){ ?>
     <div style="text-align: right;" >
         <input type="button" onclick="location.href='<?=Yii::app()->request->baseUrl; ?>/user/add';" value="建立帳號" />

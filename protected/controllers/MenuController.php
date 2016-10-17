@@ -1,6 +1,5 @@
 <?php
-class MenuController extends FrameController
-{
+class MenuController extends FrameController{
 
     public function __construct(){
 
@@ -15,6 +14,8 @@ class MenuController extends FrameController
         }
 
         $this->BreadCrumbs[Yii::app()->request->baseUrl] = '首頁';
+
+        parent::__construct();
     }
 
     /**
