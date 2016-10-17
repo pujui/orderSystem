@@ -1,6 +1,6 @@
-<form id="addOrderForm" method="post" >
+<form id="addOrderForm" method="post" style="height:600px; " >
     <div>
-        <div style="float: left;">
+        <div style="float: left; width: 300px;">
             <table style="width: 300px;">
                 <tr>
                     <th colspan="2" >訂單內容</th>
@@ -17,8 +17,8 @@
                 <tr>
                     <td colspan="3" >
                         <input type="submit" style="width: 100px;height: 50px;" value="送出訂單" />
-                        <input type="button" style="width: 100px;height: 50px; margin-bottom:5px;" onclick="location.href='<?=Yii::app()->request->baseUrl; ?>/order/add';" value="清除" />
-                        <input type="submit" style="width: 200px;height: 50px;" value="列印並送出訂單" />
+                        <input type="button" style="width: 100px;height: 50px; margin-bottom:10px;" onclick="location.href='<?=Yii::app()->request->baseUrl; ?>/order/add';" value="清除" />
+                        <input type="submit" style="width: 200px;height: 50px; margin-bottom:10px;" value="列印並送出訂單" />
                     </td>
                 </tr>
             </table>
@@ -58,27 +58,27 @@
     </div>
 </form>
 <div id="checkedAttr" class="hide" >
-    <table class="detail-list">
+    <table class="detail-list" style="width: 400px;">
         <tr>
             <th>糖</th>
             <td>
-                無<input type="radio" name="itemAttrA" class="inputItemRadio" value="無糖" />
-                微<input type="radio" name="itemAttrA" class="inputItemRadio" value="微糖" />
-                中<input type="radio" name="itemAttrA" class="inputItemRadio" value="中糖" />
-                少<input type="radio" name="itemAttrA" class="inputItemRadio" value="少糖" />
-                正<input type="radio" name="itemAttrA" def="me" class="inputItemRadio" checked="checked" value="正糖" />
+                <input type="radio" name="itemAttrA" class="inputItemRadio" value="無糖" />無
+               <input type="radio" name="itemAttrA" class="inputItemRadio" value="微糖" /> 微
+                <input type="radio" name="itemAttrA" class="inputItemRadio" value="中糖" />中
+                <input type="radio" name="itemAttrA" class="inputItemRadio" value="少糖" />少
+                <input type="radio" name="itemAttrA" def="me" class="inputItemRadio" checked="checked" value="正糖" />正
             </td>
         </tr>
         <tr>
             <th>冰</th>
             <td>
-                無<input type="radio" name="itemAttrB" class="inputItemRadio" value="無冰" />
-                微<input type="radio" name="itemAttrB" class="inputItemRadio" value="微冰" />
-                中<input type="radio" name="itemAttrB" class="inputItemRadio" value="中冰" />
-                少<input type="radio" name="itemAttrB" class="inputItemRadio" value="少冰" />
-                正<input type="radio" name="itemAttrB" def="me" class="inputItemRadio" checked="checked" value="正冰" />
-                溫<input type="radio" name="itemAttrB" class="inputItemRadio" checked="checked" value="溫" />
-                熱<input type="radio" name="itemAttrB" class="inputItemRadio" checked="checked" value="熱" />
+                <input type="radio" name="itemAttrB" class="inputItemRadio" value="無冰" />無
+                <input type="radio" name="itemAttrB" class="inputItemRadio" value="微冰" />微
+                <input type="radio" name="itemAttrB" class="inputItemRadio" value="中冰" />中
+                <input type="radio" name="itemAttrB" class="inputItemRadio" value="少冰" />少
+                <input type="radio" name="itemAttrB" def="me" class="inputItemRadio" checked="checked" value="正冰" />正<br/><br/><br/>
+                <input type="radio" name="itemAttrB" class="inputItemRadio" checked="checked" value="溫" />溫
+                <input type="radio" name="itemAttrB" class="inputItemRadio" checked="checked" value="熱" />熱
             </td>
         </tr>
         <tr>

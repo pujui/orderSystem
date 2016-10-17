@@ -10,11 +10,12 @@
         <?php } ?>
         </div>
     </div>
+    <?php if($hideHeader != 1){ ?>
     <div id="header">
         <div class="app-grid" >
             <ul>
                 <li class="grid-picture" >
-                    <input type="button" class="headbtn" onclick="location.href='<?=Yii::app()->request->baseUrl; ?>/user/index';" value="使用者管理" />
+                    <input type="button" class="headbtn" onclick="location.href='<?=Yii::app()->request->baseUrl; ?>/order/add';" value="建立訂單" />
                 </li>
                 <li class="grid-name"></li>
             </ul>
@@ -30,7 +31,7 @@
         <div class="app-grid" >
             <ul>
                 <li class="grid-picture" >
-                    <input type="button" class="headbtn" onclick="location.href='<?=Yii::app()->request->baseUrl; ?>/menu/index';" value="菜單管理" />
+                    <input type="button" class="headbtn" onclick="location.href='<?=Yii::app()->request->baseUrl; ?>/user/index';" value="使用者管理" />
                 </li>
                 <li class="grid-name"></li>
             </ul>
@@ -38,12 +39,13 @@
         <div class="app-grid" >
             <ul>
                 <li class="grid-picture" >
-                    <input type="button" class="headbtn" onclick="location.href='<?=Yii::app()->request->baseUrl; ?>/order/add';" value="建立訂單" />
+                    <input type="button" class="headbtn" onclick="location.href='<?=Yii::app()->request->baseUrl; ?>/menu/index';" value="菜單管理" />
                 </li>
                 <li class="grid-name"></li>
             </ul>
         </div>
     </div>
+    <?php } ?>
     <div id="breadcrumbs">
         <?php
         $this->widget('CBreadCrumbsView',array(

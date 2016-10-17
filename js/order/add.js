@@ -75,7 +75,6 @@ $(document).ready(function(){
         item += ' = <input type="text" name="itemTotal[]" class="inputItemPrice" readonly="readonly" value="'+$(e.target).data('price')+'" /><br/>';
         item += '<br/><input type="button" class="delItem" checked="checked" style="height:30px;" value="X" />';
         item += ' <input type="button" class="addCount" style="height:30px;" value="-5" />';
-        item += ' <input type="button" class="addCount" style="height:30px;" value="-2" />';
         item += ' <input type="button" class="addCount" style="height:30px;" value="-1" />';
         item += ' <input type="button" class="addCount" style="height:30px;" value="+1" />';
         item += ' <input type="button" class="addCount" style="height:30px;" value="+2" />';

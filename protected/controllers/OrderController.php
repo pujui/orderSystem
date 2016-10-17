@@ -79,7 +79,8 @@ class OrderController extends FrameController{
         $this->setJS('/js/order/add.js');
         
         $this->layout('order/add', array(
-            'showList' => $showList
+            'showList' => $showList,
+            'hideHeader' => 1
         ));
     }
 
