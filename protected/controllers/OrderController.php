@@ -40,13 +40,30 @@ class OrderController extends FrameController{
     public function actionAdd(){
         $menuManager = new MenuManager;
         $showList = $menuManager->show();
-        
+
+        try {
+            if(isset($_POST['itemPrice'])){
+
+                $userVO = UserManager::getLogin();
+                $orderManager = new OrderManager;
+                $orderManager->add($userVO, $_POST);
+                exit;
+                $this->redirect(Yii::app()->request->baseUrl.'/order/');
+            }
+        }catch (MenuException $e){
+            $errorCode = $e->getMessage();
+            $this->redirect(Yii::app()->request->baseUrl.'/order/');
+        }
         $this->BreadCrumbs[Yii::app()->request->baseUrl.'/order/'] = '訂單管理';
         
         $this->BreadCrumbs['last'] = '新增定單';
         
         $this->pageTitle = '訂單管理：新增定單';
 
+        $this->setCSS('/js/jquery/jquery-ui-1.10.3.custom/ui-lightness/jquery-ui-1.10.3.custom.min.css');
+        
+        $this->setJS('/js/jquery/jquery.blockUI.js');
+        
         $this->setJS('/js/order/add.js');
         
         $this->layout('order/add', array(

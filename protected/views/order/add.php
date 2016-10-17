@@ -1,4 +1,4 @@
-<form id="detailForm" method="post" >
+<form id="addOrderForm" method="post" >
     <div>
         <div style="float: left;">
             <table style="width: 300px;">
@@ -57,3 +57,34 @@
         </div>
     </div>
 </form>
+<div id="checkedAttr" class="hide" >
+    <table class="detail-list">
+        <tr>
+            <th>糖</th>
+            <td>
+                無<input type="radio" name="itemAttrA" class="inputItemRadio" value="無糖" />
+                微<input type="radio" name="itemAttrA" class="inputItemRadio" value="微糖" />
+                中<input type="radio" name="itemAttrA" class="inputItemRadio" value="中糖" />
+                少<input type="radio" name="itemAttrA" class="inputItemRadio" value="少糖" />
+                正<input type="radio" name="itemAttrA" def="me" class="inputItemRadio" checked="checked" value="正糖" />
+            </td>
+        </tr>
+        <tr>
+            <th>冰</th>
+            <td>
+                無<input type="radio" name="itemAttrB" class="inputItemRadio" value="無冰" />
+                微<input type="radio" name="itemAttrB" class="inputItemRadio" value="微冰" />
+                中<input type="radio" name="itemAttrB" class="inputItemRadio" value="中冰" />
+                少<input type="radio" name="itemAttrB" class="inputItemRadio" value="少冰" />
+                正<input type="radio" name="itemAttrB" def="me" class="inputItemRadio" checked="checked" value="正冰" />
+                溫<input type="radio" name="itemAttrB" class="inputItemRadio" checked="checked" value="溫" />
+                熱<input type="radio" name="itemAttrB" class="inputItemRadio" checked="checked" value="熱" />
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" >
+                <input type="button" id="addItemBtn" value="確認" />
+            </td>
+        </tr>
+    </table>
+</div>

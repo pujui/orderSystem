@@ -31,4 +31,39 @@ class OrderDAO extends BaseDAO{
         }
     }
     
+    public function add($main, $insert){
+        $transaction = $this->db->beginTransaction();
+        try
+        {
+            $sql = "INSERT INTO ordersystem.orderlist
+                        (creater, priceTotal, createtime)
+                    VALUES
+                        (:creater, :priceTotal, NOW())";
+            $this->bindQuery($sql, array(':creater' => $main['creater'], ':priceTotal' => $main['priceTotal']));
+            
+            $orderId = $this->db->getLastInsertID();
+            
+            $bind = [ ':orderId' => $orderId];
+            $sql = 'INSERT INTO ordersystem.orderdetail (orderId, menuId, price, itemCount, itemTotal, createTime, memo) VALUES ';
+            $sqlList = [];
+            foreach ($insert as $key=>$row){
+                $sqlList[] = " (:orderId, :menuId{$key}, :price{$key}, :itemCount{$key}, :itemTotal{$key}, NOW(), :memo{$key}) ";
+                $bind[":menuId{$key}"] = $row['menuId'];
+                $bind[":price{$key}"] = $row['price'];
+                $bind[":itemCount{$key}"] = $row['itemCount'];
+                $bind[":itemTotal{$key}"] = $row['itemTotal'];
+                $bind[":memo{$key}"] = $row['memo'];
+            }
+            $this->bindQuery($sql . implode(',', $sqlList), $bind);
+            
+           //.... other SQL executions
+           $transaction->commit();
+           return true;
+        }
+        catch(Exception $e)
+        {
+           $transaction->rollback();
+           return false;
+        }
+    }
 }

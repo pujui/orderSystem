@@ -5,7 +5,7 @@ if(isset($editUserVO)){
     $editStatus = 1;
 }
 ?>
-<form id="detailForm" method="post" >
+<form id="userAddForm" method="post" >
     <table style="width: 500px;">
         <tr>
             <th >Name</th>

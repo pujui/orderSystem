@@ -21,4 +21,5 @@ class OrderVO{
         $this->createTime = $row['createTime'];
         $this->updateTime = $row['updateTime'];
     }
+
 }

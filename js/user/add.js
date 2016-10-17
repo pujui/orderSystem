@@ -15,7 +15,7 @@ $(document).ready(function(){
     }
     
     userAddForm.prototype.append = function(){
-        if($('input[name=edit]').length() == 0){
+        if($('input[name=edit]').length == 0){
 	        $('input[name=account]').val('');
 	        $('input[name=name]').val(this.userAddFormVO.name);
 	        $('input[name=password]').val('');
@@ -39,7 +39,7 @@ $(document).ready(function(){
         }
         if($('input[name=confirmPassword]').val() != $('input[name=password]').val()){
             msg.push('Password不相同');
-        }return false;
+        }
         if(msg.length == 0){
             return true;
         }else{
