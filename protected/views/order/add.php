@@ -65,26 +65,39 @@
     <div id="checkedAttr" class="hide" >
         <table class="detail-list" style="width: 400px;">
             <tr>
-                <th>糖</th>
-                <td>
-                    <input type="radio" name="itemAttrA" class="inputItemRadio" value="無糖" />無糖
-                    <input type="radio" name="itemAttrA" def="me" class="inputItemRadio" checked="checked" value="正糖" />正常<br/><br/>
-                    <input type="radio" name="itemAttrA" class="inputItemRadio" value="微糖" />微糖
-                    <input type="radio" name="itemAttrA" class="inputItemRadio" value="半糖" />半糖
-                    <input type="radio" name="itemAttrA" class="inputItemRadio" value="少糖" />少糖
-                </td>
-            </tr>
-            <tr>
                 <th>冰</th>
-                <td>
-                    <input type="radio" name="itemAttrB" class="inputItemRadio" value="無冰" />無冰
-                    <input type="radio" name="itemAttrB" def="me" class="inputItemRadio" checked="checked" value="正冰" />正<br/><br/>
-                    <input type="radio" name="itemAttrB" class="inputItemRadio" value="微冰" />微冰
-                    <input type="radio" name="itemAttrB" class="inputItemRadio" value="少冰" />少冰
-                </td>
+                <td><input type="radio" name="itemAttrB" def="me" class="inputItemRadio" checked="checked" value="正常" />正常</td>
+                <td><input type="radio" name="itemAttrB" class="inputItemRadio" checked="checked" value="去冰" />去冰</td>
+                <td><input type="radio" name="itemAttrB" class="inputItemRadio" checked="checked" value="微冰" />微冰</td>
+                <td><input type="radio" name="itemAttrB" class="inputItemRadio" checked="checked" value="少冰" />少冰</td>
+                <td><input type="radio" name="itemAttrB" class="inputItemRadio" checked="checked" value="多冰" />多冰</td>
             </tr>
             <tr>
-                <td colspan="2" >
+                <th>糖</th>
+                <td><input type="radio" name="itemAttrA" def="me" class="inputItemRadio" checked="checked" value="正常" />正常</td>
+                <td><input type="radio" name="itemAttrA" class="inputItemRadio" checked="checked" value="微糖" />微糖</td>
+                <td><input type="radio" name="itemAttrA" class="inputItemRadio" checked="checked" value="半糖" />半糖</td>
+                <td><input type="radio" name="itemAttrA" class="inputItemRadio" checked="checked" value="少糖" />少糖</td>
+                <td><input type="radio" name="itemAttrA" class="inputItemRadio" checked="checked" value="無糖" />無糖</td>
+            </tr>
+            <tr>
+                <th>其他</th>
+                <td><input type="checkbox" name="itemAttrC[]" class="inputItemRadio" value="少蜂蜜" />少蜂蜜</td>
+                <td><input type="checkbox" name="itemAttrC[]" class="inputItemRadio" value="去蜂蜜" />去蜂蜜</td>
+                <td><input type="checkbox" name="itemAttrC[]" class="inputItemRadio" value="全奶" />全奶</td>
+                <td><input type="checkbox" name="itemAttrC[]" class="inputItemRadio" value="加蜂蜜" />加蜂蜜</td>
+                <td><input type="checkbox" name="itemAttrC[]" class="inputItemRadio" value="酸一點" />酸一點</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><input type="checkbox" name="itemAttrC[]" class="inputItemRadio" value="加牛奶" />加牛奶</td>
+                <td><input type="checkbox" name="itemAttrC[]" class="inputItemRadio" value="去布丁" />去布丁</td>
+                <td><input type="checkbox" name="itemAttrC[]" class="inputItemRadio" value="去牛奶" />去牛奶</td>
+                <td><input type="checkbox" name="itemAttrC[]" class="inputItemRadio" value="去牛奶10" />去牛奶10</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td colspan="6" >
                     <input type="button" id="addItemBtnAgain" class="inputItemAttrCheck" value="繼續" />
                     <input type="button" id="addItemBtn" class="inputItemAttrCheck" value="確認出單" />
                 </td>

@@ -68,6 +68,10 @@ $(document).ready(function(){
         var e = this.selected;
         var sugar = $('input[name=itemAttrA]:checked').val();
         var ice = $('input[name=itemAttrB]:checked').val();
+        var other = [];
+        $('input[name="itemAttrC[]"]:checked').each(function(){
+            other.push($(this).val());
+        });
         var item = '<span>';
         item += '<input type="text" class="inputItem" name="itemM[]" readonly="readonly" value="'
             +$(e.target).data('name')
@@ -75,16 +79,18 @@ $(document).ready(function(){
             +$(e.target).data('classname')
             +' '
             +sugar+ice
+            +' '
+            +other.join(' ')
             +'" />&nbsp;';
         item += '<input type="text" name="itemPrice[]" class="inputItemPrice" readonly="readonly" value="'+$(e.target).data('price')+'" />';
         item += ' x <input type="text" name="itemCount[]" class="inputItemPrice" readonly="readonly" value="1" />';
         item += ' = <input type="text" name="itemTotal[]" class="inputItemPrice" readonly="readonly" value="'+$(e.target).data('price')+'" /><br/>';
-        item += '<br/><input type="button" class="delItem" checked="checked" style="height:30px;" value="X" />';
-        item += ' <input type="button" class="addCount" style="height:30px;" value="-5" />';
-        item += ' <input type="button" class="addCount" style="height:30px;" value="-1" />';
-        item += ' <input type="button" class="addCount" style="height:30px;" value="+1" />';
-        item += ' <input type="button" class="addCount" style="height:30px;" value="+2" />';
-        item += ' <input type="button" class="addCount" style="height:30px;" value="+5" />';
+        item += '<br/><input type="button" class="delItem inputItemAddCount" checked="checked" value="X" />';
+        item += ' <input type="button" class="addCount inputItemAddCount" value="-5" />';
+        item += ' <input type="button" class="addCount inputItemAddCount" value="-1" />';
+        item += ' <input type="button" class="addCount inputItemAddCount" value="+1" />';
+        item += ' <input type="button" class="addCount inputItemAddCount" value="+2" />';
+        item += ' <input type="button" class="addCount inputItemAddCount" value="+5" />';
         item += '<input type="hidden" name="itemId[]" value="'+$(e.target).data('nameid')+'" />';
         item += '<input type="hidden" name="itemName[]" value="'+$(e.target).data('name')+'" />';
         item += '<hr/></span>'
