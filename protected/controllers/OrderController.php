@@ -25,15 +25,23 @@ class OrderController extends FrameController{
     }
 
     public function actionIndex(){
-        
         $userVO = UserManager::getLogin();
-
         $pageVO = new PageVO;
         $pageVO->page = intval($_GET['p']);
+        $pageVO->params = $_GET;
         $pageVO->limit = 30;
+        $search = [
+            'start' => $_GET['start'],
+            'end'   => $_GET['end'],
+            'status'=> $_GET['status']
+        ];
         $orderManager = new OrderManager;
-        $orderListPage = $orderManager->findOrderList($pageVO);
+        $orderListPage = $orderManager->findOrderList($pageVO, $search);
         
+
+        $orderDAO = new OrderDAO();
+        $months = $orderDAO->findDataForLastMonth();
+        $days = $orderDAO->findDataForLastDay();
         $this->BreadCrumbs['last'] = '訂單管理';
         
         $this->pageTitle = '訂單管理：列表';
@@ -46,7 +54,9 @@ class OrderController extends FrameController{
         
         $this->layout('order/index', array(
             'orderListPage' => $orderListPage,
-            'statusList'    => $this->statusList
+            'statusList'    => $this->statusList,
+            'months'        => $months,
+            'days'          => $days
         ));
     }
 
@@ -84,4 +94,12 @@ class OrderController extends FrameController{
         ));
     }
 
+    public function actionEdit($id = 0, $s = 0){
+        $statusList = [ 1 => 1, 2 => -1];
+        if($id > 0 && isset($statusList[$s])){
+            $orderDAO = new OrderDAO;
+            $orderDAO->updateStatus($id, $statusList[$s]);
+        }
+        $this->redirect(Yii::app()->request->baseUrl.'/order/');
+    }
 }

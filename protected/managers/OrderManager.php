@@ -6,14 +6,14 @@ class OrderManager{
      * @param unknown $pageVO
      * @return OrderListPage
      */
-    public function findOrderList($pageVO){
+    public function findOrderList($pageVO, $search = []){
         $orderDAO = new OrderDAO();
-        $result = $orderDAO->findOrderList($pageVO, 'TOTAL');
+        $result = $orderDAO->findOrderList($pageVO, 'TOTAL', $search);
         $pageVO->total = empty($result)? 0: $result['count'];
         $pageVO->price = empty($result)? 0: $result['price'];
         $pageVO->createStartRange();
     
-        $list = $orderDAO->findOrderList($pageVO, 'PAGE');
+        $list = $orderDAO->findOrderList($pageVO, 'PAGE', $search);
         $orderListPage = new OrderListPage;
         $orderListPage->pageVO = $pageVO;
         foreach ($list as $row){

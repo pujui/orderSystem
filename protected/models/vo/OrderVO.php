@@ -2,6 +2,7 @@
 class OrderVO{
     
     public $orderId;
+    public $todayOrderNo;
     public $creater;
     public $priceTotal;
     public $status;
@@ -15,6 +16,7 @@ class OrderVO{
             return false;
         }
         $this->orderId = $row['orderId'];
+        $this->todayOrderNo = $row['todayOrderNo'];
         $this->creater = $row['creater'];
         $this->status = $row['status'];
         $this->priceTotal = $row['priceTotal'];

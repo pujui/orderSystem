@@ -7,11 +7,12 @@ $(document).ready(function(){
     orderAddForm.prototype.init = function(){
         $('.addItem').click($.proxy(this.add, this));
         $('#addOrderForm input[type=submit]').click(this.checkVariable);
-        $('#addItemBtn').click($.proxy(this.addItemBtn, this));
+        $('#addItemBtn').click($.proxy(this.addItemBtnToOrder, this));
+        $('#addItemBtnAgain').click($.proxy(this.addItemBtn, this));
         $(document).on("click", ".delItem", $.proxy(this.delItem, this));
         $(document).on("click", ".addCount", $.proxy(this.calculate, this));
-        
-        
+
+        $( "#tabs" ).tabs();
     }
 
     orderAddForm.prototype.delItem = function(e){
@@ -55,6 +56,11 @@ $(document).ready(function(){
                 left: ($( window ).width()/2)-(750/2)
             }
         });
+    }
+
+    orderAddForm.prototype.addItemBtnToOrder = function(){
+        $('.orderTab').click();
+        this.addItemBtn();
     }
 
     orderAddForm.prototype.addItemBtn = function(){
