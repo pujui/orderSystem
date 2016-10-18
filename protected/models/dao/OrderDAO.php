@@ -129,7 +129,7 @@ class OrderDAO extends BaseDAO{
                     )
                 )
                 ->queryAll();
-        $lis = [];
+        $list = [];
         foreach ($result as $row){
             $list[$row['ym']] = $row;
         }
@@ -157,7 +157,7 @@ class OrderDAO extends BaseDAO{
                     )
                 )
                 ->queryAll();
-        $lis = [];
+        $list = [];
         foreach ($result as $row){
             $list[$row['ym']] = $row;
         }
