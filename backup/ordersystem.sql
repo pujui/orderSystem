@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 2016-10-17 11:03:19
+-- Generation Time: 2016-10-18 12:02:49
 -- Server version: 5.6.21
 -- PHP Version: 5.6.3
 
@@ -60,7 +60,7 @@ CREATE TABLE IF NOT EXISTS `menu` (
 -- Dumping data for table `menu`
 --
 
-INSERT INTO `menu` (`menuId`, `name`, `firstClass`, `supportStatus`, `isCancel`, `updateTime`, `createTime`, `classPrice1`, `className1`, `classPrice2`, `className2`, `classPrice3`, `className3`, `classPrice4`, `className4`, `classPrice5`, `className5`, `classPrice6`, `className6`, `classPrice7`, `className7`, `classPrice8`, `className8`, `classPrice9`, `className9`, `classPrice10`, `className10`) VALUES
+REPLACE INTO `menu` (`menuId`, `name`, `firstClass`, `supportStatus`, `isCancel`, `updateTime`, `createTime`, `classPrice1`, `className1`, `classPrice2`, `className2`, `classPrice3`, `className3`, `classPrice4`, `className4`, `classPrice5`, `className5`, `classPrice6`, `className6`, `classPrice7`, `className7`, `classPrice8`, `className8`, `classPrice9`, `className9`, `classPrice10`, `className10`) VALUES
 (1, '西瓜汁', '新鮮現打果汁', 0, 0, '2016-10-17 09:17:38', '2016-10-17 09:17:38', 0, '小', 0, '中', 30, '大', 0, '', 0, '', 0, '', 0, '', 0, '', 0, '', 0, ''),
 (2, '蜂蜜檸檬', '檸檬', 0, 0, '2016-10-17 09:21:35', '2016-10-17 09:18:08', 0, '小', 0, '中', 35, '大', 0, '', 0, '', 0, '', 0, '', 0, '', 0, '', 0, ''),
 (3, '金桔檸檬', '檸檬', 0, 0, '2016-10-17 09:21:39', '2016-10-17 09:18:52', 0, '小', 0, '中', 35, '大', 0, '', 0, '', 0, '', 0, '', 0, '', 0, '', 0, ''),
@@ -86,20 +86,20 @@ CREATE TABLE IF NOT EXISTS `orderdetail` (
 `orderDetailId` int(10) unsigned NOT NULL,
   `orderId` int(10) unsigned NOT NULL,
   `menuId` int(11) NOT NULL,
-  `price` int(1) NOT NULL,
+  `price` int(1) NOT NULL COMMENT '價錢',
   `itemCount` int(1) unsigned NOT NULL,
   `itemTotal` int(1) unsigned NOT NULL,
-  `status` smallint(1) unsigned NOT NULL,
+  `status` smallint(1) unsigned NOT NULL COMMENT '處理狀態 0 未處理, 1已處理完畢',
   `createTime` datetime NOT NULL,
   `updateTime` datetime NOT NULL,
-  `memo` varchar(200) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8 COMMENT='訂單明細';
+  `memo` varchar(200) NOT NULL COMMENT '備註'
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8 COMMENT='訂單明細';
 
 --
 -- Dumping data for table `orderdetail`
 --
 
-INSERT INTO `orderdetail` (`orderDetailId`, `orderId`, `menuId`, `price`, `itemCount`, `itemTotal`, `status`, `createTime`, `updateTime`, `memo`) VALUES
+REPLACE INTO `orderdetail` (`orderDetailId`, `orderId`, `menuId`, `price`, `itemCount`, `itemTotal`, `status`, `createTime`, `updateTime`, `memo`) VALUES
 (1, 1, 6, 65, 6, 390, 0, '2016-10-17 16:03:20', '0000-00-00 00:00:00', '酪梨牛奶 大 無糖無冰'),
 (2, 1, 12, 35, 3, 105, 0, '2016-10-17 16:03:20', '0000-00-00 00:00:00', '奇異果果汁 大 中糖中冰'),
 (3, 1, 14, 50, 1, 50, 0, '2016-10-17 16:03:20', '0000-00-00 00:00:00', '蘋果柳橙 大 正糖正冰'),
@@ -114,7 +114,13 @@ INSERT INTO `orderdetail` (`orderDetailId`, `orderId`, `menuId`, `price`, `itemC
 (12, 2, 4, 35, 1, 35, 0, '2016-10-17 16:04:42', '0000-00-00 00:00:00', '西瓜牛奶 折價-5 正糖正冰'),
 (13, 3, 4, 35, 1, 35, 0, '2016-10-17 16:12:06', '0000-00-00 00:00:00', '西瓜牛奶 折價-5 正糖正冰'),
 (14, 3, 5, 40, 1, 40, 0, '2016-10-17 16:12:06', '0000-00-00 00:00:00', '木瓜牛奶 大 正糖正冰'),
-(15, 4, 9, 40, 11, 440, 0, '2016-10-17 16:12:22', '0000-00-00 00:00:00', '蘋果牛奶 大 無糖無冰');
+(15, 4, 9, 40, 11, 440, 0, '2016-10-17 16:12:22', '0000-00-00 00:00:00', '蘋果牛奶 大 無糖無冰'),
+(16, 5, 4, 35, 6, 210, 0, '2016-10-18 09:31:09', '0000-00-00 00:00:00', '西瓜牛奶 折價-5 正糖正冰'),
+(17, 6, 4, 35, 1, 35, 0, '2016-10-18 09:32:13', '0000-00-00 00:00:00', '西瓜牛奶 折價-5 正糖正冰'),
+(18, 7, 6, 65, 1, 65, 0, '2016-10-18 09:32:34', '0000-00-00 00:00:00', '酪梨牛奶 大 正糖正冰'),
+(19, 8, 5, 40, 6, 240, 0, '2016-10-18 09:33:03', '0000-00-00 00:00:00', '木瓜牛奶 大 正糖中冰'),
+(20, 9, 6, 65, 1, 65, 0, '2016-10-18 09:33:16', '0000-00-00 00:00:00', '酪梨牛奶 大 正糖正冰'),
+(21, 9, 4, 35, 1, 35, 0, '2016-10-18 09:33:16', '0000-00-00 00:00:00', '西瓜牛奶 折價-5 正糖正冰');
 
 -- --------------------------------------------------------
 
@@ -123,23 +129,29 @@ INSERT INTO `orderdetail` (`orderDetailId`, `orderId`, `menuId`, `price`, `itemC
 --
 
 CREATE TABLE IF NOT EXISTS `orderlist` (
-`orderId` int(10) unsigned NOT NULL,
-  `creater` int(10) unsigned NOT NULL,
-  `priceTotal` int(1) NOT NULL,
+`orderId` int(10) unsigned NOT NULL COMMENT '訂單號碼',
+  `todayOrderNo` varchar(13) NOT NULL COMMENT '20160821O0001',
+  `creater` int(10) unsigned NOT NULL COMMENT '建立者',
+  `priceTotal` int(1) NOT NULL COMMENT '總價錢',
   `createTime` datetime NOT NULL,
   `updateTime` datetime NOT NULL,
-  `status` smallint(1) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='訂單列表';
+  `status` smallint(1) NOT NULL COMMENT '處理狀態 0未處理, 1已處理完畢'
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COMMENT='訂單列表';
 
 --
 -- Dumping data for table `orderlist`
 --
 
-INSERT INTO `orderlist` (`orderId`, `creater`, `priceTotal`, `createTime`, `updateTime`, `status`) VALUES
-(1, 1, 1260, '2016-10-17 16:03:20', '0000-00-00 00:00:00', 0),
-(2, 1, 1260, '2016-10-17 16:04:42', '0000-00-00 00:00:00', 0),
-(3, 1, 75, '2016-10-17 16:12:06', '0000-00-00 00:00:00', 0),
-(4, 1, 440, '2016-10-17 16:12:22', '0000-00-00 00:00:00', 0);
+REPLACE INTO `orderlist` (`orderId`, `todayOrderNo`, `creater`, `priceTotal`, `createTime`, `updateTime`, `status`) VALUES
+(1, '', 1, 1260, '2016-07-17 16:03:20', '2016-10-18 10:05:39', 1),
+(2, '', 1, 1260, '2016-10-17 16:04:42', '2016-10-18 10:05:36', -1),
+(3, '', 1, 75, '2016-10-17 16:12:06', '2016-10-18 10:05:43', -1),
+(4, '', 1, 440, '2016-10-17 16:12:22', '2016-10-18 10:05:26', -1),
+(5, '20161018O', 1, 210, '2016-10-18 09:31:09', '2016-10-18 10:05:32', 1),
+(6, '20161018O0001', 1, 35, '2016-10-18 09:32:13', '0000-00-00 00:00:00', 0),
+(7, '20161018O0007', 1, 65, '2016-10-18 09:32:34', '0000-00-00 00:00:00', 0),
+(8, '20161018O0004', 1, 240, '2016-10-18 09:33:03', '2016-10-18 11:56:39', -1),
+(9, '20161018O0005', 1, 100, '2016-10-18 09:33:16', '0000-00-00 00:00:00', 0);
 
 -- --------------------------------------------------------
 
@@ -162,7 +174,7 @@ CREATE TABLE IF NOT EXISTS `user` (
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`userId`, `account`, `name`, `password`, `privateKey`, `createTime`, `isActive`, `updateTime`) VALUES
+REPLACE INTO `user` (`userId`, `account`, `name`, `password`, `privateKey`, `createTime`, `isActive`, `updateTime`) VALUES
 (1, 'root001', 'root', '20e5629ef82a8b4486f4081a98cff52a79e28c5c', 'asdfqwe', '2016-10-17 00:00:00', 2, '2016-10-17 09:10:18'),
 (2, 'EP001', 'employee', '90390fd6538309165393a13e485e08f98bba9160', 'asdfqwe', '2016-10-17 09:13:38', 1, '2016-10-17 09:13:38'),
 (3, 'wqd', 'qwe', '4e33a6e1a4008ea404095bb31c55761383b2d36a', 'asdfqwe', '2016-10-17 14:28:31', 0, '2016-10-17 14:28:37'),
@@ -188,7 +200,7 @@ ALTER TABLE `orderdetail`
 -- Indexes for table `orderlist`
 --
 ALTER TABLE `orderlist`
- ADD PRIMARY KEY (`orderId`), ADD KEY `createTime` (`createTime`);
+ ADD PRIMARY KEY (`orderId`), ADD KEY `createTime` (`createTime`), ADD KEY `todayOrderNo` (`todayOrderNo`);
 
 --
 -- Indexes for table `user`
@@ -209,12 +221,12 @@ MODIFY `menuId` int(11) NOT NULL AUTO_INCREMENT COMMENT '菜單ID',AUTO_INCREMEN
 -- AUTO_INCREMENT for table `orderdetail`
 --
 ALTER TABLE `orderdetail`
-MODIFY `orderDetailId` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=16;
+MODIFY `orderDetailId` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=22;
 --
 -- AUTO_INCREMENT for table `orderlist`
 --
 ALTER TABLE `orderlist`
-MODIFY `orderId` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
+MODIFY `orderId` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '訂單號碼',AUTO_INCREMENT=10;
 --
 -- AUTO_INCREMENT for table `user`
 --
