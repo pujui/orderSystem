@@ -47,6 +47,7 @@ $(document).ready(function(){
         this.selected = e;
         $('input[name=itemAttrA][def=me]').prop('checked', true);
         $('input[name=itemAttrB][def=me]').prop('checked', true);
+        $('input[name="itemAttrC[]"]:checked').prop('checked', true);
         $.blockUI({ 
             message: $('#checkedAttr'),
             onOverlayClick: $.unblockUI,
