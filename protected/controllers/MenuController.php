@@ -19,6 +19,7 @@ class MenuController extends FrameController{
         }else{
             $this->actionErrorPage();
         }
+        $this->setCSS('/css/menu.css');
 
         $this->BreadCrumbs[Yii::app()->request->baseUrl] = '首頁';
 
@@ -42,7 +43,11 @@ class MenuController extends FrameController{
         $this->BreadCrumbs['last'] = '菜單管理';
         
         $this->pageTitle = '菜單管理：列表';
-
+        
+        $this->setCSS('/js/jquery/jquery-ui-1.10.3.custom/ui-lightness/jquery-ui-1.10.3.custom.min.css');
+        
+        $this->setJS('/js/menu/index.js');
+        
         $this->layout('menu/index', array(
             'menuListPage'      => $menuListPage,
             'sellStatusList'   => $this->sellStatusList,
@@ -114,5 +119,20 @@ class MenuController extends FrameController{
             'errorCode'         => $errorCode,
         ));
     }
-    
+
+    public function actionExtra(){
+        $menuManager = new MenuManager;
+        if(isset($_POST['extraId'])){
+            try {
+                $menuManager->editExtral($_POST);
+                $this->redirect(Yii::app()->request->baseUrl.'/menu/');
+            }catch (MenuException $e){
+                $this->redirect(Yii::app()->request->baseUrl.'/menu/');
+            }
+        }
+        $list = $menuManager->findExtral();
+        $this->layout('menu/extra', array(
+            'list'    => $list,
+        ));
+    }
 }

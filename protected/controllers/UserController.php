@@ -30,7 +30,9 @@ class UserController extends FrameController{
         $userVO = $userManager->getLogin();
         $userList = $userVO->isActive == 2 ? $userManager->findUserList(): [];
 
+        $this->setCSS('/js/jquery/jquery-ui-1.10.3.custom/ui-lightness/jquery-ui-1.10.3.custom.min.css');
         $this->setJS('/js/user/user.js');
+        $this->setJS('/js/user/index.js');
         $this->layout('user/index', array(
             'userList' => $userList,
             'activeList' => $this->activeList

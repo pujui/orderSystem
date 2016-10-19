@@ -2,6 +2,9 @@
 /*******************
  * menu block
  *******************/
+#tabs{
+    font: normal 14pt Arial,Helvetica,Verdana,"DejaVu Sans","Bitstream Vera Sans",Geneva,sans-serif;
+}
 #addMenu{
     width: 530px;
     float: left;
@@ -66,17 +69,6 @@
     height: 50px;
     font-size: 100%;
     margin-top: 5px;
-}
-
-.templeBtn1{
-    width: 150px;
-    height: 80px;
-    margin: 10px 0px;
-}
-.templeBtn2{
-    width: 300px;
-    height: 80px;
-    margin: 10px 0px;
 }
 
 /*******************

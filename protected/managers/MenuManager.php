@@ -90,4 +90,58 @@ class MenuManager{
         $menuDAO = new MenuDAO();
         $menuDAO->edit($insert);
     }
+
+    public function findExtral($option = 0){
+        $menuDAO = new MenuDAO;
+        $result = $menuDAO->findExtraMenu();
+        $list = [];
+        foreach ($result as $row){
+            if($option == 1 && $row['name']==''){
+                continue;
+            }
+            if(!isset($list[$row['className']])) $list[$row['className']] = [];
+            if(in_array($row['className'], ['sugar', 'ice'])){
+                $list[$row['className']][] = [$row['name'], $row['selected'], $row['extraId']];
+            }else if($row['className'] == 'extra'){
+                $list[$row['className']][] = [$row['name'], $row['price'], $row['extraId']];
+            }
+        }
+        return $list;
+    }
+    
+    public function editExtral($data){
+        if(empty($data['sugarId'])){
+            throw new MenuException(MenuException::ERR_VALUE_IS_EMPTY);
+        }
+        if(empty($data['iceId'])){
+            throw new MenuException(MenuException::ERR_VALUE_IS_EMPTY);
+        }
+        if(empty($data['extraId'])){
+            throw new MenuException(MenuException::ERR_VALUE_IS_EMPTY);
+        }
+        $menuDAO = new MenuDAO;
+        foreach ($data['sugarId'] as $key=>$value){
+            $insert = [
+                ':extraId' => (int) $value,
+                ':name'    => trim((string)$data['sugarName'][$key]),
+            ];
+            $menuDAO->editExtraMenu($insert, 'sugar');
+        }
+        foreach ($data['iceId'] as $key=>$value){
+            $insert = [
+                ':extraId' => (int) $value,
+                ':name'    => trim((string)$data['iceName'][$key]),
+            ];
+            $menuDAO->editExtraMenu($insert, 'ice');
+        }
+        foreach ($data['extraId'] as $key=>$value){
+            $insert = [
+                ':extraId' => (int) $value,
+                ':name'    => trim((string)$data['extraName'][$key]),
+                ':price'    =>(int) $data['extraPrice'][$key],
+            ];
+            $menuDAO->editExtraMenu($insert, 'extra');
+        }
+        
+    }
 }

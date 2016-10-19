@@ -1,12 +1,12 @@
 <form method="get">
-    <table class="detail-list" width="770">
+    <table class="detail-list" width="900">
         <tr>
             <td>
                 <div>
                     處理狀態：<select name="status" >
                         <option value="0" >全部</option>
-                        <option value="1" <?php if($orderListPage->pageVO->params['status'] == '1'){ ?>selected="selected"<?php } ?>>未處理</option>
-                        <option value="2" <?php if($orderListPage->pageVO->params['status'] == '2'){ ?>selected="selected"<?php } ?>>已處理</option>
+                        <option value="1" <?php if($orderListPage->pageVO->params['status'] == '1'){ ?>selected="selected"<?php } ?>>已成立</option>
+                        <option value="2" <?php if($orderListPage->pageVO->params['status'] == '2'){ ?>selected="selected"<?php } ?>>已取消</option>
                     </select>
                     <input type="text" name="start" value="<?=CHtml::encode($orderListPage->pageVO->params['start']) ?>" readonly="readonly" placeholder="開始 <?=date('Y-m-d') ?>" />
                     <input type="text" name="end" value="<?=CHtml::encode($orderListPage->pageVO->params['end']) ?>" readonly="readonly" placeholder="結束 <?=date('Y-m-d') ?>" />
@@ -17,7 +17,7 @@
         </tr>
     </table>
 </form>
-<table class="detail-list" width="770">
+<table class="detail-list" width="900">
     <tr>
         <td>查詢結果</td>
         <td colspan="3">
@@ -26,13 +26,13 @@
     </tr>
 </table>
 <?php if(empty($orderListPage->details)){ ?>
-<table class="detail-list">
+<table class="detail-list" width="900">
     <tr>
         <th>無資料</th>
     </tr>
 </table>
 <?php }else{ ?>
-<table class="detail-list">
+<table class="detail-list" width="900">
     <tr>
         <th>訂單號碼</th>
         <th>訂單內容</th>
@@ -59,10 +59,10 @@
         <td><?=$row->priceTotal ?></td>
         <td>
             <?php if($row->status == 0){ ?>
-                <input type="button" onclick="if(confirm('確認是否標示已處理')) location.href='<?=Yii::app()->request->baseUrl; ?>/order/edit?id=<?=$row->orderId ?>&s=1';" value="已處理訂單" />
-                <input type="button" onclick="if(confirm('確認是否取消, 取消後無法回復')) location.href='<?=Yii::app()->request->baseUrl; ?>/order/edit?id=<?=$row->orderId ?>&s=2';" value="取消訂單" />
-            <?php }else{ ?>
                 <?=$statusList[$row->status] ?>
+                <input type="button" onclick="if(confirm('確認是否回復訂單')) location.href='<?=Yii::app()->request->baseUrl; ?>/order/edit?id=<?=$row->orderId ?>&s=1';" value="回復訂單" />
+            <?php }else{ ?>
+                <input type="button" onclick="if(confirm('確認是否取消訂單')) location.href='<?=Yii::app()->request->baseUrl; ?>/order/edit?id=<?=$row->orderId ?>&s=2';" value="取消訂單" />
             <?php } ?>
             
         </td>

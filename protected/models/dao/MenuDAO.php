@@ -177,4 +177,26 @@ class MenuDAO extends BaseDAO{
         );
     }
 
+    public function findExtraMenu(){
+        $sql = "SELECT *
+                FROM ordersystem.extramenu
+                ORDER BY extraId ";
+        return $this->queryAll($sql);
+    }
+
+    public function editExtraMenu($insert, $option = ''){
+        $bind = [
+            ':extraId' => $insert[':extraId'],
+            ':name' => $insert[':name']
+        ];
+        $set = '';
+        if($option == 'extra'){
+            $bind[':price'] = $insert[':price'];
+            $set = ',price=:price';
+        }
+        $sql = "UPDATE ordersystem.extramenu
+                SET name=:name {$set}
+                WHERE extraId=:extraId";
+        $this->bindQuery($sql, $bind);
+    }
 }

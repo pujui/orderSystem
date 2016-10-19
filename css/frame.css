@@ -19,6 +19,20 @@ body{
     background-color: #E6E6E6;
 }
 
+.templeBtn1{
+    width: 150px;
+    height: 80px;
+    margin: 10px 0px;
+}
+.templeBtn2{
+    width: 300px;
+    height: 80px;
+    margin: 10px 0px;
+}
+.templeBtn3{
+    width: 150px;
+    height: 40px;
+}
 
 /*******************
  * footer block start
@@ -98,13 +112,9 @@ span.error{
     color: red;
 }
 
-/*
- * test
- */
-
-
 .pageArea{
     width : 100%;
+    text-align: center;
 }
 
 .pageArea span{

@@ -1,8 +1,14 @@
 @CHARSET "UTF-8";
-
 #login{
-    width: 620px;
+    width: 530px;
     margin: 0 auto;
+}
+#tabs{
+    font: normal 14pt Arial,Helvetica,Verdana,"DejaVu Sans","Bitstream Vera Sans",Geneva,sans-serif;
+}
+
+#tabs .detail-list td{
+    padding: 10px;
 }
 
 #login h1{

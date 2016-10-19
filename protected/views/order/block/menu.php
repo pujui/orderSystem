@@ -1,6 +1,6 @@
 <div id="addMenu" >
     <div class="scroll" >
-        <table>
+        <table >
         <tr>
             <th colspan="2" >菜單內容</th>
         </tr>

@@ -15,10 +15,10 @@ class OrderDAO extends BaseDAO{
         }
         if($search['status'] == '1'){
             $WHERE .= ' AND status=:status ';
-            $bind[':status'] = 0;
+            $bind[':status'] = 1;
         }else if ($search['status'] == '2'){
             $WHERE .= ' AND status=:status ';
-            $bind[':status'] = 1;
+            $bind[':status'] = 0;
         }
     
         if($action == 'PAGE'){
@@ -69,9 +69,9 @@ class OrderDAO extends BaseDAO{
             $count = $this->countOrderForToday();
             $todayOrderNo = sprintf('%sO%04d', date('Ymd'), $count+1);
             $sql = "INSERT INTO ordersystem.orderlist
-                        (creater, todayOrderNo, priceTotal, createtime)
+                        (creater, status, todayOrderNo, priceTotal, createtime)
                     VALUES
-                        (:creater, :todayOrderNo, :priceTotal, NOW())";
+                        (:creater, 1, :todayOrderNo, :priceTotal, NOW())";
             $this->bindQuery($sql, array(':todayOrderNo' => $todayOrderNo, ':creater' => $main['creater'], ':priceTotal' => $main['priceTotal']));
             
             $orderId = $this->db->getLastInsertID();
@@ -101,8 +101,8 @@ class OrderDAO extends BaseDAO{
     public function countOrderForToday(){
         $sql = "SELECT COUNT(orderId) count
                 FROM ordersystem.orderlist
-                WHERE
-                    createTime BETWEEN DATE_FORMAT(CURDATE(),'%Y-%m-%d 00:00:00') AND NOW()
+                WHERE status=1
+                    AND createTime BETWEEN DATE_FORMAT(CURDATE(),'%Y-%m-%d 00:00:00') AND NOW()
                 ";
         $row = $this->getCommand($sql)
                     ->queryRow();
@@ -172,7 +172,7 @@ class OrderDAO extends BaseDAO{
                 SET
                     status=:status
                     , updatetime=NOW()
-                WHERE orderId=:orderId AND status=0 ";
+                WHERE orderId=:orderId ";
         $this->bindQuery($sql, $bind);
     }
 }
