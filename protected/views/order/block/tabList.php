@@ -38,7 +38,7 @@
         <th>訂單內容</th>
         <th>總價錢</th>
         <th >處理狀態</th>
-        <th >建立&更新時間</th>
+        <th >建立時間</th>
     </tr>
     <?php foreach ($orderListPage->details as $key=>$row){ ?>
     <tr <?php if($key%2 == 1){ ?>class="odd-row" <?php } ?>>
@@ -68,9 +68,6 @@
         </td>
         <td>
             <?=date('Y-m-d H:i', strtotime($row->createTime)) ?>
-            <?php if($row->status != 0){ ?><br/>
-            <?=date('Y-m-d H:i', strtotime($row->updateTime)) ?>
-            <?php } ?>
         </td>
     </tr>
     <?php }?>
