@@ -45,6 +45,10 @@ class UserController extends FrameController{
     public function actionAdd(){
 
         $userManager = new UserManager;
+        
+        if(!UserManager::isLogin()){
+            $this->actionErrorPage();
+        }
 
         if(isset($_POST['account'], $_POST['password'])){
 
@@ -73,6 +77,9 @@ class UserController extends FrameController{
     public function actionEdit($id = 0){
         if($id < 1){
             $this->actionloginPage();
+        }
+        if(!UserManager::isLogin()){
+            $this->actionErrorPage();
         }
 
         $userManager = new UserManager;
