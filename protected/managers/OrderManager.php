@@ -54,10 +54,11 @@ class OrderManager{
             $main['priceTotal'] += $data['itemTotal'][$key];
         }
         $orderDAO = new OrderDAO();
-        $result = $orderDAO->add($main, $insert);
-        if($result === false){
+        $orderId = $orderDAO->add($main, $insert);
+        if($orderId <= 0){
             throw new OrderException(OrderException::ERR_CREATE_ORDER);
         }
+        return $orderId;
     }
     
 }

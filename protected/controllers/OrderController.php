@@ -67,8 +67,12 @@ class OrderController extends FrameController{
 
                 $userVO = UserManager::getLogin();
                 $orderManager = new OrderManager;
-                $orderManager->add($userVO, $_POST);
-                $this->redirect(Yii::app()->request->baseUrl.'/order/');
+                $id = $orderManager->add($userVO, $_POST);
+                if($_POST['print'] == '1'){
+                    $this->redirect(Yii::app()->request->baseUrl.'/order/print/?id='.$id);
+                }else{
+                    $this->redirect(Yii::app()->request->baseUrl.'/order/');
+                }
             }
         }catch (MenuException $e){
             $errorCode = $e->getMessage();
@@ -101,5 +105,24 @@ class OrderController extends FrameController{
             $orderDAO->updateStatus($id, $statusList[$s]);
         }
         $this->redirect(Yii::app()->request->baseUrl.'/order/');
+    }
+    
+    public function actionPrint($id){
+        if($id < 0) $this->actionErrorPage();
+        $pageVO = new PageVO;
+        $pageVO->page = intval($_GET['p']);
+        $pageVO->params = $_GET;
+        $pageVO->limit = 1;
+        $search = [
+            'orderId'=> $id
+        ];
+        $orderManager = new OrderManager;
+        $orderListPage = $orderManager->findOrderList($pageVO, $search);
+
+        if(empty($orderListPage->details)) $this->actionErrorPage();
+
+        $order = array_pop($orderListPage->details);
+
+        $this->renderPartial('order/print', [ 'order' => $order ]);
     }
 }

@@ -6,11 +6,13 @@ $(document).ready(function(){
     
     orderAddForm.prototype.init = function(){
         $('.addItem').click($.proxy(this.add, this));
-        $('#addOrderForm input[type=submit]').click(this.checkVariable);
         $('#addItemBtn').click($.proxy(this.addItemBtn, this));
         $('#cancelItemBtn').click($.unblockUI);
         $(document).on("click", ".delItem", $.proxy(this.delItem, this));
         $(document).on("click", ".addCount", $.proxy(this.calculate, this));
+
+        $('#sendOrder').click(this.checkVariable);
+        $('#sendOrderAndPrint').click(this.checkVariable);
     }
 
     orderAddForm.prototype.delItem = function(e){
@@ -102,6 +104,10 @@ $(document).ready(function(){
             msg.push('訂單無內容');
         }
         if(msg.length == 0){
+            if($(this).data('print') == '1'){
+                $('#addOrderForm').append('<input type="hidden" name="print" value="1"/>');
+            }
+            $('#addOrderForm').submit();
             return true;
         }else{
             alert(msg.join('\n\n'));
@@ -110,3 +116,12 @@ $(document).ready(function(){
     }
     new orderAddForm().init();
 });
+function printScreen(html){
+    var printPage = window.open('', 'printPage', '');
+    printPage.document.open();
+    printPage.document.write('<HTML><head></head><BODY onload="window.print();window.close();">');
+    printPage.document.write('<PRE>');
+    printPage.document.write(html);
+    printPage.document.write('</PRE>');
+    printPage.document.close('</BODY></HTML>');
+}

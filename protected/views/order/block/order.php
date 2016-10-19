@@ -13,9 +13,9 @@
     </tr>
     <tr>
         <td colspan="3" >
-            <input type="submit" class="templeBtn1"  value="送出訂單" />
+            <input type="button" id="sendOrder" class="templeBtn1" data-print="0" value="送出訂單" />
             <input type="button" class="templeBtn1" onclick="location.href='<?=Yii::app()->request->baseUrl; ?>/order/add';" value="清除" />
-            <br/><input type="submit" class="templeBtn2"  value="列印並送出訂單" />
+            <br/><input type="button" id="sendOrderAndPrint" data-print="1"  class="templeBtn2"  value="列印並送出訂單" />
         </td>
     </tr>
 </table>

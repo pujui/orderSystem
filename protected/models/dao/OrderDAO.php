@@ -19,6 +19,9 @@ class OrderDAO extends BaseDAO{
         }else if ($search['status'] == '2'){
             $WHERE .= ' AND status=:status ';
             $bind[':status'] = 0;
+        }else if ($search['orderId'] > 0){
+            $WHERE .= ' AND orderId=:orderId ';
+            $bind[':orderId'] = $search['orderId'];
         }
     
         if($action == 'PAGE'){
@@ -89,7 +92,7 @@ class OrderDAO extends BaseDAO{
             }
             $this->bindQuery($sql . implode(',', $sqlList), $bind);
            $transaction->commit();
-           return true;
+            return $orderId;
         }
         catch(Exception $e)
         {
