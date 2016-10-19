@@ -5,6 +5,7 @@
     <meta name="language" content="zh" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>訂單系統 - 列印訂單<?=$order->todayOrderNo ?></title>
+    <script type="text/javascript" src="/orderSystem/js/jquery/jquery-1.9.1.min.js"></script>
 </head>
 <body>
     <table style="padding: 0px; margin: 0px;" >
@@ -21,7 +22,12 @@
     </table>
     <script type="text/javascript">
         window.print();
-        location.href = "<?=Yii::app()->request->baseUrl.'/order/'; ?>";
+        $(document).ready(function(){
+            setTimeout(loaction_href, 2500);
+        });
+        function loaction_href(){
+            location.href = "<?=Yii::app()->request->baseUrl.'/order/'; ?>";
+        }
     </script>
 </body>
 </html>

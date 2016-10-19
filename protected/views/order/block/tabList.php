@@ -58,6 +58,7 @@
         </td>
         <td><?=$row->priceTotal ?></td>
         <td>
+            <input type="button" onclick="location.href='<?=Yii::app()->request->baseUrl; ?>/order/print?id=<?=$row->orderId ?>';" value="補印訂單" />
             <?php if($row->status == 0){ ?>
                 <?=$statusList[$row->status] ?>
                 <input type="button" onclick="if(confirm('確認是否回復訂單')) location.href='<?=Yii::app()->request->baseUrl; ?>/order/edit?id=<?=$row->orderId ?>&s=1';" value="回復訂單" />
