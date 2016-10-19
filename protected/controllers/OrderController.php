@@ -76,6 +76,25 @@ class OrderController extends FrameController{
             $errorCode = $e->getMessage();
             $this->redirect(Yii::app()->request->baseUrl.'/order/');
         }
+        $extraMenuList = [
+            'ice'   => [
+                ['正常', 1], ['多冰', 0], ['少冰', 0], ['微冰', 0], ['去冰', 0]
+            ],
+            'sugar' => [
+                ['正常', 1], ['微糖', 0], ['半糖', 0], ['少糖', 0], ['無糖', 0]
+            ],
+            'extra'   => [
+                ['少蜂蜜', 0], 
+                ['去蜂蜜', 0],
+                ['加蜂蜜', 0],
+                ['酸一點', 0],
+                ['全奶+10', 10],
+                ['加牛奶+10', 10],
+                ['加布丁+15', 15],
+                ['去牛奶-5', -5],
+                ['去牛奶-10', -10],
+            ]
+        ];
         $this->BreadCrumbs[Yii::app()->request->baseUrl.'/order/'] = '訂單管理';
         
         $this->BreadCrumbs['last'] = '新增定單';
@@ -90,7 +109,7 @@ class OrderController extends FrameController{
         
         $this->layout('order/add', array(
             'showList' => $showList,
-            'hideHeader' => 1
+            'extraMenuList' => $extraMenuList
         ));
     }
 

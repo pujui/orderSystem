@@ -7,12 +7,10 @@ $(document).ready(function(){
     orderAddForm.prototype.init = function(){
         $('.addItem').click($.proxy(this.add, this));
         $('#addOrderForm input[type=submit]').click(this.checkVariable);
-        $('#addItemBtn').click($.proxy(this.addItemBtnToOrder, this));
-        $('#addItemBtnAgain').click($.proxy(this.addItemBtn, this));
+        $('#addItemBtn').click($.proxy(this.addItemBtn, this));
+        $('#cancelItemBtn').click($.unblockUI);
         $(document).on("click", ".delItem", $.proxy(this.delItem, this));
         $(document).on("click", ".addCount", $.proxy(this.calculate, this));
-
-        $( "#tabs" ).tabs();
     }
 
     orderAddForm.prototype.delItem = function(e){
@@ -59,33 +57,32 @@ $(document).ready(function(){
         });
     }
 
-    orderAddForm.prototype.addItemBtnToOrder = function(){
-        $('.orderTab').click();
-        this.addItemBtn();
-    }
-
     orderAddForm.prototype.addItemBtn = function(){
         $.unblockUI();
         var e = this.selected;
         var sugar = $('input[name=itemAttrA]:checked').val();
         var ice = $('input[name=itemAttrB]:checked').val();
         var other = [];
+        var extraPrice = 0, extraTotalPrice = 0;
         $('input[name="itemAttrC[]"]:checked').each(function(){
+            extraPrice = parseInt($(this).data('price'));
+            if(!isNaN(extraPrice)){
+                extraTotalPrice += extraPrice;
+            }
             other.push($(this).val());
         });
-        var item = '<span>';
+        var item = '<span class="inputItemContent" >';
         item += '<input type="text" class="inputItem" name="itemM[]" readonly="readonly" value="'
             +$(e.target).data('name')
-            +' '
-            +$(e.target).data('classname')
             +' '
             +sugar+ice
             +' '
             +other.join(' ')
-            +'" />&nbsp;';
-        item += '<input type="text" name="itemPrice[]" class="inputItemPrice" readonly="readonly" value="'+$(e.target).data('price')+'" />';
-        item += ' x <input type="text" name="itemCount[]" class="inputItemPrice" readonly="readonly" value="1" />';
-        item += ' = <input type="text" name="itemTotal[]" class="inputItemPrice" readonly="readonly" value="'+$(e.target).data('price')+'" /><br/>';
+            +'" />';
+        extraTotalPrice += $(e.target).data('price');
+        item += '<input type="text" name="itemPrice[]" class="inputItemPrice" readonly="readonly" value="'+extraTotalPrice+'" />';
+        item += '&nbsp;x&nbsp;<input type="text" name="itemCount[]" class="inputItemPrice" readonly="readonly" value="1" />';
+        item += '<input type="hidden" name="itemTotal[]" class="inputItemPrice" readonly="readonly" value="'+extraTotalPrice+'" />';
         item += '<br/><input type="button" class="delItem inputItemAddCount" checked="checked" value="X" />';
         item += ' <input type="button" class="addCount inputItemAddCount" value="-5" />';
         item += ' <input type="button" class="addCount inputItemAddCount" value="-1" />';

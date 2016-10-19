@@ -11,9 +11,7 @@ include dirname(__FILE__).'/frame/global_variable.php';
     <title><?=CHtml::encode($this->pageTitle); ?> - 訂單系統</title>
 </head>
 <body>
-<?php
-include dirname(__FILE__).'/frame/header.php';
-?>
+<?php include dirname(__FILE__).'/frame/header.php';?>
 <div id="frameContent">
     <?=$content ?>
 </div>
@@ -21,6 +19,5 @@ include dirname(__FILE__).'/frame/header.php';
 include dirname(__FILE__).'/frame/footer.php';
 include dirname(__FILE__).'/frame/js.php';
 ?>
-
 </body>
 </html>
