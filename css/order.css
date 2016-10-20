@@ -1,0 +1,91 @@
+@CHARSET "UTF-8";
+/*******************
+ * menu block
+ *******************/
+#tabs{
+    font: normal 14pt Arial,Helvetica,Verdana,"DejaVu Sans","Bitstream Vera Sans",Geneva,sans-serif;
+}
+#addMenu{
+    width: 530px;
+    float: left;
+}
+#addMenu > .scroll{
+    width: 560px;
+    height: 668px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+#addMenu > table{
+    width: 530px;
+}
+#addMenu > table, td{
+    padding: 0px;
+    margin: 0px;
+}
+#addMenu .addItem{
+    width: 262px;
+    height: 60px;
+    font-size: 100%;
+}
+
+/*******************
+ * order block
+ *******************/
+#addOrder{
+    width: 450px;
+    float: left;
+}
+.inputItem{
+    width: 280px;
+    height: 50px;
+    font-size: 100%;
+    margin-right: 5px;
+}
+.inputItemPrice{
+    width: 40px;
+    height: 50px;
+    font-size: 100%;
+    text-align: center;
+    margin-right: 5px;
+    
+}
+.inputItemContent{
+    padding-top: 10px;
+}
+.inputItemRadio{
+    width: 30px;
+    height: 30px;
+    text-align: right;
+}
+.inputItemAttrCheck{
+    width: 150px;
+    height: 80px;
+    text-align: center;
+    margin: 10px 0px;
+    font-size: 100%;
+}
+.inputItemAddCount{
+    width: 50px;
+    height: 50px;
+    font-size: 100%;
+    margin-top: 5px;
+}
+
+/*******************
+ * checkedAttr block
+ *******************/
+.checkedAttr{
+    width: 750px;
+}
+.checkedAttr th{
+    width: 150px;
+    height: 80px;
+    padding: 0px;
+    margin: 0px;
+}
+.checkedAttr td{
+    width: 600px;
+    height: 80px;
+    padding: 0px;
+    margin: 0px;
+}
