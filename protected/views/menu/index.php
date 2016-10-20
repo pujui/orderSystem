@@ -1,20 +1,24 @@
 <div id="tabs">
     <ul>
         <li><a href="#tabs-1">菜單列表</a></li>
-        <li style="width: 650px; text-align: right;">
-            <input type="button" class="templeBtn3" onclick="location.href='<?=Yii::app()->request->baseUrl; ?>/menu/add';" value="建立商品" />
+        <li style="width: 800px; text-align: right;">
+            <div class="btn-group" role="group" aria-label="...">
+                <button type="button" class="btn btn-default" onclick="location.href='<?=Yii::app()->request->baseUrl; ?>/menu/add';" >建立商品</button>
+            </div>
+            <div class="btn-group" role="group" aria-label="...">
+                <button type="button" class="btn btn-default" onclick="location.href='<?=Yii::app()->request->baseUrl; ?>/menu/extra';" >編輯例外選項</button>
+            </div>
         </li>
-        <li><input type="button" class="templeBtn3" onclick="location.href='<?=Yii::app()->request->baseUrl; ?>/menu/extra';" value="編輯例外選項" /></li>
     </ul>
     <div id="tabs-1">
         <?php if(empty($menuListPage->details)){ ?>
-        <table class="detail-list" width="900">
+        <table class="detail-list">
             <tr>
                 <th>無資料</th>
             </tr>
         </table>
         <?php }else{ ?>
-        <table class="detail-list" width="900" >
+        <table class="detail-list" >
             <tr>
                 <th>分類</th>
                 <th>商品</th>
@@ -42,7 +46,7 @@
                 <td><?=$row->createTime ?></td>
                 <td>
                     <?=$row->updateTime ?><br/>
-                    <input type="button" onclick="location.href='<?=Yii::app()->request->baseUrl; ?>/menu/edit/?id=<?=$row->menuId ?>';" value="編輯" />
+                     <button type="button" class="btn btn-default" onclick="location.href='<?=Yii::app()->request->baseUrl; ?>/menu/edit/?id=<?=$row->menuId ?>';" >編輯</button>
                 </td>
             </tr>
             <?php }?>

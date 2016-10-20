@@ -53,6 +53,8 @@
         </table>
     </div>
     <div id="extraMenuSend">
-        <input type="submit"   />
+        <div class="btn-group btn-group-lg" role="group" >
+            <button class="btn btn-lg btn-primary btn-block loginSubmit" type="submit">提交</button>
+        </div>
     </div>
 </form>

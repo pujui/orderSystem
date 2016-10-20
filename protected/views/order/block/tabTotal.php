@@ -1,5 +1,5 @@
 <div id="tabs-2">
-    <table >
+    <table class="detail-list" >
         <tr>
             <th colspan="3">近7日統計</th>
         </tr>
@@ -18,7 +18,7 @@
     </table>
 </div>
 <div id="tabs-3">
-    <table >
+    <table class="detail-list" >
         <tr>
             <th colspan="3">近5個月統計</th>
         </tr>

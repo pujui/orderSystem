@@ -2,10 +2,6 @@
 /*******************
  * list block
  *******************/
-#tabs{
-    font: normal 14pt Arial,Helvetica,Verdana,"DejaVu Sans","Bitstream Vera Sans",Geneva,sans-serif;
-}
-
 #tabs .detail-list td{
     padding: 10px;
 }
@@ -14,24 +10,12 @@
  * add block
  *******************/
 
-#addMenu{
-    width: 900px;
-}
-#addMenu input{
-    width: 300px;
-    height: 40px;
-    font-size: 100%;
-}
-#addMenu select{
-    width: 150px;
-    height: 40px;
-    font-size: 100%;
-}
-#addMenu table{
-    width: 900px;
-}
 #addMenu td{
     text-align: right;
+    padding-right: 200px;
+}
+#addMenu th{
+    width: 30%;
 }
 
 /*******************
@@ -77,7 +61,8 @@
     text-align: center;
     margin: 30px 0px 30px 0px;
 }
-#extraMenuSend > input{
-    width: 200px;
-    height: 80px;
+#extraMenuSend .loginSubmit{
+    height: 60px;
+    width: 300px;
+    margin: 30px;
 }

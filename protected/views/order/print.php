@@ -23,7 +23,7 @@
     <script type="text/javascript">
         window.print();
         $(document).ready(function(){
-            setTimeout(loaction_href, 2500);
+            setTimeout(loaction_href, 1500);
         });
         function loaction_href(){
             location.href = "<?=Yii::app()->request->baseUrl.'/order/'; ?>";

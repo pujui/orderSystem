@@ -49,7 +49,7 @@ $(document).ready(function(){
         $('input[name=itemAttrB][def=me]').prop('checked', true);
         $('input[name="itemAttrC[]"]:checked').prop('checked', false);
         $.blockUI({ 
-            message: $('#checkedAttr'),
+            message: $('.checkedAttr'),
             onOverlayClick: $.unblockUI,
             css: {
                 top: '10%',

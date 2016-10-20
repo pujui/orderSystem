@@ -1,28 +1,49 @@
 @CHARSET "UTF-8";
+
+#searchOrderForm{
+    
+}
+#searchOrderForm select, input{
+    width: 150px;
+    height: 40px;
+}
+.searchOrderTable{
+    height: 60px;
+}
+#tabs table{
+    width: 950px;
+}
+#tabs-2 td{
+    padding: 20px;
+}
+#tabs-3 td{
+    padding: 20px;
+}
+
 /*******************
  * menu block
  *******************/
 #tabs{
     font: normal 14pt Arial,Helvetica,Verdana,"DejaVu Sans","Bitstream Vera Sans",Geneva,sans-serif;
 }
-#addMenu{
+#addMenuByOrder{
     width: 530px;
     float: left;
 }
-#addMenu > .scroll{
+#addMenuByOrder > .scroll{
     width: 560px;
     height: 668px;
     overflow-y: scroll;
     overflow-x: hidden;
 }
-#addMenu > table{
+#addMenuByOrder > table{
     width: 530px;
 }
-#addMenu > table, td{
+#addMenuByOrder > table, td{
     padding: 0px;
     margin: 0px;
 }
-#addMenu .addItem{
+#addMenuByOrder .addItem{
     width: 262px;
     height: 60px;
     font-size: 100%;
@@ -88,4 +109,20 @@
     height: 80px;
     padding: 0px;
     margin: 0px;
+}
+
+
+/*******************
+ * other block
+ *******************/
+
+.templeBtn1{
+    width: 150px;
+    height: 80px;
+    margin: 10px 0px;
+}
+.templeBtn2{
+    width: 300px;
+    height: 80px;
+    margin: 10px 0px;
 }

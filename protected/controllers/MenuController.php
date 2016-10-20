@@ -19,6 +19,8 @@ class MenuController extends FrameController{
         }else{
             $this->actionErrorPage();
         }
+
+        $this->setVariable('navBarMenu', 'active');
         $this->setCSS('/css/menu.css');
 
         $this->BreadCrumbs[Yii::app()->request->baseUrl] = '首頁';

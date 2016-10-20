@@ -45,6 +45,8 @@ class OrderController extends FrameController{
 
         $this->pageTitle = '訂單管理：列表';
 
+        $this->setVariable('navBarOrder', 'active');
+
         $this->setCSS('/js/jquery/jquery-ui-1.10.3.custom/ui-lightness/jquery-ui-1.10.3.custom.min.css');
         
         $this->setJS('/js/jquery/jquery.blockUI.js');
@@ -79,6 +81,7 @@ class OrderController extends FrameController{
             $this->redirect(Yii::app()->request->baseUrl.'/order/');
         }
 
+        $this->setVariable('navBarAddOrder', 'active');
         $extraMenuList = $menuManager->findExtral(1);
         $this->BreadCrumbs[Yii::app()->request->baseUrl.'/order/'] = '訂單管理';
         

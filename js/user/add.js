@@ -7,7 +7,7 @@ $(document).ready(function(){
     
     userAddForm.prototype.init = function(){
         
-        $('#userAddForm input[type=submit]').click(this.checkVariable);
+        $('#userAddForm .loginSubmit').click(this.checkVariable);
         
         if(this.userAddFormVO){
             this.append();
@@ -25,17 +25,19 @@ $(document).ready(function(){
     
     userAddForm.prototype.checkVariable = function(){
         var msg = [];
-        if($('input[name=account]').val().trim() == ''){
-            msg.push('請填入Account');
-        }
         if($('input[name=name]').val().trim() == ''){
             msg.push('請填入Name');
         }
-        if($('input[name=password]').val().trim() == ''){
-            msg.push('請填入 Password');
-        }
-        if($('input[name=confirmPassword]').val().trim() == ''){
-            msg.push('請填入 Confirm Password');
+        if($('input[name=account]').length > 0){
+            if($('input[name=account]').val().trim() == ''){
+                msg.push('請填入Account');
+            }
+            if($('input[name=password]').val().trim() == ''){
+                msg.push('請填入 Password');
+            }
+            if($('input[name=confirmPassword]').val().trim() == ''){
+                msg.push('請填入 Confirm Password');
+            }
         }
         if($('input[name=confirmPassword]').val() != $('input[name=password]').val()){
             msg.push('Password不相同');

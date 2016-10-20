@@ -6,18 +6,15 @@ class UserController extends FrameController{
     private $activeList = [ -1 => 'delete', 0 => 'close', 1 => 'normal', 2 => 'root'];
 
     public function __construct(){
-        $this->setCSS('/css/user/user.css');
-        
         $userManager = new UserManager;
-        
         $isLogin = $userManager->isLogin();
+        
+        $this->setVariable('navBarUser', 'active');
         $this->setVariable('isLogin', $isLogin);
         if($isLogin === true){
             $this->setVariable('user', $userManager->getLogin());
         }
-        
         $this->BreadCrumbs[Yii::app()->request->baseUrl] = '首頁';
-
         parent::__construct();
     }
     
@@ -25,17 +22,17 @@ class UserController extends FrameController{
      * 首頁
      */
     public function actionIndex(){
-        
+        if(!UserManager::isLogin()){
+            $this->actionErrorPage();
+        }
         $userManager = new UserManager;
         $userVO = $userManager->getLogin();
         $userList = $userVO->isActive == 2 ? $userManager->findUserList(): [];
 
-        $this->setCSS('/js/jquery/jquery-ui-1.10.3.custom/ui-lightness/jquery-ui-1.10.3.custom.min.css');
-        $this->setJS('/js/user/user.js');
         $this->setJS('/js/user/index.js');
         $this->layout('user/index', array(
-            'userList' => $userList,
-            'activeList' => $this->activeList
+            'userList'      => $userList,
+            'activeList'    => $this->activeList
         ));
     }
     
@@ -114,7 +111,6 @@ class UserController extends FrameController{
         if($userManager->isLogin()){
             $this->actionloginPage();
         }
-        
         $loginFormVO = null;
         if(isset($_POST['account'], $_POST['password'])){
             $loginFormVO = new LoginFormVO;
@@ -127,9 +123,8 @@ class UserController extends FrameController{
                 $loginFormVO->errorCode = 1;
             }
         }
-        
+        $this->setCSS('/css/signin.css');
         $this->BreadCrumbs['last'] = '登入頁';
-        
         $this->layout('user/login', array(
             'loginFormVO' => $loginFormVO,
         ));

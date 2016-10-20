@@ -1,15 +1,18 @@
 <form id="addMenu" method="post" >
-    <table class="detail-list">
+    <table >
+        <tr>
+            <th colspan="2" class="subTitle"><?php if(!empty($menuData)){?>編輯商品<?php }else{ ?>新增商品<?php } ?></th>
+        </tr>
         <tr>
             <th >名稱</th>
-            <td style="text-align: center;">
+            <td style="text-align: left; padding: 20px;">
                 <input type="text" name="name" value="<?=CHtml::encode($menuData['name']) ?>" maxlength="40"/>
             </td>
         </tr>
         <tr>
             <th >分類</th>
-            <td style="text-align: center;">選擇目前已有分類
-                <select name="defFirstClass" >
+            <td style="text-align: left; padding: 20px;">已有分類
+                <select name="defFirstClass" class="btn-lg" >
                     <option value="-999" >--</option>
                     <?php foreach ($firstClassList as $key=>$row ){ ?>
                     <option ><?=CHtml::encode($row['firstClass']) ?></option>
@@ -20,8 +23,8 @@
         </tr>
         <tr>
             <th >販賣狀態</th>
-            <td style="text-align: center;">
-                <select name="isCancel" >
+            <td style="text-align: left; padding: 20px;">
+                <select name="isCancel" class="btn-lg" >
                     <option value="0" <?php if($menuData['isCancel']=='0') echo 'selected="selected"'; ?>>正常販賣</option>
                     <option value="1" <?php if($menuData['isCancel']=='1') echo 'selected="selected"'; ?>>暫時取消</option>
                     <option value="-1" <?php if($menuData['isCancel']=='-1') echo 'selected="selected"'; ?> >刪除</option>
@@ -80,7 +83,9 @@
         </tr>
         <tr>
             <td colspan="2" style="text-align: center;">
-                <input type="submit"style="height: 80px; margin: 30px 0px 30px 0px;"  />
+                <div class="btn-group btn-group-lg" role="group" >
+                    <button class="btn btn-lg btn-primary btn-block loginSubmit" type="submit">提交</button>
+                </div>
             </td>
         </tr>
     </table>

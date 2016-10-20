@@ -1,162 +1,84 @@
 @CHARSET "UTF-8";
-input{
-    -webkit-appearance: none;
-}
 body{
-    background-color: #FFF;
-    margin:0;
-    padding:0;
-    color: #555;
+    background-color: #eee;
     font: normal 15pt Arial,Helvetica,Verdana,"DejaVu Sans","Bitstream Vera Sans",Geneva,sans-serif;
 }
 #frameContent{
-    width: 1000px;
+    width: 1024px;
     height: 568px;
     margin: 0 auto;
     overflow-y: scroll;
     overflow-x: hidden;
 }
+
+/*********************************
+*  header
+**********************************/
 #header{
-    width: 1000px;
+    width: 1024px;
     margin: 0 auto;
     background-color: #E6E6E6;
 }
 
-.templeBtn1{
-    width: 150px;
-    height: 80px;
-    margin: 10px 0px;
+/*********************************
+*  user
+**********************************/
+#userAddForm{
+    margin: 0 auto;
 }
-.templeBtn2{
+#userAddForm input, select{
     width: 300px;
-    height: 80px;
-    margin: 10px 0px;
-}
-.templeBtn3{
-    width: 150px;
     height: 40px;
 }
+#userAddForm table{
+    width: 1024px;
+}
+#userAddForm .loginSubmit{
+    height: 60px;
+    width: 300px;
+}
 
-/*******************
- * footer block start
- *******************/
+/*********************************
+*  menu
+**********************************/
+#addMenu{
+    width: 1024px;
+}
+#addMenu table{
+    width: 1024px;
+}
+#addMenu .loginSubmit{
+    height: 60px;
+    width: 300px;
+    margin: 30px 0px 30px 280px;
+}
+#addMenu input, select{
+    width: 250px;
+    height: 40px;
+}
+#addMenu select{
+    width: 300px;
+    height: 50px;
+}
+
+/*********************************
+*  footer
+**********************************/
 #footer{
-    width: 1000px;
+    width: 1024px;
     height: 100px;
     margin: 0 auto;
     background-color: #E6E6E6;
 }
-.mainBtn{
-    width: 90px;
+.nav-orderSystem > li > a {
     height: 100px;
-}
-#loginBtn{
-}
-#logoutBtn{
-    background-color: #c8d7e4;
-}
-.disabledBtn{
-    background-color: #595959;
-}
-.addOrderMainBtn{
-    background-image: url("/orderSystem/images/choice.png");
-    background-repeat: no-repeat;
-    background-position: center center; 
-}
-.orderListMainBtn{
-    background-image: url("/orderSystem/images/choice.png");
-    background-repeat: no-repeat;
-    background-position: center center; 
-}
-.userMainBtn{
-    background-image: url("/orderSystem/images/userBlack.png");
-    background-repeat: no-repeat;
-    background-position: center center; 
-}
-
-/*******************
- * footer block end
- *******************/
-
-
-.app-grid{
-    width: 125px;
-    padding-top: 5px;
-    position: relative;
-    display: inline-block;
-}
-
-.app-grid ul{
-    background-color: #f4f4f4;
-    border: 1px solid #dcdcdc;
-    list-style: none;
-    height: 115px;
-    padding: 15px;
-    margin: 0;
-}
-
-.grid-picture{
-    width: 90px;
-    height: 90px;
-}
-
-.grid-name{
-    height: 20px;
-    line-height: 20px;
-    overflow: hidden;
-    text-align: center;
-    margin-top: 5px;
-}
-
-#breadcrumbs{
-    padding: 10px 0px 0px 25px;
-}
-#breadcrumbs a{
-    padding: 0px 5px 0px 5px;
-}
-
-#breadcrumbs span{
-    padding: 0px 5px 0px 5px;
-}
-
-
-.hide{
-    display: none;
-}
-
-span.error{
-    font-weight: bold;
-    font-size: 18px;
-    color: red;
+    padding-top: 35px;
 }
 
 .pageArea{
-    width : 100%;
+    width: 980px;
     text-align: center;
-}
-
-.pageArea span{
-    width : 25px;
-    height : 25px;
-    padding-left: 5px;
-    font-size: 18px;
-}
-
-.functionList li{
-    list-style: none;
-    margin: 10px;
-}
-
-.functionBtn{
-    font-size: 18px;
-    height: 44px;
-    width: 320px;
-    border: 1px solid #2f5bb7;
-    color: #fff;
-    text-shadow: 0 1px rgba(0,0,0,0.3);
-    background-color: #357ae8;
-    background-image: -webkit-linear-gradient(top,#4d90fe,#357ae8);
-    background-image: -moz-linear-gradient(top,#4d90fe,#357ae8);
+    margin-top: 25px;
 }
 
 /**
@@ -222,3 +144,4 @@ tr:last-child td.last {
     -moz-border-radius-bottomright:5px;
     -webkit-border-bottom-right-radius:5px; /* Saf3-4 */
 }
+

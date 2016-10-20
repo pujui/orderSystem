@@ -15,7 +15,6 @@ class FrameController extends Controller
     public $BreadCrumbs = array();
     
     public function __construct(){
-        //parent::__construct();
     }
     
     public function layout($page, $data = array()){
@@ -46,7 +45,7 @@ class FrameController extends Controller
     }
     
     public function actionErrorPage(){
-        $this->redirect(Yii::app()->request->baseUrl.'/user/');
+        $this->redirect(Yii::app()->request->baseUrl.'/user/login');
     }
 
 }

@@ -6,9 +6,12 @@ if(isset($editUserVO)){
 }
 ?>
 <form id="userAddForm" method="post" >
-    <table style="width: 500px;">
+    <table>
         <tr>
-            <th >Name</th>
+            <th colspan="2" class="subTitle"><?php if($editStatus){?>編輯帳號<?php }else{ ?>新增帳號<?php } ?></th>
+        </tr>
+        <tr  >
+            <td>Name</td>
             <td >
                 <?php if($editStatus){?>
                     <input type="hidden" name="edit" value="1" />
@@ -18,8 +21,8 @@ if(isset($editUserVO)){
                 <?php } ?>
             </td>
         </tr>
-        <tr>
-            <th >Account</th>
+        <tr class="odd-row">
+            <td >Account</td>
             <td >
                 <?php if($editStatus){
                     echo CHtml::encode($editUserVO->account);
@@ -29,21 +32,21 @@ if(isset($editUserVO)){
             </td>
         </tr>
         <tr>
-            <th><?php if($editStatus){ echo "Change "; }?>Password</th>
+            <td><?php if($editStatus){ echo "Change "; }?>Password</td>
             <td >
                 <input type="password" name="password" maxlength="20" />
             </td>
         </tr>
-        <tr>
-            <th>Confirm Password</th>
+        <tr class="odd-row">
+            <td>Confirm Password</td>
             <td >
                 <input type="password" name="confirmPassword" maxlength="20" />
             </td>
         </tr>
         <tr>
-            <th >isActive</th>
+            <td >isActive</td>
             <td >
-                <select name="isActive" >
+                <select name="isActive" class="btn-lg" >
                     <option value="0" <?php if($isActive=='0') echo 'selected="selected"'; ?> >close</option>
                     <option value="1" <?php if($isActive=='1') echo 'selected="selected"'; ?> >normal</option>
                     <option value="2" <?php if($isActive=='2') echo 'selected="selected"'; ?> >root</option>
@@ -53,13 +56,15 @@ if(isset($editUserVO)){
         </tr>
         <tr>
             <td colspan="2" style="text-align: center;">
-                <input type="submit" />
+                <div class="btn-group btn-group-lg" role="group" >
+                    <?php if(is_object($userAddFormVO) && $userAddFormVO->errorCode > 0): ?>
+                    <span class="error" >ERROR CODE：<?=$userAddFormVO->errorCode ?></span><br/>
+                    <?php endif; ?>
+                    <button class="btn btn-lg btn-primary btn-block loginSubmit" type="submit">提交</button>
+                </div>
             </td>
         </tr>
     </table>
-    <?php if(is_object($userAddFormVO) && $userAddFormVO->errorCode > 0): ?>
-    <span class="error" >ERROR CODE：<?=$userAddFormVO->errorCode ?></span>
-    <?php endif; ?>
 </form>
 <script type="text/javascript">
     var userAddFormVO = <?=json_encode($userAddFormVO); ?>;

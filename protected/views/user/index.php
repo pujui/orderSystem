@@ -1,12 +1,12 @@
 <div>
-    <?php if($isLogin === false){ ?>
-    <h1>您目前未登入訂單管理系統，請由此<a href="<?=Yii::app()->request->baseUrl; ?>/user/login" >登入</a></h1>
-    <?php }else if($user->isActive == 2){ ?>
+    <?php if($user->isActive == 2){ ?>
     <div id="tabs" >
         <ul>
             <li><a href="#tabs-1">使用者列表</a></li>
             <li style="width: 780px; text-align: right;">
-                <input type="button" class="templeBtn3"  onclick="location.href='<?=Yii::app()->request->baseUrl; ?>/user/add';" value="建立帳號" />
+                <div class="btn-group" role="group" aria-label="...">
+                    <button type="button" class="btn btn-default" onclick="location.href='<?=Yii::app()->request->baseUrl; ?>/user/add';" >建立帳號</button>
+                </div>
             </li>
         </ul>
         <div id="tabs-1">
@@ -26,8 +26,7 @@
                     <td><br/><?=$row->createTime ?><br/></td>
                     <td>
                         <?=$row->updateTime ?><br/>
-                        <input type="button" onclick="location.href='<?=Yii::app()->request->baseUrl; ?>/user/edit/?id=<?=$row->userId ?>';" value="編輯" />
-                       
+                        <button type="button" class="btn btn-default" onclick="location.href='<?=Yii::app()->request->baseUrl; ?>/user/edit/?id=<?=$row->userId ?>';" >編輯</button>
                     </td>
                 </tr>
                 <?php } ?>
