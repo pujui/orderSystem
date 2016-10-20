@@ -1,26 +1,26 @@
-<form id="detailForm" method="post" >
-    <table style="width: 500px;">
+<form id="addMenu" method="post" >
+    <table class="detail-list">
         <tr>
             <th >名稱</th>
-            <td >
+            <td style="text-align: center;">
                 <input type="text" name="name" value="<?=CHtml::encode($menuData['name']) ?>" maxlength="40"/>
             </td>
         </tr>
         <tr>
             <th >分類</th>
-            <td >選擇目前已有分類
+            <td style="text-align: center;">選擇目前已有分類
                 <select name="defFirstClass" >
                     <option value="-999" >--</option>
                     <?php foreach ($firstClassList as $key=>$row ){ ?>
                     <option ><?=CHtml::encode($row['firstClass']) ?></option>
                     <?php } ?>
-                </select><br/><br/>
+                </select>
                 <input type="text" name="firstClass" value="<?=CHtml::encode($menuData['firstClass']) ?>" placeholder="手動建立請勿選擇上方選項" maxlength="40"/>
             </td>
         </tr>
         <tr>
             <th >販賣狀態</th>
-            <td >
+            <td style="text-align: center;">
                 <select name="isCancel" >
                     <option value="0" <?php if($menuData['isCancel']=='0') echo 'selected="selected"'; ?>>正常販賣</option>
                     <option value="1" <?php if($menuData['isCancel']=='1') echo 'selected="selected"'; ?>>暫時取消</option>
@@ -29,22 +29,58 @@
             </td>
         </tr>
         <tr>
-            <td colspan="2" style="text-align: right;" >
-                1.<input type="text" name="className[]" value="小" maxlength="10" width="20px" /> <input type="text" name="classPrice[]" maxlength="10" width="20px" /><br/>
-                2.<input type="text" name="className[]" value="中" maxlength="10" width="20px" /> <input type="text" name="classPrice[]" maxlength="10" width="20px" /><br/>
-                3.<input type="text" name="className[]" value="大" maxlength="10" width="20px" /> <input type="text" name="classPrice[]" maxlength="10" width="20px" /><br/>
-                4.<input type="text" name="className[]" placeholder="品項: 小 中 大" maxlength="10" width="20px" /> <input type="text" placeholder="價格: 30 45 50" name="classPrice[]" maxlength="10" width="20px" /><br/>
-                5.<input type="text" name="className[]" placeholder="品項: 小 中 大" maxlength="10" width="20px" /> <input type="text" placeholder="價格: 30 45 50" name="classPrice[]" maxlength="10" width="20px" /><br/>
-                6.<input type="text" name="className[]" placeholder="品項: 小 中 大" maxlength="10" width="20px" /> <input type="text" placeholder="價格: 30 45 50" name="classPrice[]" maxlength="10" width="20px" /><br/>
-                7.<input type="text" name="className[]" placeholder="品項: 小 中 大" maxlength="10" width="20px" /> <input type="text" placeholder="價格: 30 45 50" name="classPrice[]" maxlength="10" width="20px" /><br/>
-                8.<input type="text" name="className[]" placeholder="品項: 小 中 大" maxlength="10" width="20px" /> <input type="text" placeholder="價格: 30 45 50" name="classPrice[]" maxlength="10" width="20px" /><br/>
-                9.<input type="text" name="className[]" placeholder="品項: 小 中 大" maxlength="10" width="20px" /> <input type="text" placeholder="價格: 30 45 50" name="classPrice[]" maxlength="10" width="20px" /><br/>
-                10.<input type="text" name="className[]" placeholder="品項: 小 中 大" maxlength="10" width="20px" /> <input type="text" placeholder="價格: 30 45 50" name="classPrice[]" maxlength="10" width="20px" /><br/>
+            <td colspan="2">
+                1.<input type="text" name="className[]" value="小" maxlength="10" width="20px" /> <input type="text" name="classPrice[]" maxlength="10" width="20px" />
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                2.<input type="text" name="className[]" value="中" maxlength="10" width="20px" /> <input type="text" name="classPrice[]" maxlength="10" width="20px" />
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                3.<input type="text" name="className[]" value="大" maxlength="10" width="20px" /> <input type="text" name="classPrice[]" maxlength="10" width="20px" />
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                4.<input type="text" name="className[]" placeholder="品項: 小 中 大" maxlength="10" width="20px" /> <input type="text" placeholder="價格: 30 45 50" name="classPrice[]" maxlength="10" width="20px" />
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                5.<input type="text" name="className[]" placeholder="品項: 小 中 大" maxlength="10" width="20px" /> <input type="text" placeholder="價格: 30 45 50" name="classPrice[]" maxlength="10" width="20px" />
+            </td> 
+        </tr>
+        <tr>
+            <td colspan="2">
+                6.<input type="text" name="className[]" placeholder="品項: 小 中 大" maxlength="10" width="20px" /> <input type="text" placeholder="價格: 30 45 50" name="classPrice[]" maxlength="10" width="20px" />
+            </td> 
+        </tr>
+        <tr>
+            <td colspan="2">
+                7.<input type="text" name="className[]" placeholder="品項: 小 中 大" maxlength="10" width="20px" /> <input type="text" placeholder="價格: 30 45 50" name="classPrice[]" maxlength="10" width="20px" />
+             </td> 
+        </tr>
+        <tr>
+            <td colspan="2">
+                8.<input type="text" name="className[]" placeholder="品項: 小 中 大" maxlength="10" width="20px" /> <input type="text" placeholder="價格: 30 45 50" name="classPrice[]" maxlength="10" width="20px" />
+            </td> 
+        </tr>
+        <tr>
+            <td colspan="2">
+                9.<input type="text" name="className[]" placeholder="品項: 小 中 大" maxlength="10" width="20px" /> <input type="text" placeholder="價格: 30 45 50" name="classPrice[]" maxlength="10" width="20px" />
+            </td> 
+        </tr>
+        <tr>
+            <td colspan="2">
+                10.<input type="text" name="className[]" placeholder="品項: 小 中 大" maxlength="10" width="20px" /> <input type="text" placeholder="價格: 30 45 50" name="classPrice[]" maxlength="10" width="20px" />
             </td>
         </tr>
         <tr>
             <td colspan="2" style="text-align: center;">
-                <input type="submit" />
+                <input type="submit"style="height: 80px; margin: 30px 0px 30px 0px;"  />
             </td>
         </tr>
     </table>

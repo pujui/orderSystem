@@ -11,6 +11,30 @@
 }
 
 /*******************
+ * add block
+ *******************/
+
+#addMenu{
+    width: 900px;
+}
+#addMenu input{
+    width: 300px;
+    height: 40px;
+    font-size: 100%;
+}
+#addMenu select{
+    width: 150px;
+    height: 40px;
+    font-size: 100%;
+}
+#addMenu table{
+    width: 900px;
+}
+#addMenu td{
+    text-align: right;
+}
+
+/*******************
  * extra block
  *******************/
 #eatraMenu{
