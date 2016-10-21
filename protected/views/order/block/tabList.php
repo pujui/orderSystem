@@ -59,14 +59,20 @@
             </div>
         </td>
         <td><?=$row->priceTotal ?></td>
-        <td>
-            <button type="button" class="btn btn-default" onclick="location.href='<?=Yii::app()->request->baseUrl; ?>/order/print?id=<?=$row->orderId ?>';" >補印訂單</button>
+        <td >
+            <div  style="padding-top: 10px;">
+                <button type="button" class="btn btn-default" onclick="location.href='<?=Yii::app()->request->baseUrl; ?>/order/print?id=<?=$row->orderId ?>&tp=0&only=1';"  >補印明細</button>
+                <button type="button" class="btn btn-default" onclick="location.href='<?=Yii::app()->request->baseUrl; ?>/order/print?id=<?=$row->orderId ?>&tp=1&only=1';" >補印商品標</button>
+                <button type="button" class="btn btn-default" onclick="location.href='<?=Yii::app()->request->baseUrl; ?>/order/print?id=<?=$row->orderId ?>';" >補印訂單</button><br/>
+            </div>
+            <div  style="padding-top: 10px; padding-bottom: 10px;">
             <?php if($row->status == 0){ ?>
                 <button type="button" class="btn btn-default" onclick="if(confirm('確認是否回復訂單')) location.href='<?=Yii::app()->request->baseUrl; ?>/order/edit?id=<?=$row->orderId ?>&s=1';" >回復訂單</button>
             <?php }else{ ?>
                 <button type="button" class="btn btn-default" onclick="if(confirm('確認是否取消訂單')) location.href='<?=Yii::app()->request->baseUrl; ?>/order/edit?id=<?=$row->orderId ?>&s=2';" >取消訂單</button>
             <?php } ?>
             <?=$statusList[$row->status] ?>
+            </div>
         </td>
         <td>
             <?=date('Y-m-d H:i', strtotime($row->createTime)) ?>

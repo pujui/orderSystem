@@ -1,0 +1,112 @@
+@CHARSET "UTF-8";
+body{
+    margin: 1px; 
+}
+@page { margin: 0px; }
+.cFristPrint{
+    padding: 0px; 
+    margin: 0px; 
+    margin-left: 2px;
+    width: 120px; 
+    height: 94px; 
+    overflow: hidden;
+}
+.cPrint{
+    padding: 0px; 
+    margin: 0px; 
+    margin-left: 2px;
+    width: 120px; 
+    height: 94px; 
+    overflow: hidden;
+    page-break-before: always; 
+}
+.cPrint div{
+    /*border:#ccc 1px solid; */
+    margin: 1px;
+    overflow: hidden;
+}
+.printName{
+    width: 110px; 
+    height: 20px; 
+    font-size: 16px;
+}
+.printAttrA{
+    padding-left: 2px;
+    width: 65px;
+    height: 15px; 
+    font-size: 12px;
+}
+.printAttrB{
+    padding: 0px; 
+    width: 100px; 
+    height: 28px; 
+    overflow: hidden;
+    text-align: left;
+}
+
+.printAttrB table, tr, td, tbody{
+    padding: 0px; 
+    margin: 0px; 
+    border: 0px;
+    text-align: left;
+    vertical-align: top;
+    height: 28px; 
+}
+.printAttrB .printAttrB-F{
+    width: 65px; 
+    font-size: 12px;
+}
+.printAttrB .printAttrB-S{
+    width: 30px; 
+    font-size: 16px;
+}
+.printNo{
+    height: 20px; 
+    width: 65px;
+    font-size: 16px;
+    padding-left: 20px;
+}
+.printOrder{
+    width: 215px;
+    margin-left: 2px;
+}
+.printOrderTitle{
+    width: 200px;
+    border-bottom:#ccc 1px solid;
+    padding: 5px; 
+    margin: 0px;
+    font-weight:bold;
+    font-size: 18px;
+}
+.printOrderBody{
+    padding: 2px; 
+    width: 206px;
+    overflow-x: hidden;
+}
+.pob1{
+    font-size: 16px;
+    padding-right: 15px;
+    font-weight:bold;
+}
+.pob2 , .pob3, .pob4, .pob5{
+    font-size: 14px;
+}
+.pob4{
+    padding-right: 20px;
+}
+.printOrderPrice{
+    border-top:#ccc 1px solid;
+    width: 206px;
+    height: 30px;
+    padding-top: 12px; 
+    padding-left: 2px; 
+    padding-right: 2px; 
+    font-size: 18px;
+    text-align: right;
+    font-weight:bold;
+}
+.printOrderTime{
+    height: 30px;
+    width: 206px;
+    padding: 2px; 
+}
