@@ -13,19 +13,19 @@
                             echo '<tr>';
                         }
                         echo '<td>';
-                        echo sprintf('<input type="button"
-                                        value="%s %s : %d"
-                                        class="addItem"
+                        echo sprintf('<button type="button"
+                                        class="addItem btn btn-default"
                                         data-nameid="%s"
                                         data-name="%s"
                                         data-classname="%s"
                                         data-price="%d"
-                                     />'
-                                    , CHtml::encode($row['name']) , CHtml::encode($priceRow[0]), CHtml::encode($priceRow[1])
+                                     />%s %s : %d</button>'
                                     , CHtml::encode($row['menuId'])
                                     , CHtml::encode($row['name'])
                                     , CHtml::encode($priceRow[0])
-                                    , CHtml::encode($priceRow[1]));
+                                    , CHtml::encode($priceRow[1])
+                                    , CHtml::encode($row['name']) , CHtml::encode($priceRow[0]), CHtml::encode($priceRow[1])
+                                    );
                         echo '</td>';
                         if(($trCount+1)%2 == 0){
                             echo '</tr>';

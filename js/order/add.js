@@ -85,12 +85,12 @@ $(document).ready(function(){
         item += '<input type="text" name="itemPrice[]" class="inputItemPrice" readonly="readonly" value="'+extraTotalPrice+'" />';
         item += '&nbsp;x&nbsp;<input type="text" name="itemCount[]" class="inputItemPrice" readonly="readonly" value="1" />';
         item += '<input type="hidden" name="itemTotal[]" class="inputItemPrice" readonly="readonly" value="'+extraTotalPrice+'" />';
-        item += '<br/><input type="button" class="delItem inputItemAddCount" checked="checked" value="X" />';
-        item += ' <input type="button" class="addCount inputItemAddCount" value="-5" />';
-        item += ' <input type="button" class="addCount inputItemAddCount" value="-1" />';
-        item += ' <input type="button" class="addCount inputItemAddCount" value="+1" />';
-        item += ' <input type="button" class="addCount inputItemAddCount" value="+2" />';
-        item += ' <input type="button" class="addCount inputItemAddCount" value="+5" />';
+        item += '<br/><input type="button" class="btn btn-default delItem inputItemAddCount" checked="checked" value="X" />';
+        item += ' <input type="button" class="btn btn-default addCount inputItemAddCount" value="-5" />';
+        item += ' <input type="button" class="btn btn-default addCount inputItemAddCount" value="-1" />';
+        item += ' <input type="button" class="btn btn-default addCount inputItemAddCount" value="+1" />';
+        item += ' <input type="button" class="btn btn-default addCount inputItemAddCount" value="+2" />';
+        item += ' <input type="button" class="btn btn-default addCount inputItemAddCount" value="+5" />';
         item += '<input type="hidden" name="itemId[]" value="'+$(e.target).data('nameid')+'" />';
         item += '<input type="hidden" name="itemName[]" value="'+$(e.target).data('name')+'" />';
         item += '<hr/></span>'

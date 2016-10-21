@@ -44,17 +44,19 @@
     <tr <?php if($key%2 == 1){ ?>class="odd-row" <?php } ?>>
         <td><?=CHtml::encode($row->todayOrderNo) ?></td>
         <td style="text-align: center; padding: 0px; margin: 0px;">
-            <a href="javascript:void(0);" onclick="$(this).parent().find('table').toggle();">詳細內容</a>
-            <table style="padding: 0px; margin: 0px;" class="hide">
-            <?php foreach ($row->details as $detailRow){ ?>
-                <tr>
-                    <td style="text-align: right; padding: 0px; margin: 0px;" ><?=CHtml::encode($detailRow['memo']) ?></td>
-                    <td style="text-align: right; padding: 0px; margin: 0px;" >
-                        <?=$detailRow['price'] . '&nbsp;x&nbsp;' . $detailRow['itemCount'] . '&nbsp;=&nbsp;' . $detailRow['itemTotal'] ?>
-                    </td>
-                </tr>
-            <?php } ?>
-            </table>
+            <a href="javascript:void(0);" onclick="$(this).parent().find('div').toggle();">詳細內容</a>
+            <div style="display:none; position: absolute; height: 200px; overflow-y: scroll;" >
+                <table style="padding: 0px; margin: 0px; width: 500px;" >
+                <?php foreach ($row->details as $detailRow){ ?>
+                    <tr class="odd-row">
+                        <td style="text-align: left; padding: 10px; margin: 0px; vertical-align: top;" ><?=CHtml::encode($detailRow['memo']) ?></td>
+                        <td style="text-align: left; padding: 10px; margin: 0px; vertical-align: top;" >
+                            <?=$detailRow['price'] . '&nbsp;x&nbsp;' . $detailRow['itemCount'] . '&nbsp;=&nbsp;' . $detailRow['itemTotal'] ?>
+                        </td>
+                    </tr>
+                <?php } ?>
+                </table>
+            </div>
         </td>
         <td><?=$row->priceTotal ?></td>
         <td>

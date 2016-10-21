@@ -110,7 +110,7 @@ class OrderController extends FrameController{
         $this->redirect(Yii::app()->request->baseUrl.'/order/');
     }
     
-    public function actionPrint($id){
+    public function actionPrint($id, $tp = 0){
         if($id < 0) $this->actionErrorPage();
         $pageVO = new PageVO;
         $pageVO->page = intval($_GET['p']);
@@ -126,6 +126,6 @@ class OrderController extends FrameController{
 
         $order = array_pop($orderListPage->details);
 
-        $this->renderPartial('order/print', [ 'order' => $order ]);
+        $this->renderPartial('order/print', [ 'order' => $order, 'tp' => $tp ]);
     }
 }
