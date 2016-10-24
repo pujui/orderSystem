@@ -6,7 +6,11 @@
 // This is the main Web application configuration. Any writable
 // CWebApplication properties can be configured here.
 
-define('WEB_PATH', 'http://'.$_SERVER['SERVER_ADDR'].'/orderSystem');
+if($_SERVER['SERVER_PORT'] != 80){
+    define('WEB_PATH', 'http://'.$_SERVER['SERVER_ADDR'].':'.$_SERVER['SERVER_PORT'].'/orderSystem');
+}else{
+    define('WEB_PATH', 'http://'.$_SERVER['SERVER_ADDR'].'/orderSystem');
+}
 
 return array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',

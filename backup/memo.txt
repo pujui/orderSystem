@@ -1,0 +1,20 @@
+1.安裝xampp
+2.安裝git
+3.建立專案
+    下載專案: 
+        git clone https://github.com/pujui/orderSystem.git
+    建立log目錄:
+        /orderSystem/protected/runtime
+    修改DB帳密:
+        /orderSystem/protected/config/main.php
+        password => '密碼'
+    php.ini設定時區: date.timezone設定為Asia/Taipei
+    php.ini設定錯誤通知: error_reporting設定為E_ALL & ~E_NOTICE
+    設定登入時間: session.gc_maxlifetime = 秒數(0為無限制)
+
+4.修改列印設定/orderSystem/prints
+    設定印表機名稱: autoPrint.bat 兩台
+
+5.建立db從專案backup匯入ordersystem.sql
+    ip/phpmyadmin
+

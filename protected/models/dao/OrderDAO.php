@@ -76,9 +76,9 @@ class OrderDAO extends BaseDAO{
                     VALUES
                         (:creater, 1, :todayOrderNo, :priceTotal, NOW())";
             $this->bindQuery($sql, array(':todayOrderNo' => $todayOrderNo, ':creater' => $main['creater'], ':priceTotal' => $main['priceTotal']));
-            
+
             $orderId = $this->db->getLastInsertID();
-            
+
             $bind = [ ':orderId' => $orderId];
             $sql = 'INSERT INTO ordersystem.orderdetail (orderId, menuId, price, itemCount, itemTotal, createTime, memo) VALUES ';
             $sqlList = [];
@@ -91,8 +91,8 @@ class OrderDAO extends BaseDAO{
                 $bind[":memo{$key}"] = $row['memo'];
             }
             $this->bindQuery($sql . implode(',', $sqlList), $bind);
-           $transaction->commit();
-            return $orderId;
+            $transaction->commit();
+            return [$orderId, $todayOrderNo];
         }
         catch(Exception $e)
         {

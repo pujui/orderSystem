@@ -15,15 +15,20 @@ class OrderController extends FrameController{
         $this->setVariable('isLogin', $isLogin);
         if($isLogin === true){
             $this->setVariable('user', $userManager->getLogin());
-        }else{
-            $this->actionErrorPage();
         }
         $this->BreadCrumbs[Yii::app()->request->baseUrl] = '首頁';
 
         parent::__construct();
     }
+    
+    private function __check_login(){
+        if(UserManager::isLogin() !== true){
+            $this->actionErrorPage();
+        }
+    }
 
     public function actionIndex(){
+        $this->__check_login();
         $userVO = UserManager::getLogin();
         $pageVO = new PageVO;
         $pageVO->page = intval($_GET['p']);
@@ -36,7 +41,6 @@ class OrderController extends FrameController{
         ];
         $orderManager = new OrderManager;
         $orderListPage = $orderManager->findOrderList($pageVO, $search);
-        
 
         $orderDAO = new OrderDAO();
         $months = $orderDAO->findDataForLastMonth();
@@ -62,16 +66,16 @@ class OrderController extends FrameController{
     }
 
     public function actionAdd(){
+        $this->__check_login();
         $menuManager = new MenuManager;
         $showList = $menuManager->show();
         try {
             if(isset($_POST['itemPrice'])){
-
                 $userVO = UserManager::getLogin();
                 $orderManager = new OrderManager;
-                $id = $orderManager->add($userVO, $_POST);
+                $order = $orderManager->add($userVO, $_POST);
                 if($_POST['print'] == '1'){
-                    $this->redirect(Yii::app()->request->baseUrl.'/order/print/?id='.$id);
+                    $this->redirect(Yii::app()->request->baseUrl.'/order/updatePrint/?tp=3&id='.$order[0].'&orderNo='.$order[1]);
                 }else{
                     $this->redirect(Yii::app()->request->baseUrl.'/order/');
                 }
@@ -102,6 +106,7 @@ class OrderController extends FrameController{
     }
 
     public function actionEdit($id = 0, $s = 0){
+        $this->__check_login();
         $statusList = [ 1 => 1, 2 => 0];
         if($id > 0 && isset($statusList[$s])){
             $orderDAO = new OrderDAO;
@@ -109,8 +114,32 @@ class OrderController extends FrameController{
         }
         $this->redirect(Yii::app()->request->baseUrl.'/order/');
     }
-    
-    public function actionPrint($id, $tp = 0, $only = 0){
+
+    public function actionUpdatePrint($id = 0, $orderNo = '', $tp = 0){
+        $this->__check_login();
+        $date_fix = date('YmdHis');
+        /**
+         * 產生TAG檔
+         */
+        if($tp == 1 || $tp == 3){
+            $tagContent = file_get_contents(WEB_PATH.'/order/print?tp=1&id='.$id);
+            $file = fopen(dirname(__FILE__)."/../../prints/tag/{$date_fix}_{$id}_{$orderNo}.html","w");
+            fwrite($file, $tagContent);
+            fclose($file);
+        }
+        /**
+         * 產生明細檔
+         */
+        if($tp == 2 || $tp == 3){
+            $tagContent = file_get_contents(WEB_PATH.'/order/print?tp=2&id='.$id);
+            $file = fopen(dirname(__FILE__)."/../../prints/list/{$date_fix}_{$id}_{$orderNo}.html","w");
+            fwrite($file, $tagContent);
+            fclose($file);
+        }
+        $this->redirect(Yii::app()->request->baseUrl.'/order/print?show=1&id='.$id);
+    }
+
+    public function actionPrint($id, $tp = 0, $show = 0){
         if($id < 0) $this->actionErrorPage();
         $pageVO = new PageVO;
         $pageVO->page = intval($_GET['p']);
@@ -121,11 +150,28 @@ class OrderController extends FrameController{
         ];
         $orderManager = new OrderManager;
         $orderListPage = $orderManager->findOrderList($pageVO, $search);
-
         if(empty($orderListPage->details)) $this->actionErrorPage();
-
         $order = array_pop($orderListPage->details);
+        $this->renderPartial('order/print', [ 'order' => $order, 'tp' => $tp, 'show' => $show]);
+    }
 
-        $this->renderPartial('order/print', [ 'order' => $order, 'tp' => $tp, 'only' =>$only ]);
+    public function actionPrintList(){
+        if(UserManager::isLogin() !== true){
+            $this->actionErrorPage();
+        }
+        $userVO = UserManager::getLogin();
+        $pageVO = new PageVO;
+        $pageVO->page = intval($_GET['p']);
+        $pageVO->params = $_GET;
+        $pageVO->limit = 10;
+        $search = [
+            'needPrint' => 1
+        ];
+        $this->setVariable('navBarOrderPrint', 'active');
+        $orderManager = new OrderManager;
+        $orderListPage = $orderManager->findOrderList($pageVO, $search);
+        $this->layout('order/printList', array(
+            'orderListPage' => $orderListPage,
+        ));
     }
 }

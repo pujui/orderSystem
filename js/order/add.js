@@ -1,3 +1,4 @@
+var lockForm = false;
 $(document).ready(function(){
 
     function orderAddForm(){
@@ -99,6 +100,7 @@ $(document).ready(function(){
     }
     
     orderAddForm.prototype.checkVariable = function(){
+        if(lockForm === true) return false;
         var msg = [];
         if($('input[name="itemTotal[]"]').length < 1){
             msg.push('訂單無內容');
@@ -108,6 +110,7 @@ $(document).ready(function(){
                 $('#addOrderForm').append('<input type="hidden" name="print" value="1"/>');
             }
             $('#addOrderForm').submit();
+            lockForm = true;
             return true;
         }else{
             alert(msg.join('\n\n'));
@@ -116,12 +119,3 @@ $(document).ready(function(){
     }
     new orderAddForm().init();
 });
-function printScreen(html){
-    var printPage = window.open('', 'printPage', '');
-    printPage.document.open();
-    printPage.document.write('<HTML><head></head><BODY onload="window.print();window.close();">');
-    printPage.document.write('<PRE>');
-    printPage.document.write(html);
-    printPage.document.write('</PRE>');
-    printPage.document.close('</BODY></HTML>');
-}

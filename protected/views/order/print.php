@@ -3,8 +3,119 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="language" content="zh" />
-    <link rel="stylesheet" type="text/css" href="<?=Yii::app()->request->baseUrl . '/css/print.css'?>" />
-    <script type="text/javascript" src="/orderSystem/js/jquery/jquery-1.9.1.min.js"></script>
+    <style type="text/css">@CHARSET "UTF-8";
+body{
+    margin: 1px; 
+}
+@page { margin: 0px; }
+.cFristPrint{
+    padding: 0px; 
+    margin: 0px; 
+    margin-left: 2px;
+    width: 120px; 
+    height: 94px; 
+    overflow: hidden;
+}
+.cPrint{
+    padding: 0px; 
+    margin: 0px; 
+    margin-left: 2px;
+    width: 120px; 
+    height: 94px; 
+    overflow: hidden;
+    page-break-before: always; 
+}
+.cPrint div{
+    /*border:#ccc 1px solid; */
+    margin: 1px;
+    overflow: hidden;
+}
+.printName{
+    width: 110px; 
+    height: 20px; 
+    font-size: 16px;
+}
+.printAttrA{
+    padding-left: 2px;
+    width: 65px;
+    height: 15px; 
+    font-size: 12px;
+}
+.printAttrB{
+    padding: 0px; 
+    width: 100px; 
+    height: 28px; 
+    overflow: hidden;
+    text-align: left;
+}
+
+.printAttrB table, tr, td, tbody{
+    padding: 0px; 
+    margin: 0px; 
+    border: 0px;
+    text-align: left;
+    vertical-align: top;
+    height: 28px; 
+}
+.printAttrB .printAttrB-F{
+    width: 65px; 
+    font-size: 12px;
+}
+.printAttrB .printAttrB-S{
+    width: 30px; 
+    font-size: 16px;
+}
+.printNo{
+    height: 20px; 
+    width: 65px;
+    font-size: 16px;
+    padding-left: 20px;
+}
+.printOrder{
+    width: 215px;
+    margin-left: 2px;
+}
+.printOrderTitle{
+    width: 200px;
+    border-bottom:#ccc 1px solid;
+    padding: 5px; 
+    margin: 0px;
+    font-weight:bold;
+    font-size: 18px;
+}
+.printOrderBody{
+    padding: 2px; 
+    width: 206px;
+    overflow-x: hidden;
+}
+.pob1{
+    font-size: 16px;
+    padding-right: 15px;
+    font-weight:bold;
+}
+.pob2 , .pob3, .pob4, .pob5{
+    font-size: 14px;
+}
+.pob4{
+    padding-right: 20px;
+}
+.printOrderPrice{
+    border-top:#ccc 1px solid;
+    width: 206px;
+    height: 30px;
+    padding-top: 12px; 
+    padding-left: 2px; 
+    padding-right: 2px; 
+    font-size: 18px;
+    text-align: right;
+    font-weight:bold;
+}
+.printOrderTime{
+    height: 30px;
+    width: 206px;
+    padding: 2px; 
+}
+    </style>
 </head>
 <body>
 <?php 
@@ -44,7 +155,7 @@ if($tp == 1){
             $firstCheck = 1;
         }
     }
-} else {
+} else if($tp == 2){
 ?>
     <div class="printOrder" >
         <div class="printOrderTitle">果食&nbsp;&nbsp;-&nbsp;&nbsp;訂單號碼：<?=sprintf(' %d', $orderNo[1]); ?></div>
@@ -83,30 +194,12 @@ if($tp == 1){
     </div>
 <?php
 }
+if($show == 1){
 ?>
-    <script type="text/javascript">
-        $(document).ready(function(){
-            window.print();
-            setTimeout(loaction_href, 1000);
-        });
-        function loaction_href(){
-            <?php 
-            if($only == 1){
-                echo sprintf('alert("列印完成");location.href ="%s/order/";'
-                        , Yii::app()->request->baseUrl
-                );
-            }else if($tp == 1){
-                echo sprintf('alert("商品標籤列印完成");location.href ="%s/order/";'
-                        , Yii::app()->request->baseUrl
-                );
-            }else{
-                echo sprintf('alert("明細列印完成");location.href ="%s/order/print?id=%d&tp=1";'
-                        , Yii::app()->request->baseUrl
-                        , $order->orderId
-                );
-            }
-            ?>
-        }
-    </script>
+<script type="text/javascript">
+    alert('列印資料已送出');
+    location.href = '<?=Yii::app()->request->baseUrl . '/order/'?>';
+</script>
+<?php } ?>
 </body>
 </html>
