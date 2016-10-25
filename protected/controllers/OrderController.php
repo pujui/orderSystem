@@ -130,12 +130,12 @@ class OrderController extends FrameController{
         /**
          * 產生明細檔
          */
-        if($tp == 2 || $tp == 3){
-            $tagContent = file_get_contents(WEB_PATH.'/order/print?tp=2&id='.$id);
-            $file = fopen(dirname(__FILE__)."/../../prints/list/{$date_fix}_{$id}_{$orderNo}.html","w");
-            fwrite($file, $tagContent);
-            fclose($file);
-        }
+//         if($tp == 2 || $tp == 3){
+//             $tagContent = file_get_contents(WEB_PATH.'/order/print?tp=2&id='.$id);
+//             $file = fopen(dirname(__FILE__)."/../../prints/list/{$date_fix}_{$id}_{$orderNo}.html","w");
+//             fwrite($file, $tagContent);
+//             fclose($file);
+//         }
         $this->redirect(Yii::app()->request->baseUrl.'/order/print?show=1&id='.$id);
     }
 
@@ -159,19 +159,6 @@ class OrderController extends FrameController{
         if(UserManager::isLogin() !== true){
             $this->actionErrorPage();
         }
-        $userVO = UserManager::getLogin();
-        $pageVO = new PageVO;
-        $pageVO->page = intval($_GET['p']);
-        $pageVO->params = $_GET;
-        $pageVO->limit = 10;
-        $search = [
-            'needPrint' => 1
-        ];
-        $this->setVariable('navBarOrderPrint', 'active');
-        $orderManager = new OrderManager;
-        $orderListPage = $orderManager->findOrderList($pageVO, $search);
-        $this->layout('order/printList', array(
-            'orderListPage' => $orderListPage,
-        ));
+        $this->renderPartial('order/printList');
     }
 }
