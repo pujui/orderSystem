@@ -8,7 +8,10 @@ if(count($list) > 0){
 <script type="text/javascript">
     function print_timeout(){
         window.print();
-        location.href = '?';
+        setTimeout(local_timeout, 2000);
+    }
+    function local_timeout(){
+        location.href = '?'.<?=time(); ?>;
     }
     setTimeout(print_timeout, 3000);
 </script>

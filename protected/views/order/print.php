@@ -131,6 +131,7 @@ if($tp == 1){
                 $itemAttrB[] = '<div class="printAttrB-F" >'.CHtml::encode($itemValue).'</div>';
             }
         }
+        if(count($itemAttrB) < 2) $itemAttrB[] = '<div class="printAttrB-F" >_</div>';
         for($i = 0; $i < $detailRow['itemCount']; $i++){
     ?>
     <div class="<?php echo ($firstCheck == 0)? 'cFristPrint': 'cPrint'; ?>">
@@ -138,9 +139,7 @@ if($tp == 1){
         <div class="printAttrA" ><?=$itemAttrA; ?></div>
         <div class="printAttrB">
             <?=implode('', $itemAttrB); ?>
-            <div class="printAttrB-S">
-                No.<?=sprintf('%03d', $orderNo[1]); ?>&nbsp;&nbsp;$<?=$detailRow['price']; ?>
-            </div>
+            <div class="printAttrB-F">No.<?=sprintf('%03d', $orderNo[1]); ?>_$<?=$detailRow['price']; ?></div>
         </div>
     </div>
     <?php
