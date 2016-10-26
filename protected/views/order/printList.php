@@ -11,7 +11,7 @@ if(count($list) > 0){
         setTimeout(local_timeout, 2000);
     }
     function local_timeout(){
-        location.href = '?'.<?=time(); ?>;
+        location.href = '?<?=time(); ?>';
     }
     setTimeout(print_timeout, 3000);
 </script>
