@@ -6,8 +6,11 @@ if(count($list) > 0){
     unlink($file);
 ?>
 <script type="text/javascript">
-    window.print();
-    location.href = '?';
+    function print_timeout(){
+        window.print();
+        location.href = '?';
+    }
+    setTimeout(print_timeout, 3000);
 </script>
 <?php
 }else{

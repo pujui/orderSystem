@@ -43,8 +43,8 @@ body{
 }
 .printAttrB{
     padding: 0px; 
-    width: 100px; 
-    height: 28px; 
+    width: 120px; 
+    height: 48px; 
     overflow: hidden;
     text-align: left;
 }
@@ -55,21 +55,14 @@ body{
     border: 0px;
     text-align: left;
     vertical-align: top;
-    height: 28px; 
 }
 .printAttrB .printAttrB-F{
     width: 65px; 
     font-size: 12px;
 }
 .printAttrB .printAttrB-S{
-    width: 30px; 
-    font-size: 16px;
-}
-.printNo{
-    height: 20px; 
-    width: 65px;
-    font-size: 16px;
-    padding-left: 20px;
+    width: 60px; 
+    font-size: 14px;
 }
 .printOrder{
     width: 215px;
@@ -133,7 +126,7 @@ if($tp == 1){
             }else  if($itemKey == 1){
                 $itemAttrA = CHtml::encode($itemValue);
             }else{
-                $itemAttrB[] = CHtml::encode($itemValue);
+                $itemAttrB[] = '<div style="over-flow: hidden; width: 65px; height: 15px;">'.CHtml::encode($itemValue).'</div>';
             }
         }
         for($i = 0; $i < $detailRow['itemCount']; $i++){
@@ -144,12 +137,14 @@ if($tp == 1){
         <div class="printAttrB">
             <table>
                 <tr>
-                    <td class="printAttrB-F"><?=implode('<br/>', $itemAttrB); ?></td>
-                    <td class="printAttrB-S" >$<?=$detailRow['price']; ?></td>
+                    <td class="printAttrB-F"><?=implode('', $itemAttrB); ?></td>
+                    <td class="printAttrB-S" >
+                        $<?=$detailRow['price']; ?><br/>
+                        No.<?=sprintf('%d', $orderNo[1]); ?>
+                    </td>
                 </tr>
             </table>
         </div>
-        <div class="printNo" >No. <?=sprintf(' %d', $orderNo[1]); ?></div>
     </div>
     <?php
             $firstCheck = 1;
