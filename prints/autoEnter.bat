@@ -10,6 +10,6 @@ echo "3s 後開始自動執行, 請縮小視窗, 並開啟列印頁"
 
 echo "開始執行"
 :loop
-    @ping 127.0.0.1 -n 1 -w 3000 > nul
+    @ping 127.0.0.1 -n 3 -w 1000 > nul
     JavaRobot\dist\JavaRobot.jar
 goto loop
