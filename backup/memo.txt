@@ -5,12 +5,13 @@
         git clone https://github.com/pujui/orderSystem.git
     建立log目錄:
         /orderSystem/protected/runtime
+        /orderSystem/prints/tag
     修改DB帳密:
         /orderSystem/protected/config/main.php
         password => '密碼'
     php.ini設定時區: date.timezone設定為Asia/Taipei
     php.ini設定錯誤通知: error_reporting設定為E_ALL & ~E_NOTICE
-    設定登入時間: session.gc_maxlifetime = 秒數(0為無限制)
+    設定登入時間: session.gc_maxlifetime = 秒數
 
 4.修改列印設定/orderSystem/prints
     設定印表機名稱: autoPrint.bat 兩台
