@@ -25,12 +25,17 @@ class LineBotController extends FrameController{
     }
     
     public function actionPush(){
-        $httpClient = new \LINE\LINEBot\HTTPClient\CurlHTTPClient('ql6H42WjDDCViHshU89XzBTG9k+LiAtuHyE9j+2Kwml3HlU6iymtzdlsz41aBglak7vjxh4t549kvUUvZfSQc1KVDobOM7izPQgzMWqym+4TR2REoyika4JWM5oZSBQf6pKBwtG7R81GKQ6mem1LCQdB04t89/1O/w1cDnyilFU=');
-        $bot = new \LINE\LINEBot($httpClient, ['channelSecret' => '99b1dea83b05a4271096a91025e7765c']);
-        
-        $textMessageBuilder = new \LINE\LINEBot\MessageBuilder\TextMessageBuilder('hello');
-        $response = $bot->pushMessage('<to>', $textMessageBuilder);
-        
-        echo $response->getHTTPStatus() . ' ' . $response->getRawBody();
+        try {
+            $httpClient = new \LINE\LINEBot\HTTPClient\CurlHTTPClient('ql6H42WjDDCViHshU89XzBTG9k+LiAtuHyE9j+2Kwml3HlU6iymtzdlsz41aBglak7vjxh4t549kvUUvZfSQc1KVDobOM7izPQgzMWqym+4TR2REoyika4JWM5oZSBQf6pKBwtG7R81GKQ6mem1LCQdB04t89/1O/w1cDnyilFU=');
+            $bot = new \LINE\LINEBot($httpClient, ['channelSecret' => '99b1dea83b05a4271096a91025e7765c']);
+            
+            $textMessageBuilder = new \LINE\LINEBot\MessageBuilder\TextMessageBuilder('hello');
+            $response = $bot->pushMessage('<to>', $textMessageBuilder);
+            
+            echo $response->getHTTPStatus() . ' ' . $response->getRawBody();
+        }catch (Exception $e){
+            var_export($e->getCode());
+            var_export($e->getMessage());
+        }
     }
 }
