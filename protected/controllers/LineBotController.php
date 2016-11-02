@@ -26,11 +26,10 @@ class LineBotController extends FrameController{
         ];
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, 'https://api.line.me/v2/bot/message/push');
-        curl_setopt($ch, CURLOPT_HEADER, TRUE);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($postData));
         $head = curl_exec($ch);
         echo $head;
         curl_close($ch);
