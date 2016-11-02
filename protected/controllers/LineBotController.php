@@ -41,9 +41,10 @@ class LineBotController extends FrameController{
         curl_setopt($ch, CURLOPT_URL, 'https://api.line.me/v2/bot/profile/'.$userId);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+        curl_setopt($ch, CURLOPT_POST, false);
         $result = curl_exec($ch);
         curl_close($ch);
-        if($r == 1) return json_decode($result, true);
+        if($r === '1') return json_decode($result, true);
         echo $result;
     }
     
@@ -62,7 +63,7 @@ class LineBotController extends FrameController{
                 $userId = $data['source']['userId'];
                 $message = $data['message']['text'];
                 $response['replyToken'] = $data['replyToken'];
-                $userData = $this->actionProfile($userId, 1);
+                $userData = $this->actionProfile($userId, '1');
             }
             $data['displayName'] = $userData['displayName'];
             $lineBotDAO->addAccessLog($data);
