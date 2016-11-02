@@ -28,7 +28,7 @@ class LineBotDAO extends BaseDAO{
         $this->bindQuery($sql, array(
             ':replyToken'   => $data['replyToken'],
             ':type'         => $data['type'],
-            ':timestamp'    => date('Y-m-d H:i:s', $data['timestamp']),
+            ':timestamp'    => $data['timestamp'],
             ':sourceType'   => $data['source']['type'],
             ':userId'       => $data['source']['userId'],
             ':messageId'    => $data['message']['id'],
