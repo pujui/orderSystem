@@ -53,8 +53,8 @@ class LineBotDAO extends BaseDAO{
         $sql = "INSERT INTO LineBot.user (userId, `mode`, `createTime`) VALUES (:userId, :mode, NOW())
                 ON DUPLICATE KEY UPDATE `mode`=:mode, updateTime=NOW() ";
         $this->bindQuery($sql, [
-            ':replyToken'   => $user['userId'],
-            ':type'         => $user['mode']
+            ':userId'   => $user['userId'],
+            ':mode'     => $user['mode']
         ]);
     }
 }
