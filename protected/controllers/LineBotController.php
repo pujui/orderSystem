@@ -17,10 +17,6 @@ class LineBotController extends FrameController{
                 [
                     'type' => 'text',
                     'text' => 'hello1',
-                ],
-                [
-                    'type' => 'text',
-                    'text' => 'hello2',
                 ]
             ]
         ];
@@ -30,8 +26,7 @@ class LineBotController extends FrameController{
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($postData));
-        $head = curl_exec($ch);
-        echo $head;
+        $result = curl_exec($ch);
         curl_close($ch);
     }
     
