@@ -2,6 +2,8 @@
 class LineBotController extends FrameController{
 
     const MESSAGE_FIRST_SETTING = '請選擇你要使用系統方式:';
+    
+    const TOKEN = 'Authorization: Bearer +EcHH6lvAf/A5uW512v+RANnVU/+tRQaMJkS4KkxtuAnmUjtwz9aiIx2V/5rYeH3k7vjxh4t549kvUUvZfSQc1KVDobOM7izPQgzMWqym+7NXH9xvcym0DlriDnGWZQ5Fy5XFA1m/I1WajRZHx9xyQdB04t89/1O/w1cDnyilFU=';
 
     protected $keyword = [
     ];
@@ -9,7 +11,7 @@ class LineBotController extends FrameController{
     public function actionPush(){
         $header = [
             'Content-Type: application/json',
-            'Authorization: Bearer +EcHH6lvAf/A5uW512v+RANnVU/+tRQaMJkS4KkxtuAnmUjtwz9aiIx2V/5rYeH3k7vjxh4t549kvUUvZfSQc1KVDobOM7izPQgzMWqym+7NXH9xvcym0DlriDnGWZQ5Fy5XFA1m/I1WajRZHx9xyQdB04t89/1O/w1cDnyilFU='
+            self::TOKEN
         ];
         $postData = [
             'to' => 'Uedb3beba41a0db8cafc690d13a77e561',
@@ -29,6 +31,21 @@ class LineBotController extends FrameController{
         $result = curl_exec($ch);
         curl_close($ch);
     }
+
+    public function actionProfile($userId = '', $r = ''){
+        $header = [
+            'Content-Type: application/json',
+            self::TOKEN
+        ];
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, 'https://api.line.me/v2/bot/profile/'.$userId);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+        $result = curl_exec($ch);
+        curl_close($ch);
+        if($r == 1) return json_decode($result, true);
+        echo $result;
+    }
     
     public function actionHook(){
         $input = json_decode(file_get_contents('php://input'), TRUE);
@@ -38,13 +55,16 @@ class LineBotController extends FrameController{
         }
         $response = [ 'replyToken' => '', 'message'   => [ 'type' => 'text', 'text' => '' ] ];
         $userId = $message = '';
+        $userData = [];
         $lineBotDAO = new LineBotDAO;
         foreach ($input as $key=>&$data){
             if($key == 0){
                 $userId = $data['source']['userId'];
                 $message = $data['message']['text'];
                 $response['replyToken'] = $data['replyToken'];
+                $userData = $this->actionProfile($userId, 1);
             }
+            $data['displayName'] = $userData['displayName'];
             $lineBotDAO->addAccessLog($data);
         }
         $command = explode(' ', $message);

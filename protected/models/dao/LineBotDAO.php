@@ -3,7 +3,8 @@ class LineBotDAO extends BaseDAO{
 
     public function addAccessLog($data){
         $sql = "INSERT INTO LineBot.access_log
-                    (replyToken
+                    (displayName
+                    , replyToken
                     , `type`
                     , `timestamp`
                     , sourceType
@@ -15,7 +16,8 @@ class LineBotDAO extends BaseDAO{
                     , `log`
                     )
                 VALUES
-                    (:replyToken
+                    (:displayName
+                    , :replyToken
                     , :type
                     , :timestamp
                     , :sourceType
@@ -26,6 +28,7 @@ class LineBotDAO extends BaseDAO{
                     , NOW()
                     , :log ) ";
         $this->bindQuery($sql, array(
+            ':displayName'  => $data['displayName'],
             ':replyToken'   => $data['replyToken'],
             ':type'         => $data['type'],
             ':timestamp'    => $data['timestamp'],
