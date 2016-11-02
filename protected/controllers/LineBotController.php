@@ -12,7 +12,7 @@ class LineBotController extends FrameController{
         }
         $response = [
             'replyToken' => '',
-            'messages'   => [
+            'message'   => [
                 'type' => 'text',
                 'text' => ''
             ]
@@ -20,6 +20,7 @@ class LineBotController extends FrameController{
         $lineBotDAO = new LineBotDAO;
         foreach ($input as $key=>&$data){
             if($key == 0){
+                $response['replyToken'] = $data['replyToken'];
                 $response['message']['text'] = $data['source']['userId'].':'.$data['message']['text'];
             }
             $lineBotDAO->addAccessLog($data);
