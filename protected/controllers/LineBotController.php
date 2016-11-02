@@ -79,6 +79,7 @@ class LineBotController extends FrameController{
             $response['message']['text'] = self::MESSAGE_FIRST_SETTING;
         }
         $lineBotDAO = new LineBotDAO;
+        $user = ['userId' => $userId, 'mode' => 'test'];
         $lineBotDAO->setUser($user);
     }
 
