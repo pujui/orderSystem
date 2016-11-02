@@ -28,7 +28,7 @@ class LineBotDAO extends BaseDAO{
         $this->bindQuery($sql, array(
             ':replyToken'   => $data['replyToken'],
             ':type'         => $data['type'],
-            ':timestamp'    => date('Y-m-d H:i:s', $data['timestamp']),
+            ':timestamp'    => $data['timestamp'],
             ':sourceType'   => $data['source']['type'],
             ':userId'       => $data['source']['userId'],
             ':messageId'    => $data['message']['id'],
@@ -38,4 +38,20 @@ class LineBotDAO extends BaseDAO{
         ));
     }
 
+    public function findUser($userId){
+        return $this->getCommand(
+                    "SELECT * FROM LineBot.user WHERE userId=:userId LIMIT 1",
+                    [':userId' => $userId]
+                )
+                ->queryRow();
+    }
+    
+    public function setUser($user){
+        $sql = "INSERT INTO LineBot.user (userId, `mode`, `createTime`)
+                ON DUPLICATE KEY UPDATE `mode`=:mode, updateTime=NOW() ";
+        $this->bindQuery($sql, array(
+            ':replyToken'   => $user['userId'],
+            ':type'         => $user['mode']
+        ));
+    }
 }
