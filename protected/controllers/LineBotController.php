@@ -74,11 +74,11 @@ class LineBotController extends FrameController{
     }
     
     private function setUserMode($userId, $command, $message, &$response){
-        $userInfo = $this->findUser($userId);
+        $lineBotDAO = new LineBotDAO;
+        $userInfo = $lineBotDAO->findUser($userId);
         if(empty($userInfo)){
             $response['message']['text'] = self::MESSAGE_FIRST_SETTING;
         }
-        $lineBotDAO = new LineBotDAO;
         $user = ['userId' => $userId, 'mode' => 'test'];
         $lineBotDAO->setUser($user);
     }
