@@ -8,17 +8,17 @@ class LineBotController extends FrameController{
     protected $keyword = [
     ];
     
-    public function actionPush(){
+    public function actionPush($id = '', $message = ''){
         $header = [
             'Content-Type: application/json',
             self::TOKEN
         ];
         $postData = [
-            'to' => 'Uedb3beba41a0db8cafc690d13a77e561',
+            'to' => $id,
             'messages' => [
                 [
                     'type' => 'text',
-                    'text' => 'hello1',
+                    'text' => $message,
                 ]
             ]
         ];
@@ -30,6 +30,7 @@ class LineBotController extends FrameController{
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($postData));
         $result = curl_exec($ch);
         curl_close($ch);
+        echo $result;
     }
 
     public function actionProfile($userId = '', $r = ''){

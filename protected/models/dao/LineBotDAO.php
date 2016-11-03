@@ -33,7 +33,7 @@ class LineBotDAO extends BaseDAO{
             ':type'         => $data['type'],
             ':timestamp'    => $data['timestamp'],
             ':sourceType'   => $data['source']['type'],
-            ':userId'       => $data['source']['userId'],
+            ':userId'       => $data['source'][$data['source']['type'].'Id'],
             ':messageId'    => $data['message']['id'],
             ':messageType'  => $data['message']['type'],
             ':messageText'  => $data['message']['text'],
