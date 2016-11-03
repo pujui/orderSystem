@@ -11,7 +11,7 @@ class RoomManager{
         $roomId = $lineBotDAO->findRoom($roomId);
         if(empty($userInfo)){
             $lineBotDAO->setRoom($roomId, self::ROOM_OPEN);
-            $response['message']['text'] = self::MESSAGE_OPEN;
+            $response['message']['text'] = sprintf(self::MESSAGE_OPEN, $roomId);
         }else{
             $list = $lineBotDAO->findRoomList($roomId);
             $response['message']['text'] = sprintf(self::MESSAGE_WAITE_START, count($list), $roomId);
