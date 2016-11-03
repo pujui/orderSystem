@@ -75,7 +75,7 @@ class LineBotDAO extends BaseDAO{
     }
     
     public function setRoom($roomId, $status){
-        $sql = "INSERT INTO LineBot.user (roomId, `status`, `createTime`) VALUES (:roomId, :status, NOW())
+        $sql = "INSERT INTO LineBot.room (roomId, `status`, `createTime`) VALUES (:roomId, :status, NOW())
                 ON DUPLICATE KEY UPDATE `status`=:status, updateTime=NOW() ";
         $this->bindQuery($sql, [
             ':roomId'   => (string)$roomId,
