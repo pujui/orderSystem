@@ -61,7 +61,7 @@ class LineBotController extends FrameController{
         $lineBotDAO = new LineBotDAO;
         foreach ($input as $key=>&$data){
             if($key == 0){
-                $userId = $data['source']['userId'];
+                $userId = $data['source'][$data['source']['type'].'Id'];
                 $message = $data['message']['text'];
                 $response['replyToken'] = $data['replyToken'];
                 $userData = $this->actionProfile($userId, '1');

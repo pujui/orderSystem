@@ -28,15 +28,15 @@ class LineBotDAO extends BaseDAO{
                     , NOW()
                     , :log ) ";
         $this->bindQuery($sql, array(
-            ':displayName'  => $data['displayName'],
-            ':replyToken'   => $data['replyToken'],
-            ':type'         => $data['type'],
-            ':timestamp'    => $data['timestamp'],
-            ':sourceType'   => $data['source']['type'],
-            ':userId'       => $data['source'][$data['source']['type'].'Id'],
-            ':messageId'    => $data['message']['id'],
-            ':messageType'  => $data['message']['type'],
-            ':messageText'  => $data['message']['text'],
+            ':displayName'  => (string)$data['displayName'],
+            ':replyToken'   => (string)$data['replyToken'],
+            ':type'         => (string)$data['type'],
+            ':timestamp'    => (string)$data['timestamp'],
+            ':sourceType'   => (string)$data['source']['type'],
+            ':userId'       => (string)$data['source'][$data['source']['type'].'Id'],
+            ':messageId'    => (string)$data['message']['id'],
+            ':messageType'  => (string)$data['message']['type'],
+            ':messageText'  => (string)$data['message']['text'],
             ':log'          => json_encode($data),
         ));
     }
@@ -44,7 +44,7 @@ class LineBotDAO extends BaseDAO{
     public function findUser($userId){
         return $this->getCommand(
                     "SELECT * FROM LineBot.user WHERE userId=:userId LIMIT 1",
-                    [':userId' => $userId]
+                    [':userId' => (string)$userId]
                 )
                 ->queryRow();
     }
@@ -53,8 +53,8 @@ class LineBotDAO extends BaseDAO{
         $sql = "INSERT INTO LineBot.user (userId, `mode`, `createTime`) VALUES (:userId, :mode, NOW())
                 ON DUPLICATE KEY UPDATE `mode`=:mode, updateTime=NOW() ";
         $this->bindQuery($sql, [
-            ':userId'   => $user['userId'],
-            ':mode'     => $user['mode']
+            ':userId'   => (string)$user['userId'],
+            ':mode'     => (string)$user['mode']
         ]);
     }
 }
