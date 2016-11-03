@@ -55,13 +55,14 @@ class LineBotController extends FrameController{
         if(empty($input) || !is_array($input)){
             $this->exitHook($response);
         }
-        $response = [ 'replyToken' => '', 'message'   => [ 'type' => 'text', 'text' => '111' ] ];
-        $userId = $message = '';
+        $response = [ 'replyToken' => '', 'message'   => [ 'type' => 'text', 'text' => '' ] ];
+        $userId = $type = $message = '';
         $userData = [];
         $lineBotDAO = new LineBotDAO;
         foreach ($input as $key=>&$data){
             if($key == 0){
-                $userId = $data['source'][$data['source']['type'].'Id'];
+                $type = $data['source']['type'];
+                $userId = $data['source'][$type.'Id'];
                 $message = $data['message']['text'];
                 $response['replyToken'] = $data['replyToken'];
                 $userData = $this->actionProfile($userId, '1');
@@ -69,12 +70,15 @@ class LineBotController extends FrameController{
             $data['displayName'] = $userData['displayName'];
             $lineBotDAO->addAccessLog($data);
         }
-        $command = explode(' ', $message);
-        $this->setUserMode($userId, $command[0], $command[1], $response);
+        $this->setUserMode($userId, $message, $response);
+        if($type == 'room'){
+            $roomManager = new RoomManager;
+            $roomManager->action($userId, $message, $response);
+        }
         $this->exitHook($response);
     }
-    
-    private function setUserMode($userId, $command, $message, &$response){
+
+    private function setUserMode($userId, $message, &$response){
         $lineBotDAO = new LineBotDAO;
         $userInfo = $lineBotDAO->findUser($userId);
         if(empty($userInfo)){

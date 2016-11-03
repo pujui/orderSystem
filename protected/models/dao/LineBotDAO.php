@@ -48,6 +48,22 @@ class LineBotDAO extends BaseDAO{
                 )
                 ->queryRow();
     }
+
+    public function findRoom($roomId){
+        return $this->getCommand(
+                    "SELECT * FROM LineBot.room WHERE roomId=:roomId LIMIT 1",
+                    [':roomId' => (string)$roomId]
+                )
+                ->queryRow();
+    }
+
+    public function findRoomList($roomId){
+        return $this->getCommand(
+                    "SELECT * FROM LineBot.room_list WHERE roomId=:roomId",
+                    [':roomId' => (string)$roomId]
+                )
+                ->queryAll();
+    }
     
     public function setUser($user){
         $sql = "INSERT INTO LineBot.user (userId, `mode`, `createTime`) VALUES (:userId, :mode, NOW())
@@ -55,6 +71,15 @@ class LineBotDAO extends BaseDAO{
         $this->bindQuery($sql, [
             ':userId'   => (string)$user['userId'],
             ':mode'     => (string)$user['mode']
+        ]);
+    }
+    
+    public function setRoom($roomId, $status){
+        $sql = "INSERT INTO LineBot.user (roomId, `status`, `createTime`) VALUES (:roomId, :status, NOW())
+                ON DUPLICATE KEY UPDATE `status`=:status, updateTime=NOW() ";
+        $this->bindQuery($sql, [
+            ':roomId'   => (string)$roomId,
+            ':status'   => (string)$status,
         ]);
     }
 }
