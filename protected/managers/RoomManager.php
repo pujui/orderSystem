@@ -29,6 +29,6 @@ class RoomManager{
             $response['message']['text'] = self::MESSAGE_NOT_EXISTS;
             return;
         }
-        $lineBotDAO->setRoomList($roomId, $userId);
+        $lineBotDAO->setRoomList($roomId, $userId, self::ROOM_ROLE_JOIN);
     }
 }
