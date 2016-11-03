@@ -55,7 +55,7 @@ class LineBotController extends FrameController{
         if(empty($input) || !is_array($input)){
             $this->exitHook($response);
         }
-        $response = [ 'replyToken' => '', 'message'   => [ 'type' => 'text', 'text' => '' ] ];
+        $response = [ 'replyToken' => '', 'message'   => [ 'type' => 'text', 'text' => 'Hello' ] ];
         $userId = $type = $message = '';
         $userData = [];
         $lineBotDAO = new LineBotDAO;
