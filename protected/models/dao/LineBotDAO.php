@@ -82,4 +82,15 @@ class LineBotDAO extends BaseDAO{
             ':status'   => (string)$status,
         ]);
     }
+    
+    public function setRoomList($roomId, $userId, $status, $role = ''){
+        $sql = "INSERT INTO LineBot.room_list (roomId, `userId`, `status`, `createTime`) VALUES (:roomId, :userId, :status, :NOW())
+                ON DUPLICATE KEY UPDATE `status`=:status, role=:role updateTime=NOW() ";
+        $this->bindQuery($sql, [
+            ':roomId'   => (string)$roomId,
+            ':userId'   => (string)$userId,
+            ':status'   => (string)$status,
+            ':role'     => (string)$role,
+        ]);
+    }
 }

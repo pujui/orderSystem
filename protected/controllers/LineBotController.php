@@ -71,9 +71,13 @@ class LineBotController extends FrameController{
             $lineBotDAO->addAccessLog($data);
         }
         $this->setUserMode($userId, $message, $response);
+
+        $command = explode(' ', trim($message));
+        $roomManager = new RoomManager;
         if($type == 'room'){
-            $roomManager = new RoomManager;
             $roomManager->action($userId, $message, $response);
+        }else if($command[0] == 'join'){
+            $roomManager->join($userId, $command, $response);
         }
         $this->exitHook($response);
     }
