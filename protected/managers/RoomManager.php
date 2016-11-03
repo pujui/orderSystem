@@ -2,8 +2,8 @@
 class RoomManager{
 
     const ROOM_OPEN = 'OPEN';
-    const MESSAGE_OPEN = '遊戲房間已開啟';
-    const MESSAGE_WAITE_START = "遊戲房間狀態: OPEN, 玩家人數: %d\n加入遊戲請輸入遊戲代碼:%s\n開始遊戲請輸入: start";
+    const MESSAGE_OPEN = "遊戲房間已開啟\n加入遊戲請輸入遊戲代碼:\n%s";
+    const MESSAGE_WAITE_START = "遊戲房間狀態: OPEN, 玩家人數: %d\n加入遊戲請輸入遊戲代碼:\n%s\n開始遊戲請輸入: start";
     const MESSAGE_START = "遊戲房間狀態: START, 玩家人數: %d\n已無法加入遊戲只能觀看";
 
     public function action($roomId, $message, &$response){
