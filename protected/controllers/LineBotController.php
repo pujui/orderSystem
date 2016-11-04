@@ -135,7 +135,7 @@ class LineBotController extends FrameController{
                 $setlist = $roomManager->start($userId, $message, $response);
             }else if($message == '/open'){
                 $roomManager->open($userId, $message, $response);
-            }else{
+            }else if($command[0] == '/status'){
                 $response['message']['text'] = self::MESSAGE_ROOM_SETTING;
             }
         }else if($command[0] == '/join'){
@@ -144,7 +144,7 @@ class LineBotController extends FrameController{
             
         }else if($command[0] == '/leave'){
             $roomManager->leave($userId, $command, $response);
-        }else{
+        }else if($command[0] == '/status'){
             $response['message']['text'] = self::MESSAGE_BOT_SETTING;
         }
         $this->exitHook($response);

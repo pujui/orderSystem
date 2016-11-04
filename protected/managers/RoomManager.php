@@ -89,7 +89,7 @@ class RoomManager{
                             self::ROOM_ROLE_STATUS_NORAML,
                             self::ROOM_ROLE_JOIN
                         );
-            $response['message']['text'] = 
+            $response['message']['text'] = self::MESSAGE_JOIN_SUCCESS;
             $this->parent->actionPush(
                                 $roomId, 
                                 $response['displayName']
