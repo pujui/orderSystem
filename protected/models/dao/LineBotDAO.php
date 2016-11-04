@@ -67,7 +67,7 @@ class LineBotDAO extends BaseDAO{
 
     public function findRoomUserIsLive($userId){
         return $this->getCommand(
-                    "SELECT R.* 
+                    "SELECT RL.* 
                      FROM LineBot.room_list RL
                      INNER JOIN LineBot.room R ON RL.roomId=R.roomId
                      WHERE RL.userId=:userId AND R.status!='END' AND RL.statue!='LEAVE'
