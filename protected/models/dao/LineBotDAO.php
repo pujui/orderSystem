@@ -64,6 +64,18 @@ class LineBotDAO extends BaseDAO{
                 )
                 ->queryAll();
     }
+
+    public function findRoomUserIsLive($userId){
+        return $this->getCommand(
+                    "SELECT R.* 
+                     FROM LineBot.room_list RL
+                     INNER JOIN LineBot.room R
+                     WHERE RL.roomId=R.roomId AND RL.userId=:userId AND R.status!='END' AND RL.statue!='LEAVE'
+                    ",
+                    [':userId' => (string)$userId]
+                )
+                ->queryRow();
+    }
     
     public function setUser($user){
         $sql = "INSERT INTO LineBot.user (userId, `mode`, `createTime`) VALUES (:userId, :mode, NOW())
@@ -95,15 +107,26 @@ class LineBotDAO extends BaseDAO{
         ]);
     }
     
-    public function updateRoomList($roomId, $userId, $role){
-        $sql = "UPDATE LineBot.room_list
-                SET role=:role, updateTime=NOW()
-                WHERE roomId=:roomId AND userId=:userId
-                ";
-        $this->bindQuery($sql, [
-            ':roomId'       => (string)$roomId,
+    public function updateRoomList($roomId, $userId, $role = '', $status = ''){
+        $bind = [
             ':userId'       => (string)$userId,
-            ':role'         => (string)$role,
-        ]);
+        ];
+        $set = $where = '';
+        if($role != ''){
+            $set .= ',role=:role'; 
+            $bind[':role'] = (string)$role;
+        }
+        if($status != ''){
+            $set .= ',status=:status'; 
+            $bind[':status'] = (string)$status;
+        }
+        if($roomId != ''){
+            $where .= ' AND roomId=:roomId '; 
+            $bind[':roomId'] = (string)$roomId;
+        }
+        $sql = "UPDATE LineBot.room_list
+                SET updateTime=NOW() {$set}
+                WHERE 1=1 AND userId=:userId {$where} ";
+        $this->bindQuery($sql, $bind);
     }
 }

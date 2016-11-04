@@ -10,8 +10,13 @@ class RoomManager{
     const MESSAGE_START_PEOPLE_LIMIT = "遊戲人數最少四人\n";
     const MESSAGE_START_ALREADY = "遊戲已準備好,腳色分配完畢\n";
 
+    const MESSAGE_LEAVE_NOT_EXIST = "你目前無在任何遊戲內\n";
+    const MESSAGE_LEAVE_SUCCESS = "你已離開遊戲\n";
+    
     const ROOM_ROLE_JOIN = 'JOIN';
-    const ROOM_ROLE_STATUS = 'NORMAL';
+    const ROOM_ROLE_STATUS_NORAML = 'NORMAL';
+    const ROOM_ROLE_STATUS_LEAVE = 'LEAVE';
+    const ROOM_ROLE_STATUS_DEAD = 'DEAD';
     
     private $lineBotDAO;
     private $role = [
@@ -21,16 +26,17 @@ class RoomManager{
         ['role' => 'VILLAGER', 'roleName' => '村民']
     ];
     private $roleName = [
-        'KILLER'    => '殺手 - 可以殺死任何對象',
-        'HELPER'    => '救援 - 可以再每回合隨意救活被殺手殺死對象(當然也可以救活自己)',
-        'POLICE'    => '警察- 忘了',
-        'VILLAGER'  => '村民- 可以投票誰是兇手'
+        'KILLER'    => "殺手\n可以殺死任何對象\n 使用: /kill [player number] ex: /kill 1",
+        'HELPER'    => "救援\n可以再每回合隨意救活被殺手殺死對象(當然也可以救活自己)\n 使用/help [player number] ex: /help 1",
+        'POLICE'    => "警察\n當有人死亡後會被公布出來, 被公布後可以被殺手殺死之前不行",
+        'VILLAGER'  => "村民\n只可以投票誰是兇手的羔羊"
     ];
     private $roleStatus = [
         'NORMAL'  => 'Live',
         'DEAD'    => 'Dead',
-        'HELP'    => 'Live-被拯救',
+        'HELP'    => 'Live-此回合被拯救',
         'ARREST'  => 'Live',
+        'LEAVE'   => 'Leave'
     ];
 
     public function __construct(){
@@ -77,7 +83,7 @@ class RoomManager{
                             $roomId, 
                             $userId, 
                             $response['displayName'], 
-                            self::ROOM_ROLE_STATUS,
+                            self::ROOM_ROLE_STATUS_NORAML,
                             self::ROOM_ROLE_JOIN
                         );
         }else if($roomInfo['status'] == self::ROOM_STATUS_START){
@@ -124,11 +130,22 @@ class RoomManager{
         }
     }
 
+    public function leave($userId, $message, &$response){
+        $userLiveRoom = $this->lineBotDAO->findRoomUserIsLive($userId);
+        if(empty($userLiveRoom)){
+            $response['message']['text'] = self::MESSAGE_LEAVE_NOT_EXIST;
+        }else{
+            $this->lineBotDAO->updateRoomList($userLiveRoom['roomId'], $userId, '', self::ROOM_ROLE_STATUS_LEAVE);
+            $response['message']['text'] = self::MESSAGE_LEAVE_SUCCESS;
+            return $userLiveRoom;
+        }
+    }
+
     public function getRoomRoleStatus($roomId){
         $message = '';
         $list = $this->lineBotDAO->findRoomList($roomId);
         foreach ($list as $key=>$user){
-            $message .= sprintf("Player %d - %s(%s)".PHP_EOL, $key, $user['displayName'], $this->roleName[$user['role']], $this->roleStatus[$user['status']]);
+            $message .= sprintf("Player %d - %s(%s)".PHP_EOL, $key, $user['displayName'], $this->roleStatus[$user['status']]);
         }
         return $message;
     }
