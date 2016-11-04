@@ -27,10 +27,10 @@ class RoomManager{
         'VILLAGER'  => '村民'
     ];
     private $roleStatus = [
-        'JOIN'  => '活著',
-        'DEAD'  => '死亡',
-        'HELP'  => '救助',
-        'ARREST'=> '逮捕',
+        'NORMAL'  => '活著',
+        'DEAD'    => '死亡',
+        'HELP'    => '救助',
+        'ARREST'  => '逮捕',
     ];
 
     public function __construct(){
@@ -99,26 +99,24 @@ class RoomManager{
                 $this->lineBotDAO->setRoom($roomId, self::ROOM_STATUS_START);
                 $randomList = $list;
                 $setList = [];
-                foreach ($list as &$row){
+                foreach ($list as $row){
                     $setList[$row['id']] = $row;
                 }
                 shuffle($randomList);
                 $checkProtectedNumber = 1;
-                foreach ($randomList as $user){
+                foreach ($randomList as $key=>$user){
                     if($checkProtectedNumber > 0){
-                        foreach ($this->role as $role){
-                            if($key == 3) $checkProtectedNumber--;
-                            $setList[$user['id']]['role'] = $role['role'];
-                            $setList[$user['id']]['roleName'] = $role['roleName'];
-                        }
+                        $r_k = ($key+1)%4;
+                        $setList[$user['id']]['role'] = $this->role[$r_k]['role'];
+                        $setList[$user['id']]['roleName'] = $this->role[$r_k]['roleName'];
+                        if($r_k == 0) $checkProtectedNumber--;
                     }else{
                         $r_k = (rand(0, 999)*$user['id'])%4;
                         $setList[$user['id']]['role'] = $this->role[$r_k]['role'];
                         $setList[$user['id']]['roleName'] = $this->role[$r_k]['roleName'];
                     }
-                    $this->lineBotDAO->updateRoomList($roomId, $user['id'], $setList[$user['id']]['role']);
+                    $this->lineBotDAO->updateRoomList($roomId, $user['userId'], $setList[$user['id']]['role']);
                 }
-                arsort($setList);
                 $response['message']['text'] = self::MESSAGE_START_ALREADY;
                 $response['message']['text'] .= $this->getRoomRoleStatus($roomId);
             }
