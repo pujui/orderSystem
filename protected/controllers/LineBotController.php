@@ -109,7 +109,7 @@ class LineBotController extends FrameController{
         if(empty($input) || !is_array($input)){
             $this->exitHook($response);
         }
-        $response = [ 'replyToken' => '', 'message'   => [ 'type' => 'text', 'text' => '請輸入操作方式' ] ];
+        $response = [ 'replyToken' => '', 'message'   => [ 'type' => 'text', 'text' => '' ] ];
         $userId = $type = $message = '';
         $userData = [];
         $lineBotDAO = new LineBotDAO;

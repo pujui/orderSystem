@@ -126,12 +126,12 @@ class RoomManager{
                     if($checkProtectedNumber > 0){
                         $r_k = ($key+1)%4;
                         $setList[$user['id']]['role'] = $this->role[$r_k]['role'];
-                        $setList[$user['id']]['roleName'] = $this->roleName[$this->role[$r_k]['roleName']];
+                        $setList[$user['id']]['roleName'] = $this->roleName[$this->role[$r_k]['role']];
                         if($r_k == 0) $checkProtectedNumber--;
                     }else{
                         $r_k = (rand(0, 999)*$user['id'])%4;
                         $setList[$user['id']]['role'] = $this->role[$r_k]['role'];
-                        $setList[$user['id']]['roleName'] = $this->roleName[$this->role[$r_k]['roleName']];
+                        $setList[$user['id']]['roleName'] = $this->roleName[$this->role[$r_k]['role']];
                     }
                     $this->lineBotDAO->updateRoomList($roomId, $user['userId'], $setList[$user['id']]['role']);
                 }
