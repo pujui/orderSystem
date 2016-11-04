@@ -98,7 +98,7 @@ class LineBotDAO extends BaseDAO{
     public function updateRoomList($roomId, $userId, $role){
         $sql = "UPDATE LineBot.room_list
                 SET role=:role, updateTime=NOW()
-                WHERE roomId:roomId AND userId=:userId
+                WHERE roomId=:roomId AND userId=:userId
                 ";
         $this->bindQuery($sql, [
             ':roomId'       => (string)$roomId,
