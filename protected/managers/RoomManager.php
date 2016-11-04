@@ -29,8 +29,8 @@ class RoomManager{
         ['role' => 'VILLAGER', 'roleName' => '村民']
     ];
     private $roleName = [
-        'KILLER'    => "[殺手]\n可以殺死任何對象\n 使用: /kill [player number] \nexample: /kill 1",
-        'HELPER'    => "[救援]\n可以再每回合隨意救活被殺手殺死對象(當然也可以救活自己)\n 使用/help [player number] \nexample: /help 1",
+        'KILLER'    => "[殺手]\n可以殺死任何對象\n/kill [player number] \nexample: /kill 1",
+        'HELPER'    => "[救援]\n可以再每回合隨意救活被殺手殺死對象(當然也可以救活自己)\n/help [player number] \nexample: /help 1",
         'POLICE'    => "[警察]\n當有人死亡後會被公布出來, 被公布後可以被殺手殺死之前不行",
         'VILLAGER'  => "[村民]\n只可以投票誰是兇手的羔羊"
     ];
