@@ -22,9 +22,9 @@ class RoomManager{
     const ROOM_ROLE_STATUS_DEAD = 'DEAD';
     
     const MESSAGE_KILL_NOT_EXIST = "角色不存在\n";
-    const MESSAGE_KILL_ALREADY_DEAD = "角色已死亡\n";
-    const MESSAGE_KILL_ALREADY_LEAVE = "角色已逃亡\n";
-    const MESSAGE_KILL_SUCCESS = "角色已殺死\n";
+    const MESSAGE_KILL_ALREADY_DEAD = " 角色已死亡\n";
+    const MESSAGE_KILL_ALREADY_LEAVE = " 角色已逃亡\n";
+    const MESSAGE_KILL_SUCCESS = " 角色已殺死\n";
     
     public $parent = null;
     
@@ -188,9 +188,9 @@ class RoomManager{
             foreach ($list as $key=>$row){
                 if($key == $command[1]){
                     if($row['status'] == self::ROOM_ROLE_STATUS_LEAVE){
-                        return $response['message']['text'] = self::MESSAGE_KILL_ALREADY_LEAVE;
+                        return $response['message']['text'] = $row['displayName'].self::MESSAGE_KILL_ALREADY_LEAVE;
                     }else if($row['status'] == self::ROOM_ROLE_STATUS_DEAD){
-                        return $response['message']['text'] = self::MESSAGE_KILL_ALREADY_DEAD;
+                        return $response['message']['text'] = $row['displayName'].self::MESSAGE_KILL_ALREADY_DEAD;
                     }
                     $target = $row;
                 }
@@ -199,7 +199,7 @@ class RoomManager{
             }
             $this->lineBotDAO->updateRoomList($target['roomId'], $target['userId'], '', self::ROOM_ROLE_STATUS_DEAD);
             $this->lineBotDAO->updateRoomList($self['roomId'], $self['userId'], '', '', self::ROOM_EVENT_STOP);
-            $response['message']['text'] = self::MESSAGE_KILL_SUCCESS;
+            $response['message']['text'] = $target['displayName'].self::MESSAGE_KILL_SUCCESS;
         }
     }
 
