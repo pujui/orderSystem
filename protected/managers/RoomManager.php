@@ -18,6 +18,8 @@ class RoomManager{
     const ROOM_ROLE_STATUS_LEAVE = 'LEAVE';
     const ROOM_ROLE_STATUS_DEAD = 'DEAD';
     
+    public $parent = null;
+    
     private $lineBotDAO;
     private $role = [
         ['role' => 'KILLER', 'roleName' => '殺手'],
@@ -86,6 +88,7 @@ class RoomManager{
                             self::ROOM_ROLE_STATUS_NORAML,
                             self::ROOM_ROLE_JOIN
                         );
+            $this->parent->actionPush($roomId, $response['displayName']."加入遊戲\n".$this->getRoomStatus($roomId, $roomInfo['status'], true));
         }else if($roomInfo['status'] == self::ROOM_STATUS_START){
             $response['message']['text'] = $this->getRoomStatus($roomId, $roomInfo['status'], true);
         }
