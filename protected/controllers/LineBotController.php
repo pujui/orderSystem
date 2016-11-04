@@ -37,10 +37,10 @@ class LineBotController extends FrameController{
             'to' => $id,
             'messages' => [
                 [
-                    'type' => 'confirm',
+                    'type' => 'template',
                     'altText' => 'Are you sure?',
                     'template' => [
-                        'type' => 'buttons',
+                        'type' => 'confirm',
                         'text' => 'Please select',
                         'actions' => [
                             ['type' => 'message', 'label' => 'Open', 'text' => '/open'],
