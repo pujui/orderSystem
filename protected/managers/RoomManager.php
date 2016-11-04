@@ -7,8 +7,8 @@ class RoomManager{
     const MESSAGE_START = "遊戲房間狀態:%s,玩家人數:%d\n已無法加入遊戲只能觀看\n\n";
     const MESSAGE_NOT_EXISTS = "遊戲房間不存在";
     
-    const MESSAGE_START_PEOPLE_LIMIT = "遊戲人數最少四人\n\n";
-    const MESSAGE_START_ALREADY = "遊戲已準備好,腳色分配完畢\n\n";
+    const MESSAGE_START_PEOPLE_LIMIT = "遊戲人數最少四人\n";
+    const MESSAGE_START_ALREADY = "遊戲已準備好,腳色分配完畢\n";
 
     const ROOM_ROLE_JOIN = 'JOIN';
     const ROOM_ROLE_STATUS = 'NORMAL';
@@ -112,7 +112,7 @@ class RoomManager{
                             $setList[$user['id']]['roleName'] = $role['roleName'];
                         }
                     }else{
-                        $r_k = (rand(9999)*$user['id'])%4;
+                        $r_k = (rand(0, 999)*$user['id'])%4;
                         $setList[$user['id']]['role'] = $this->role[$r_k]['role'];
                         $setList[$user['id']]['roleName'] = $this->role[$r_k]['roleName'];
                     }
