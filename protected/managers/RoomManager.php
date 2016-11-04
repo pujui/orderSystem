@@ -137,7 +137,7 @@ class RoomManager{
                 }
                 $response['message']['text'] = self::MESSAGE_START_ALREADY;
                 $response['message']['text'] .= $this->getRoomRoleStatus($roomId);
-                foreach ($setlist as $user){
+                foreach ($setList as $user){
                     $this->parent->actionPush($user['userId'], '您角色為 - '.$user['roleName']);
                 }
             }

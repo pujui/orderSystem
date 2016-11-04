@@ -80,9 +80,6 @@ class LineBotController extends FrameController{
         if($type == 'room'){
             if($message == '/start'){
                 $setlist = $roomManager->start($userId, $message, $response);
-                foreach ($setlist as $user){
-                    $this->actionPush($user['userId'], '您角色為 - '.$user['roleName']);
-                }
             }else if($message == '/open'){
                 $roomManager->open($userId, $message, $response);
             }else{
