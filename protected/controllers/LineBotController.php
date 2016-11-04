@@ -8,6 +8,40 @@ class LineBotController extends FrameController{
 
     protected $keyword = [
     ];
+
+    public function actionJsonPush($id = '', $message = ''){
+        $header = [
+            'Content-Type: application/json',
+            self::TOKEN
+        ];
+        $postData = [
+            'to' => $id,
+            'messages' => [
+                [
+                    'type' => 'template',
+                    'altText' => 'this is a buttons template',
+                    'template' => [
+                        'type' => 'buttons',
+                        'thumbnailImageUrl' => '',
+                        'title' => 'Menu',
+                        'text' => 'Please select',
+                        'actions' => [
+                            ['type' => 'message', 'label' => 'open', 'text' => '/open']
+                        ]
+                    ]
+                ]
+            ]
+        ];
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, 'https://api.line.me/v2/bot/message/push');
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($postData));
+        $result = curl_exec($ch);
+        curl_close($ch);
+        echo $result;
+    }
     
     public function actionPush($id = '', $message = ''){
         $header = [
