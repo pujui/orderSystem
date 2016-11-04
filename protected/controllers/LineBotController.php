@@ -31,7 +31,7 @@ class LineBotController extends FrameController{
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($postData));
         $result = curl_exec($ch);
         curl_close($ch);
-        echo $result;
+        //echo $result;
     }
 
     public function actionProfile($userId = '', $r = ''){
@@ -78,7 +78,10 @@ class LineBotController extends FrameController{
         $roomManager = new RoomManager;
         if($type == 'room'){
             if($message == '/start'){
-                $roomManager->start($userId, $message, $response);
+                $setlist = $roomManager->start($userId, $message, $response);
+                foreach ($setlist as $user){
+                    $this->actionPush($user['userId'], '您角色為 - '.$user['roleName']);
+                }
             }else if($message == '/open'){
                 $roomManager->open($userId, $message, $response);
             }else{

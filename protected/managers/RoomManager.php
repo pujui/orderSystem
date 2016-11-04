@@ -21,15 +21,15 @@ class RoomManager{
         ['role' => 'VILLAGER', 'roleName' => '村民']
     ];
     private $roleName = [
-        'KILLER'    => '殺手',
-        'HELPER'    => '救援',
-        'POLICE'    => '警察',
-        'VILLAGER'  => '村民'
+        'KILLER'    => '殺手 - 可以殺死任何對象',
+        'HELPER'    => '救援 - 可以再每回合隨意救活被殺手殺死對象(當然也可以救活自己)',
+        'POLICE'    => '警察- 忘了',
+        'VILLAGER'  => '村民- 可以投票誰是兇手'
     ];
     private $roleStatus = [
         'NORMAL'  => 'Live',
         'DEAD'    => 'Dead',
-        'HELP'    => 'Live',
+        'HELP'    => 'Live-被拯救',
         'ARREST'  => 'Live',
     ];
 
@@ -120,6 +120,7 @@ class RoomManager{
                 $response['message']['text'] = self::MESSAGE_START_ALREADY;
                 $response['message']['text'] .= $this->getRoomRoleStatus($roomId);
             }
+            return $setList;
         }
     }
 
@@ -127,7 +128,7 @@ class RoomManager{
         $message = '';
         $list = $this->lineBotDAO->findRoomList($roomId);
         foreach ($list as $key=>$user){
-            $message .= sprintf("Player %d(%s)".PHP_EOL, $key, $user['displayName'], $this->roleName[$user['role']], $this->roleStatus[$user['status']]);
+            $message .= sprintf("Player %d - %s(%s)".PHP_EOL, $key, $user['displayName'], $this->roleName[$user['role']], $this->roleStatus[$user['status']]);
         }
         return $message;
     }
