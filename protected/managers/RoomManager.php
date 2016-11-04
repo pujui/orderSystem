@@ -12,6 +12,7 @@ class RoomManager{
 
     const MESSAGE_LEAVE_NOT_EXIST = "你目前無在任何遊戲內\n";
     const MESSAGE_LEAVE_SUCCESS = "你已離開遊戲\n";
+    const MESSAGE_JOIN_SUCCESS = "已加入遊戲\n";
     
     const ROOM_ROLE_JOIN = 'JOIN';
     const ROOM_ROLE_STATUS_NORAML = 'NORMAL';
@@ -88,7 +89,14 @@ class RoomManager{
                             self::ROOM_ROLE_STATUS_NORAML,
                             self::ROOM_ROLE_JOIN
                         );
-            $this->parent->actionPush($roomId, $response['displayName']."加入遊戲\n".$this->getRoomStatus($roomId, $roomInfo['status'], true));
+            $response['message']['text'] = 
+            $this->parent->actionPush(
+                                $roomId, 
+                                $response['displayName']
+                                .self::MESSAGE_JOIN_SUCCESS
+                                .$this->getRoomStatus($roomId, $roomInfo['status'], true)
+                                .$this->getRoomRoleStatus($roomId)
+                            );
         }else if($roomInfo['status'] == self::ROOM_STATUS_START){
             $response['message']['text'] = $this->getRoomStatus($roomId, $roomInfo['status'], true);
         }
