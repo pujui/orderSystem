@@ -112,24 +112,27 @@ class RoomManager{
                     $setList[$row['id']] = $row;
                 }
                 shuffle($randomList);
+                // Protect limit with role
                 $checkProtectedNumber = 1;
                 foreach ($randomList as $key=>$user){
                     if($checkProtectedNumber > 0){
                         $r_k = ($key+1)%4;
                         $setList[$user['id']]['role'] = $this->role[$r_k]['role'];
-                        $setList[$user['id']]['roleName'] = $this->role[$r_k]['roleName'];
+                        $setList[$user['id']]['roleName'] = $this->roleName[$this->role[$r_k]['roleName']];
                         if($r_k == 0) $checkProtectedNumber--;
                     }else{
                         $r_k = (rand(0, 999)*$user['id'])%4;
                         $setList[$user['id']]['role'] = $this->role[$r_k]['role'];
-                        $setList[$user['id']]['roleName'] = $this->role[$r_k]['roleName'];
+                        $setList[$user['id']]['roleName'] = $this->roleName[$this->role[$r_k]['roleName']];
                     }
                     $this->lineBotDAO->updateRoomList($roomId, $user['userId'], $setList[$user['id']]['role']);
                 }
                 $response['message']['text'] = self::MESSAGE_START_ALREADY;
                 $response['message']['text'] .= $this->getRoomRoleStatus($roomId);
+                foreach ($setlist as $user){
+                    $this->parent->actionPush($user['userId'], '您角色為 - '.$user['roleName']);
+                }
             }
-            return $setList;
         }
     }
 
@@ -139,8 +142,11 @@ class RoomManager{
             $response['message']['text'] = self::MESSAGE_LEAVE_NOT_EXIST;
         }else{
             $this->lineBotDAO->updateRoomList($userLiveRoom['roomId'], $userId, '', self::ROOM_ROLE_STATUS_LEAVE);
+            $this->parent->actionPush(
+                        $userLiveRoom['roomId'], 
+                        $userLiveRoom['displayName'].' 離開遊戲'.PHP_EOL.$this->getRoomRoleStatus($userLiveRoom['roomId'])
+                    );
             $response['message']['text'] = self::MESSAGE_LEAVE_SUCCESS;
-            return $userLiveRoom;
         }
     }
 

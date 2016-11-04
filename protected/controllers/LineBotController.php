@@ -93,13 +93,7 @@ class LineBotController extends FrameController{
         }else if($command[0] == '/kill'){
             
         }else if($command[0] == '/leave'){
-            $leaveRoom = $roomManager->leave($userId, $command, $response);
-            if(!empty($leaveRoom)){
-                $this->actionPush(
-                            $leaveRoom['roomId'], 
-                            $leaveRoom['displayName'].' 離開遊戲'.PHP_EOL.$roomManager->getRoomRoleStatus($leaveRoom['roomId'])
-                        );
-            }
+            $roomManager->leave($userId, $command, $response);
         }else{
             $response['message']['text'] = self::MESSAGE_BOT_SETTING;
         }
