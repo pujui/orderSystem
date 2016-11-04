@@ -70,7 +70,7 @@ class LineBotDAO extends BaseDAO{
                     "SELECT RL.* 
                      FROM LineBot.room_list RL
                      INNER JOIN LineBot.room R ON RL.roomId=R.roomId
-                     WHERE RL.userId=:userId AND R.status!='END' AND RL.statue!='LEAVE'
+                     WHERE RL.userId=:userId AND R.status!='END' AND RL.status != 'LEAVE'
                     ",
                     [':userId' => (string)$userId]
                 )
