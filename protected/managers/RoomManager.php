@@ -27,10 +27,10 @@ class RoomManager{
         'VILLAGER'  => '村民'
     ];
     private $roleStatus = [
-        'NORMAL'  => '活著',
-        'DEAD'    => '死亡',
-        'HELP'    => '救助',
-        'ARREST'  => '逮捕',
+        'NORMAL'  => 'Live',
+        'DEAD'    => 'Dead',
+        'HELP'    => 'Live',
+        'ARREST'  => 'Live',
     ];
 
     public function __construct(){
@@ -127,7 +127,7 @@ class RoomManager{
         $message = '';
         $list = $this->lineBotDAO->findRoomList($roomId);
         foreach ($list as $key=>$user){
-            $message .= sprintf('No%d. %s - %s(%s)'.PHP_EOL, $key, $user['displayName'], $this->roleName[$user['role']], $this->roleStatus[$user['status']]);
+            $message .= sprintf("Player %d(%s)".PHP_EOL, $key, $user['displayName'], $this->roleName[$user['role']], $this->roleStatus[$user['status']]);
         }
         return $message;
     }
