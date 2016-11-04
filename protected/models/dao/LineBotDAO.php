@@ -67,7 +67,7 @@ class LineBotDAO extends BaseDAO{
 
     public function findRoomUserIsLive($userId){
         return $this->getCommand(
-                    "SELECT RL.* 
+                    "SELECT RL.*, R.status as roomStatus
                      FROM LineBot.room_list RL
                      INNER JOIN LineBot.room R ON RL.roomId=R.roomId
                      WHERE RL.userId=:userId AND R.status!='END' AND RL.status != 'LEAVE'
@@ -107,7 +107,7 @@ class LineBotDAO extends BaseDAO{
         ]);
     }
     
-    public function updateRoomList($roomId, $userId, $role = '', $status = ''){
+    public function updateRoomList($roomId, $userId, $role = '', $status = '', $event = ''){
         $bind = [
             ':userId'       => (string)$userId,
         ];
@@ -115,6 +115,10 @@ class LineBotDAO extends BaseDAO{
         if($role != ''){
             $set .= ',role=:role'; 
             $bind[':role'] = (string)$role;
+        }
+        if($event != ''){
+            $set .= ',event=:event'; 
+            $bind[':event'] = (string)$event;
         }
         if($status != ''){
             $set .= ',status=:status'; 

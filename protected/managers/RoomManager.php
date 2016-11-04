@@ -2,6 +2,8 @@
 class RoomManager{
     const ROOM_STATUS_OPEN = 'OPEN';
     const ROOM_STATUS_START = 'START';
+    const ROOM_EVENT_STOP = 'STOP';
+    const ROOM_EVENT_START = 'START';
     const MESSAGE_OPEN = "遊戲房間已開啟\n-------------\n請加入BOT為好友並傳送房間代碼加入遊戲\n\n";
     const MESSAGE_WAITE_START = "遊戲房間狀態: %s, 玩家人數: %d\n加入房間請輸入代碼傳送至BOT:\n/join %s\n-------------\n開始遊戲請在GAME ROOM輸入\"/start\"\n-------------\n";
     const MESSAGE_START = "遊戲房間狀態:%s,玩家人數:%d\n已無法加入遊戲只能觀看\n\n";
@@ -18,6 +20,11 @@ class RoomManager{
     const ROOM_ROLE_STATUS_NORAML = 'NORMAL';
     const ROOM_ROLE_STATUS_LEAVE = 'LEAVE';
     const ROOM_ROLE_STATUS_DEAD = 'DEAD';
+    
+    const MESSAGE_KILL_NOT_EXIST = "角色不存在\n";
+    const MESSAGE_KILL_ALREADY_DEAD = "角色已死亡\n";
+    const MESSAGE_KILL_ALREADY_LEAVE = "角色已逃亡\n";
+    const MESSAGE_KILL_SUCCESS = "角色已殺死\n";
     
     public $parent = null;
     
@@ -40,6 +47,10 @@ class RoomManager{
         'HELP'    => 'Live-此回合被拯救',
         'ARREST'  => 'Live',
         'LEAVE'   => 'Leave'
+    ];
+    private $events = [
+        'STOP'     => '已動作',
+        'START'    => '未動作'
     ];
 
     public function __construct(){
@@ -137,7 +148,7 @@ class RoomManager{
                         $setList[$user['id']]['role'] = $this->role[$r_k]['role'];
                         $setList[$user['id']]['roleName'] = $this->roleName[$this->role[$r_k]['role']];
                     }
-                    $this->lineBotDAO->updateRoomList($roomId, $user['userId'], $setList[$user['id']]['role']);
+                    $this->lineBotDAO->updateRoomList($roomId, $user['userId'], $setList[$user['id']]['role'], '', self::ROOM_EVENT_START);
                 }
                 $response['message']['text'] = self::MESSAGE_START_ALREADY;
                 $response['message']['text'] .= $this->getRoomRoleStatus($roomId);
@@ -162,11 +173,46 @@ class RoomManager{
         }
     }
 
+    public function kill($userId, $command, &$response){
+        $userLiveRoom = $this->lineBotDAO->findRoomUserIsLive($userId);
+        if(empty($userLiveRoom)){
+            return $response['message']['text'] = self::MESSAGE_LEAVE_NOT_EXIST;
+        }else if($userLiveRoom['roomStatus'] == self::ROOM_STATUS_START){
+            $list = $this->lineBotDAO->findRoomList($userLiveRoom['roomId']);
+            $totalPeople = count($list);
+            if($command[1] < 1 || $command[1] > $totalPeople){
+                return $response['message']['text'] = self::MESSAGE_KILL_NOT_EXIST;;
+            }
+            $setList = $target = [];
+            $self = $userLiveRoom;
+            foreach ($list as $key=>$row){
+                if($key == $command[1]){
+                    if($row['status'] == self::ROOM_ROLE_STATUS_LEAVE){
+                        return $response['message']['text'] = self::MESSAGE_KILL_ALREADY_LEAVE;
+                    }else if($row['status'] == self::ROOM_ROLE_STATUS_DEAD){
+                        return $response['message']['text'] = self::MESSAGE_KILL_ALREADY_DEAD;
+                    }
+                    $target = $row;
+                }
+                $row['number'] = $key+1;
+                $setList[$row['id']] = $row;
+            }
+            $this->lineBotDAO->updateRoomList($target['roomId'], $target['userId'], '', self::ROOM_ROLE_STATUS_DEAD);
+            $this->lineBotDAO->updateRoomList($self['roomId'], $self['userId'], '', '', self::ROOM_EVENT_STOP);
+            $response['message']['text'] = self::MESSAGE_KILL_SUCCESS;
+        }
+    }
+
     public function getRoomRoleStatus($roomId){
         $message = '';
         $list = $this->lineBotDAO->findRoomList($roomId);
         foreach ($list as $key=>$user){
-            $message .= sprintf("Player %d - %s(%s)".PHP_EOL, $key, $user['displayName'], $this->roleStatus[$user['status']]);
+            $message .= sprintf("Player %d - %s(%s) - %s".PHP_EOL, 
+                            $key+1
+                            , $user['displayName']
+                            , $this->roleStatus[$user['status']]
+                            , $this->events[$user['event']]
+                        );
         }
         return $message;
     }
