@@ -66,6 +66,7 @@ class LineBotController extends FrameController{
                 $message = $data['message']['text'];
                 $response['replyToken'] = $data['replyToken'];
                 $userData = $this->actionProfile($userId, '1');
+                $response['displayName'] = $userData['displayName'];
             }
             $data['displayName'] = $userData['displayName'];
             $lineBotDAO->addAccessLog($data);
@@ -75,9 +76,14 @@ class LineBotController extends FrameController{
         $command = explode(' ', trim($message));
         $roomManager = new RoomManager;
         if($type == 'room'){
-            $roomManager->action($userId, $message, $response);
-        }else if($command[0] == 'join'){
+            if($message == '/start'){
+                $roomManager->open($userId, $message, $response);
+            }else{
+                $roomManager->open($userId, $message, $response);
+            }
+        }else if($command[0] == '/join'){
             $roomManager->join($userId, $command, $response);
+        }else if($command[0] == '/kill'){
         }
         $this->exitHook($response);
     }

@@ -59,7 +59,7 @@ class LineBotDAO extends BaseDAO{
 
     public function findRoomList($roomId){
         return $this->getCommand(
-                    "SELECT * FROM LineBot.room_list WHERE roomId=:roomId",
+                    "SELECT * FROM LineBot.room_list WHERE roomId=:roomId ORDER BY `id`",
                     [':roomId' => (string)$roomId]
                 )
                 ->queryAll();
@@ -83,14 +83,27 @@ class LineBotDAO extends BaseDAO{
         ]);
     }
     
-    public function setRoomList($roomId, $userId, $status = '', $role = ''){
-        $sql = "INSERT INTO LineBot.room_list (roomId, `userId`, `status`, `createTime`) VALUES (:roomId, :userId, :status, NOW())
-                ON DUPLICATE KEY UPDATE `status`=:status, role=:role, updateTime=NOW() ";
+    public function setRoomList($roomId, $userId, $displayName, $status = '', $role = ''){
+        $sql = "INSERT INTO LineBot.room_list (roomId, `userId`, `status`, `displayName`, `createTime`) VALUES (:roomId, :userId, :status, :displayName, NOW())
+                ON DUPLICATE KEY UPDATE `status`=:status, role=:role, displayName=:displayName, updateTime=NOW() ";
         $this->bindQuery($sql, [
-            ':roomId'   => (string)$roomId,
-            ':userId'   => (string)$userId,
-            ':status'   => (string)$status,
-            ':role'     => (string)$role,
+            ':roomId'       => (string)$roomId,
+            ':userId'       => (string)$userId,
+            ':status'       => (string)$status,
+            ':role'         => (string)$role,
+            ':displayName'  => (string)$displayName,
+        ]);
+    }
+    
+    public function updateRoomList($roomId, $userId, $role){
+        $sql = "UPDATE LineBot.room_list
+                SET role=:role, updateTime=NOW()
+                WHERE roomId:roomId AND userId=:userId
+                ";
+        $this->bindQuery($sql, [
+            ':roomId'       => (string)$roomId,
+            ':userId'       => (string)$userId,
+            ':role'         => (string)$role,
         ]);
     }
 }
