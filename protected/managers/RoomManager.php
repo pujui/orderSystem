@@ -45,6 +45,10 @@ class RoomManager{
     public function __construct(){
         $this->lineBotDAO = new LineBotDAO;
     }
+    
+    public function role($roomId, $message, &$response){
+        $response['message']['text'] = implode(PHP_EOL, $this->roleName);;
+    }
 
     /**
      * Open the room
