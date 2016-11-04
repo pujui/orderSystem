@@ -1,7 +1,8 @@
 <?php
 class LineBotController extends FrameController{
 
-    const MESSAGE_FIRST_SETTING = '請選擇你要使用系統方式:';
+    const MESSAGE_ROOM_SETTING = '請選擇你要使用系統方式: /open,/start';
+    const MESSAGE_BOT_SETTING = '請選擇你要使用系統方式: /join [room token],/kill,/help,/arrest';
     
     const TOKEN = 'Authorization: Bearer +EcHH6lvAf/A5uW512v+RANnVU/+tRQaMJkS4KkxtuAnmUjtwz9aiIx2V/5rYeH3k7vjxh4t549kvUUvZfSQc1KVDobOM7izPQgzMWqym+7NXH9xvcym0DlriDnGWZQ5Fy5XFA1m/I1WajRZHx9xyQdB04t89/1O/w1cDnyilFU=';
 
@@ -78,12 +79,16 @@ class LineBotController extends FrameController{
         if($type == 'room'){
             if($message == '/start'){
                 $roomManager->start($userId, $message, $response);
-            }else{
+            }else if($message == '/open'){
                 $roomManager->open($userId, $message, $response);
+            }else{
+                $response['message']['text'] = self::MESSAGE_ROOM_SETTING;
             }
         }else if($command[0] == '/join'){
             $roomManager->join($userId, $command, $response);
         }else if($command[0] == '/kill'){
+        }else{
+            $response['message']['text'] = self::MESSAGE_BOT_SETTING;
         }
         $this->exitHook($response);
     }

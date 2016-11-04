@@ -3,7 +3,7 @@ class RoomManager{
     const ROOM_STATUS_OPEN = 'OPEN';
     const ROOM_STATUS_START = 'START';
     const MESSAGE_OPEN = "遊戲房間已開啟\n-------------\n請加入BOT為好友並傳送房間代碼加入遊戲\n\n";
-    const MESSAGE_WAITE_START = "遊戲房間狀態:%s,玩家人數:%d\n加入房間請輸入代碼傳送至BOT:\n/join %s\n-------------\n開始遊戲請在GAME ROOM輸入/start\n\n";
+    const MESSAGE_WAITE_START = "遊戲房間狀態: %s, 玩家人數: %d\n加入房間請輸入代碼傳送至BOT:\n/join %s\n-------------\n開始遊戲請在GAME ROOM輸入\"/start\"\n-------------";
     const MESSAGE_START = "遊戲房間狀態:%s,玩家人數:%d\n已無法加入遊戲只能觀看\n\n";
     const MESSAGE_NOT_EXISTS = "遊戲房間不存在";
     
