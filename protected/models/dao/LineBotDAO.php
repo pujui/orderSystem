@@ -69,8 +69,8 @@ class LineBotDAO extends BaseDAO{
         return $this->getCommand(
                     "SELECT R.* 
                      FROM LineBot.room_list RL
-                     INNER JOIN LineBot.room R
-                     WHERE RL.roomId=R.roomId AND RL.userId=:userId AND R.status!='END' AND RL.statue!='LEAVE'
+                     INNER JOIN LineBot.room R ON RL.roomId=R.roomId
+                     WHERE RL.userId=:userId AND R.status!='END' AND RL.statue!='LEAVE'
                     ",
                     [':userId' => (string)$userId]
                 )
