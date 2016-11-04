@@ -14,6 +14,7 @@ class LineBotController extends FrameController{
             'Content-Type: application/json',
             self::TOKEN
         ];
+        /*
         $postData = [
             'to' => $id,
             'messages' => [
@@ -27,6 +28,24 @@ class LineBotController extends FrameController{
                         'text' => 'Please select',
                         'actions' => [
                             ['type' => 'message', 'label' => 'open', 'text' => '/open']
+                        ]
+                    ]
+                ]
+            ]
+        ];*/
+        $postData = [
+            'to' => $id,
+            'messages' => [
+                [
+                    'type' => 'confirm',
+                    'altText' => 'Are you sure?',
+                    'template' => [
+                        'type' => 'buttons',
+                        'text' => 'Please select',
+                        'actions' => [
+                            ['type' => 'message', 'label' => 'Open', 'text' => '/open'],
+                            ['type' => 'message', 'label' => 'Start', 'text' => '/start'],
+                            ['type' => 'message', 'label' => 'Status', 'text' => '/status']
                         ]
                     ]
                 ]
