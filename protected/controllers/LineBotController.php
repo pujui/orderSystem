@@ -1,4 +1,10 @@
 <?php
+/**
+ * room
+ *  /open 開新房間
+ * @author PuJui
+ *
+ */
 class LineBotController extends FrameController{
 
     const MESSAGE_ROOM_SETTING = "請選擇你要使用系統方式:\n/open 開啟遊戲防\n/start 開始遊戲\n/status 查詢房間狀態\n";
@@ -109,17 +115,26 @@ class LineBotController extends FrameController{
         if(empty($input) || !is_array($input)){
             $this->exitHook($response);
         }
-        $response = [ 'replyToken' => '', 'message'   => [ 'type' => 'text', 'text' => '' ] ];
+        $lineBotDAO = new LineBotDAO;
+        $response = [
+            'replyToken' => '', 
+            'messages'   => [], //[ 'type' => 'text', 'text' => '' ] 
+        ];
         $userId = $type = $message = '';
         $userData = [];
-        $lineBotDAO = new LineBotDAO;
         foreach ($input as $key=>&$data){
             if($key == 0){
+                // The message type are user or room.
                 $type = $data['source']['type'];
+                // The message id are user or room.
                 $userId = $data['source'][$type.'Id'];
+                // The message content.
                 $message = $data['message']['text'];
+                // Reply this message token.
                 $response['replyToken'] = $data['replyToken'];
+                // Get user profile
                 $userData = $this->actionProfile($userId, '1');
+                // Set user name
                 $response['displayName'] = $userData['displayName'];
             }
             $data['displayName'] = $userData['displayName'];
@@ -132,13 +147,15 @@ class LineBotController extends FrameController{
         $roomManager->parent = $this;
         if($type == 'room'){
             if($message == '/start'){
-                $setlist = $roomManager->start($userId, $message, $response);
-            }else if($message == '/open'){
                 $roomManager->open($userId, $message, $response);
+            }
+            /*else if($message == '/open'){
+                $setlist = $roomManager->start($userId, $message, $response);
             }else if($command[0] == '/role'){
                 $roomManager->role($userId, $message, $response);
-            }
-        }else if($command[0] == '/join'){
+            }*/
+        }
+        /*else if($command[0] == '/join'){
             $roomManager->join($userId, $command, $response);
         }else if($command[0] == '/kill'){
             $roomManager->kill($userId, $command, $response);
@@ -146,7 +163,7 @@ class LineBotController extends FrameController{
             $roomManager->leave($userId, $command, $response);
         }else if($command[0] == '/status'){
             $response['message']['text'] = self::MESSAGE_BOT_SETTING;
-        }
+        }*/
         $this->exitHook($response);
     }
 

@@ -1,7 +1,19 @@
 <?php
 class RoomManager{
-    const ROOM_STATUS_OPEN = 'OPEN';
-    const ROOM_STATUS_START = 'START';
+    
+    protected $MESSAGES = [
+        'OPEN'              => "遊戲房間已開啟\n1.請加入我(BOT)為好友\n2.並傳送房間代碼至BOT加入遊戲",
+        'WAITE_STATUS'      => "遊戲房間狀態: %s, 玩家人數: %d\n開始遊戲請在此房間輸入/start",
+        'JOIN'              => "加入遊戲請輸入以下代碼傳送至(BOT)",
+        'JOIN_COMMAND'      => "/join %s",
+        'START_STATUS'      => "遊戲房間狀態: %s, 玩家人數: %d\n遊戲已開始已無法加入遊戲只能觀看"
+    ];
+
+    protected $ROOM_STATUS = [
+        'OPEN'  => 'OPEN',
+        'START' => 'START',
+    ];
+
     const ROOM_EVENT_STOP = 'STOP';
     const ROOM_EVENT_START = 'START';
     const MESSAGE_OPEN = "遊戲房間已開啟\n-------------\n請加入BOT為好友並傳送房間代碼加入遊戲\n\n";
@@ -63,25 +75,28 @@ class RoomManager{
 
     /**
      * Open the room
+     * 1. Check the room is exist.
+     *  1-1 If the room not exist then create this room.
+     *  1-2 else return room status.
      * @param unknown $roomId
      * @param unknown $message
      * @param unknown $response
      */
     public function open($roomId, $message, &$response){
+        $message = [ 'type' => 'text', 'text' => '' ];
         // If the room not exist then create this room.
         $roomInfo = $this->lineBotDAO->findRoom($roomId);
         if(empty($roomInfo)){
             // Create this room.
-            $this->lineBotDAO->setRoom($roomId, self::ROOM_STATUS_OPEN);
+            $this->lineBotDAO->setRoom($roomId, $this->ROOM_STATUS['OPEN']);
             // Set room message
-            $response['message']['text'] = self::MESSAGE_OPEN;
-            $response['message']['text'] .= $this->getRoomStatus($roomId, self::ROOM_STATUS_OPEN);
+            $this->setRoomStatus($roomId, $this->ROOM_STATUS['OPEN'], $response);
         // else if the room status is "OPEN" then set room message
-        }else if($roomInfo['status'] == self::ROOM_STATUS_OPEN){
-            $response['message']['text'] = $this->getRoomStatus($roomId, $roomInfo['status'], true);
+        }else if($roomInfo['status'] == $this->ROOM_STATUS['OPEN']){
+            $this->setRoomStatus($roomId, $this->ROOM_STATUS['OPEN'], $response);
         // else if the roomk status is "START" then set room message
-        }else if($roomInfo['status'] == self::ROOM_STATUS_START){
-            $response['message']['text'] = $this->getRoomStatus($roomId, $roomInfo['status'], true);
+        }else if($roomInfo['status'] == $this->ROOM_STATUS['START']){
+            $this->setRoomStatus($roomId, $this->ROOM_STATUS['OPEN'], $response);
         }
     }
 
@@ -96,7 +111,7 @@ class RoomManager{
         $roomInfo = $this->lineBotDAO->findRoom($roomId);
         if(empty($roomInfo)){
             $response['message']['text'] = self::MESSAGE_NOT_EXISTS;
-        }else if($roomInfo['status'] == self::ROOM_STATUS_OPEN){
+        }else if($roomInfo['status'] == $this->ROOM_STATUS['OPEN']){
             $this->lineBotDAO->setRoomList(
                             $roomId, 
                             $userId, 
@@ -112,7 +127,7 @@ class RoomManager{
                                 .$this->getRoomStatus($roomId, $roomInfo['status'], true)
                                 .$this->getRoomRoleStatus($roomId)
                             );
-        }else if($roomInfo['status'] == self::ROOM_STATUS_START){
+        }else if($roomInfo['status'] == $this->ROOM_STATUS['START']){
             $response['message']['text'] = $this->getRoomStatus($roomId, $roomInfo['status'], true);
         }
     }
@@ -121,14 +136,14 @@ class RoomManager{
         $roomInfo = $this->lineBotDAO->findRoom($roomId);
         if(empty($roomInfo)){
             $response['message']['text'] = self::MESSAGE_NOT_EXISTS;
-        }else if($roomInfo['status'] == self::ROOM_STATUS_OPEN){
+        }else if($roomInfo['status'] == $this->ROOM_STATUS['OPEN']){
             $list = $this->lineBotDAO->findRoomList($roomId);
             $totalPeople = count($list);
             if($totalPeople < 4){
                 $response['message']['text'] = self::MESSAGE_START_PEOPLE_LIMIT;
             }else{
                 // Change status for this room.
-                $this->lineBotDAO->setRoom($roomId, self::ROOM_STATUS_START);
+                $this->lineBotDAO->setRoom($roomId, $this->ROOM_STATUS['START']);
                 $randomList = $list;
                 $setList = [];
                 foreach ($list as $row){
@@ -177,7 +192,7 @@ class RoomManager{
         $userLiveRoom = $this->lineBotDAO->findRoomUserIsLive($userId);
         if(empty($userLiveRoom)){
             return $response['message']['text'] = self::MESSAGE_LEAVE_NOT_EXIST;
-        }else if($userLiveRoom['roomStatus'] == self::ROOM_STATUS_START){
+        }else if($userLiveRoom['roomStatus'] == $this->ROOM_STATUS['START']){
             $list = $this->lineBotDAO->findRoomList($userLiveRoom['roomId']);
             $totalPeople = count($list);
             if($command[1] < 1 || $command[1] > $totalPeople){
@@ -217,15 +232,31 @@ class RoomManager{
         return $message;
     }
     
+    public function setRoomStatus($roomId, $status, &$response){
+        $message = [ 'type' => 'text', 'text' => '' ];
+        $list = $this->lineBotDAO->findRoomList($roomId);
+        if($status == $this->ROOM_STATUS['OPEN']){
+            $message['text'] = sprintf($this->MESSAGES['WAITE_STATUS'], $status, count($list))
+                               .PHP_EOL .$this->MESSAGES['JOIN'];
+            $response['messages'][] = $message;
+            $message['text'] = sprintf($this->MESSAGES['JOIN_COMMAND'], $roomId);
+            $response['messages'][] = $message;
+        }else if($status == $this->ROOM_STATUS['START']){
+            $message['text'] = sprintf($this->MESSAGES['START_STATUS'], $status, count($list));
+            $response['messages'][] = $message;
+        }
+    }
+    
     public function getRoomStatus($roomId, $status, $pass = false){
-        if($pass !== true && $status == self::ROOM_STATUS_OPEN){
+        $message = [ 'type' => 'text', 'text' => '' ];
+        if($pass !== true && $status == $this->ROOM_STATUS['OPEN']){
             $list = [];
         }else{
             $list = $this->lineBotDAO->findRoomList($roomId);
         }
-        if($status == self::ROOM_STATUS_OPEN){
-            return sprintf(self::MESSAGE_WAITE_START, $status, count($list), $roomId);
-        }else if($status == self::ROOM_STATUS_START){
+        if($status == $this->ROOM_STATUS['OPEN']){
+            return sprintf($this->MESSAGES['WAITE_STATUS'], $status, count($list));
+        }else if($status == $this->ROOM_STATUS['START']){
             return sprintf(self::MESSAGE_START, $status, count($list), $roomId);
         }
     }
