@@ -166,6 +166,34 @@ class RoomManager{
         }
     }
 
+
+    /**
+     * Create bot in room by room
+     * @param unknown $userId
+     * @param unknown $command
+     * @param unknown $response
+     */
+    public function create($roomId, $command, &$response){
+        $message = [ 'type' => 'text', 'text' => '' ];
+        $bot = $command[1];
+        $roomInfo = $this->lineBotDAO->findRoom($roomId);
+        if(empty($roomInfo)){
+            $message['text'] = $this->MESSAGES['JOIN_ROOM_NOT_EXIST'];
+            $response['messages'][] = $message;
+        }else if($roomInfo['status'] == $this->ROOM_STATUS['OPEN'] && $bot == 'bot'){
+            $userId = sha1(date('YmdHis').':'.$roomId.rand(0, 9999));
+            $response['displayName'] = 'bot-'.$userId;
+            $this->lineBotDAO->setRoomList($roomId, $userId, $response['displayName'], $this->ROLE_STATUS['NORMAL'], $this->ROLE_STATUS['JOIN']);
+            // Set join message
+            $message['text'] = $response['displayName'].$this->MESSAGES['JOIN_ROOM_SUCCESS'];
+            $response['messages'][] = $message;
+            // Set status message on room
+            $this->setRoomStatus($roomId, $this->ROOM_STATUS['JOIN'], $response);
+            // Set role message on room
+            $this->setRoomRoleStatus($roomId, $response);
+        }
+    }
+
     public function start($roomId, $message, &$response){
         $message = [ 'type' => 'text', 'text' => '' ];
         $roomInfo = $this->lineBotDAO->findRoom($roomId);
