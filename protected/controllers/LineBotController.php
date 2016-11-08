@@ -152,10 +152,9 @@ class LineBotController extends FrameController{
                 $setlist = $roomManager->start($userId, $message, $response);
             }else if($command[0] == '/create'){
                 $setlist = $roomManager->create($userId, $command, $response);
-            }
-            /*else if($command[0] == '/role'){
+            }else if($command[0] == '/role'){
                 $roomManager->role($userId, $message, $response);
-            }*/
+            }
         }else if($command[0] == '/join'){
             $roomManager->join($userId, $command, $response);
         }else if($command[0] == '/leave'){

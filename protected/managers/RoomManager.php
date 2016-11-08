@@ -97,7 +97,9 @@ class RoomManager{
     }
     
     public function role($roomId, $message, &$response){
-        $response['message']['text'] = implode(PHP_EOL.PHP_EOL, $this->roleName);;
+        $message = [ 'type' => 'text', 'text' => '' ];
+        $message['text'] = implode(PHP_EOL.PHP_EOL, $this->roleName);
+        $response['messages'][] = $message;
     }
 
     /**
