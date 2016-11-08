@@ -182,7 +182,7 @@ class RoomManager{
             $response['messages'][] = $message;
         }else if($roomInfo['status'] == $this->ROOM_STATUS['OPEN'] && $bot == 'bot'){
             $userId = sha1(date('YmdHis').':'.$roomId.rand(0, 9999));
-            $response['displayName'] = 'bot-'.date('YmdHis').rand(0, 100);
+            $response['displayName'] = 'Bot'.date('His');
             $this->lineBotDAO->setRoomList($roomId, $userId, $response['displayName'], $this->ROLE_STATUS['NORMAL'], $this->ROLE_STATUS['JOIN']);
             // Set join message
             $message['text'] = $response['displayName'].$this->MESSAGES['JOIN_ROOM_SUCCESS'];
