@@ -4,14 +4,15 @@ class RoomManager{
     protected $MESSAGES = [
         'OPEN'              => "遊戲房間已開啟\n1.請加入我(BOT)為好友\n2.並傳送房間代碼至BOT加入遊戲",
         'WAITE_STATUS'      => "遊戲房間狀態: %s, 玩家人數: %d\n開始遊戲請在此房間輸入/start",
-        'JOIN'              => "加入遊戲請輸入以下代碼傳送至(BOT)",
+        'JOIN'              => "加入遊戲請輸入以下代碼傳送至我(BOT)",
         'JOIN_COMMAND'      => "/join %s",
         'START_STATUS'      => "遊戲房間狀態: %s, 玩家人數: %d\n遊戲已開始已無法加入遊戲只能觀看"
     ];
 
     protected $ROOM_STATUS = [
-        'OPEN'  => 'OPEN',
-        'START' => 'START',
+        'CREATE'    => 'CREATE',
+        'OPEN'      => 'OPEN',
+        'START'     => 'START',
     ];
 
     const ROOM_EVENT_STOP = 'STOP';
@@ -90,7 +91,7 @@ class RoomManager{
             // Create this room.
             $this->lineBotDAO->setRoom($roomId, $this->ROOM_STATUS['OPEN']);
             // Set room message
-            $this->setRoomStatus($roomId, $this->ROOM_STATUS['OPEN'], $response);
+            $this->setRoomStatus($roomId, $this->ROOM_STATUS['CREATE'], $response);
         // else set room status message
         }else{
             $this->setRoomStatus($roomId, $roomInfo['status'], $response);
@@ -232,7 +233,15 @@ class RoomManager{
     public function setRoomStatus($roomId, $status, &$response){
         $message = [ 'type' => 'text', 'text' => '' ];
         $list = $this->lineBotDAO->findRoomList($roomId);
-        if($status == $this->ROOM_STATUS['OPEN']){
+        if($status == $this->ROOM_STATUS['CREATE']){
+            $message['text'] = sprintf($this->MESSAGES['OPEN'], $status, count($list));
+            $response['messages'][] = $message;
+            $message['text'] = sprintf($this->MESSAGES['WAITE_STATUS'], $status, count($list))
+                               .PHP_EOL .$this->MESSAGES['JOIN'];
+            $response['messages'][] = $message;
+            $message['text'] = sprintf($this->MESSAGES['JOIN_COMMAND'], $roomId);
+            $response['messages'][] = $message;
+        }else if($status == $this->ROOM_STATUS['OPEN']){
             $message['text'] = sprintf($this->MESSAGES['WAITE_STATUS'], $status, count($list))
                                .PHP_EOL .$this->MESSAGES['JOIN'];
             $response['messages'][] = $message;
