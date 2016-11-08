@@ -91,12 +91,9 @@ class RoomManager{
             $this->lineBotDAO->setRoom($roomId, $this->ROOM_STATUS['OPEN']);
             // Set room message
             $this->setRoomStatus($roomId, $this->ROOM_STATUS['OPEN'], $response);
-        // else if the room status is "OPEN" then set room message
-        }else if($roomInfo['status'] == $this->ROOM_STATUS['OPEN']){
-            $this->setRoomStatus($roomId, $this->ROOM_STATUS['OPEN'], $response);
-        // else if the roomk status is "START" then set room message
-        }else if($roomInfo['status'] == $this->ROOM_STATUS['START']){
-            $this->setRoomStatus($roomId, $this->ROOM_STATUS['OPEN'], $response);
+        // else set room status message
+        }else{
+            $this->setRoomStatus($roomId, $roomInfo['status'], $response);
         }
     }
 

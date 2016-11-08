@@ -118,7 +118,7 @@ class LineBotController extends FrameController{
         $lineBotDAO = new LineBotDAO;
         $response = [
             'replyToken' => '', 
-            'messages'   => [], //[ 'type' => 'text', 'text' => '' ] 
+            'messages'   => [],
         ];
         $userId = $type = $message = '';
         $userData = [];
