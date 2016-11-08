@@ -9,6 +9,7 @@ class RoomManager{
         'START_STATUS'          => "遊戲房間狀態: %s, 玩家人數: %d\n遊戲已開始已無法加入遊戲只能觀看",
         'JOIN_ROOM_NOT_EXIST'   => "遊戲房間不存在, 請確認是否複製錯誤",
         'JOIN_ROOM_SUCCESS'     => "已加入遊戲",
+        'JOIN_ARLEADY_EXIST'    => "已在遊戲中",
         'JOIN_EXIST'            => "已在其他遊戲中, 請/leave後再加入",
     ];
 
@@ -136,7 +137,7 @@ class RoomManager{
             $userLiveRoom = $this->lineBotDAO->findRoomUserIsLive($userId);
             if(!empty($userLiveRoom)){
                 if($roomId === $userLiveRoom['roomId']){
-                    $message['text'] = $response['displayName'].$this->MESSAGES['JOIN_ROOM_SUCCESS'];
+                    $message['text'] = $response['displayName'].$this->MESSAGES['JOIN_ARLEADY_EXIST'];
                 }else{
                     $message['text'] = $this->MESSAGES['JOIN_EXIST'];
                 }
