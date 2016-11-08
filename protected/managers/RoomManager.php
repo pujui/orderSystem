@@ -7,17 +7,23 @@ class RoomManager{
         'JOIN'                  => "加入遊戲請輸入以下代碼傳送至我(BOT)",
         'JOIN_COMMAND'          => "/join %s",
         'START_STATUS'          => "遊戲房間狀態: %s, 玩家人數: %d\n遊戲已開始已無法加入遊戲只能觀看",
+        'START_NOT_EXIST'       => "遊戲房間未開啟, 請先輸入/open開啟房間並確認所有人加入後再開始",
+        'START_LIMIT'           => "遊戲人數最少四人",
+        'START_ARLEADY'         => "遊戲已準備好, 角色分配結束",
         'JOIN_ROOM_NOT_EXIST'   => "遊戲房間不存在, 請確認是否複製錯誤",
         'JOIN_ROOM_SUCCESS'     => "已加入遊戲",
         'JOIN_ARLEADY_EXIST'    => "已在遊戲中",
         'JOIN_EXIST'            => "已在其他遊戲中, 請/leave後再加入",
+        'LEAVE_NOT_EXIST'       => "你目前無在任何遊戲內",
+        'LEAVE_SUCCESS'         => "已離開遊戲",
+        'ROLE_CHECKED'          => "您角色為 - %s"
     ];
 
     protected $ROOM_STATUS = [
         'CREATE'    => 'CREATE',
         'OPEN'      => 'OPEN',
         'START'     => 'START',
-        'JOIN'     => 'JOIN',
+        'JOIN'      => 'JOIN',
     ];
 
     protected $ROLE_STATUS = [
@@ -35,31 +41,6 @@ class RoomManager{
         'POLICE'    => 'POLICE',
         'VILLAGER'  => 'VILLAGER'
     ];
-
-    const ROOM_EVENT_STOP = 'STOP';
-    const ROOM_EVENT_START = 'START';
-    const MESSAGE_OPEN = "遊戲房間已開啟\n-------------\n請加入BOT為好友並傳送房間代碼加入遊戲\n\n";
-    const MESSAGE_WAITE_START = "遊戲房間狀態: %s, 玩家人數: %d\n加入房間請輸入代碼傳送至BOT:\n/join %s\n-------------\n開始遊戲請在GAME ROOM輸入\"/start\"\n-------------\n";
-    const MESSAGE_START = "遊戲房間狀態:%s,玩家人數:%d\n已無法加入遊戲只能觀看\n\n";
-    const MESSAGE_NOT_EXISTS = "遊戲房間不存在\n";
-    
-    const MESSAGE_START_PEOPLE_LIMIT = "遊戲人數最少四人\n";
-    const MESSAGE_START_ALREADY = "遊戲已準備好,腳色分配完畢\n";
-
-    const MESSAGE_LEAVE_NOT_EXIST = "你目前無在任何遊戲內\n";
-    const MESSAGE_LEAVE_SUCCESS = "你已離開遊戲\n";
-    const MESSAGE_JOIN_SUCCESS = "已加入遊戲\n";
-    
-    const ROOM_ROLE_JOIN = 'JOIN';
-    const ROOM_ROLE_STATUS_NORAML = 'NORMAL';
-    const ROOM_ROLE_STATUS_LEAVE = 'LEAVE';
-    const ROOM_ROLE_STATUS_DEAD = 'DEAD';
-    
-    const MESSAGE_KILL_NOT_EXIST = "角色不存在\n";
-    const MESSAGE_KILL_ALREADY_DEAD = " 角色已死亡\n";
-    const MESSAGE_KILL_ALREADY_LEAVE = " 角色已逃亡\n";
-    const MESSAGE_KILL_SUCCESS = " 角色已殺死\n";
-    
     public $parent = null;
     
     private $lineBotDAO;
@@ -86,6 +67,30 @@ class RoomManager{
         'STOP'     => '已動作',
         'START'    => '未動作'
     ];
+
+    const ROOM_EVENT_STOP = 'STOP';
+    const ROOM_EVENT_START = 'START';
+    const MESSAGE_OPEN = "遊戲房間已開啟\n-------------\n請加入BOT為好友並傳送房間代碼加入遊戲\n\n";
+    const MESSAGE_WAITE_START = "遊戲房間狀態: %s, 玩家人數: %d\n加入房間請輸入代碼傳送至BOT:\n/join %s\n-------------\n開始遊戲請在GAME ROOM輸入\"/start\"\n-------------\n";
+    const MESSAGE_START = "遊戲房間狀態:%s,玩家人數:%d\n已無法加入遊戲只能觀看\n\n";
+    const MESSAGE_NOT_EXISTS = "遊戲房間不存在\n";
+    
+    const MESSAGE_START_PEOPLE_LIMIT = "遊戲人數最少四人\n";
+    const MESSAGE_START_ALREADY = "遊戲已準備好,腳色分配完畢\n";
+
+    const MESSAGE_LEAVE_NOT_EXIST = "你目前無在任何遊戲內\n";
+    const MESSAGE_LEAVE_SUCCESS = "你已離開遊戲\n";
+    const MESSAGE_JOIN_SUCCESS = "已加入遊戲\n";
+    
+    const ROOM_ROLE_JOIN = 'JOIN';
+    const ROOM_ROLE_STATUS_NORAML = 'NORMAL';
+    const ROOM_ROLE_STATUS_LEAVE = 'LEAVE';
+    const ROOM_ROLE_STATUS_DEAD = 'DEAD';
+    
+    const MESSAGE_KILL_NOT_EXIST = "角色不存在\n";
+    const MESSAGE_KILL_ALREADY_DEAD = " 角色已死亡\n";
+    const MESSAGE_KILL_ALREADY_LEAVE = " 角色已逃亡\n";
+    const MESSAGE_KILL_SUCCESS = " 角色已殺死\n";
 
     public function __construct(){
         $this->lineBotDAO = new LineBotDAO;
@@ -162,14 +167,17 @@ class RoomManager{
     }
 
     public function start($roomId, $message, &$response){
+        $message = [ 'type' => 'text', 'text' => '' ];
         $roomInfo = $this->lineBotDAO->findRoom($roomId);
         if(empty($roomInfo)){
-            $response['message']['text'] = self::MESSAGE_NOT_EXISTS;
+            $message['text'] = $this->MESSAGES['START_NOT_EXIST'];
+            $response['messages'][] = $message;
         }else if($roomInfo['status'] == $this->ROOM_STATUS['OPEN']){
             $list = $this->lineBotDAO->findRoomList($roomId);
             $totalPeople = count($list);
             if($totalPeople < 4){
-                $response['message']['text'] = self::MESSAGE_START_PEOPLE_LIMIT;
+                $message['text'] = $this->MESSAGES['START_LIMIT'];
+                $response['messages'][] = $message;
             }else{
                 // Change status for this room.
                 $this->lineBotDAO->setRoom($roomId, $this->ROOM_STATUS['START']);
@@ -194,26 +202,38 @@ class RoomManager{
                     }
                     $this->lineBotDAO->updateRoomList($roomId, $user['userId'], $setList[$user['id']]['role'], '', self::ROOM_EVENT_START);
                 }
-                $response['message']['text'] = self::MESSAGE_START_ALREADY;
-                $response['message']['text'] .= $this->getRoomRoleStatus($roomId);
+                // Set role message on room
+                $message['text'] = $this->MESSAGES['START_ARLEADY'];
+                $response['messages'][] = $message;
+                $this->setRoomRoleStatus($roomId, $response);
+                // Push message for everyone
                 foreach ($setList as $user){
-                    $this->parent->actionPush($user['userId'], '您角色為 - '.$user['roleName']);
+                    $message['text'] = sprintf($this->MESSAGES['ROLE_CHECKED'], $user['roleName']);
+                    $this->parent->actionPushMessages($user['userId'], [$message]);
                 }
             }
         }
     }
 
+    /**
+     * leave the room by user
+     * @param unknown $userId
+     * @param unknown $message
+     * @param unknown $response
+     */
     public function leave($userId, $message, &$response){
+        $message = [ 'type' => 'text', 'text' => '' ];
         $userLiveRoom = $this->lineBotDAO->findRoomUserIsLive($userId);
         if(empty($userLiveRoom)){
-            $response['message']['text'] = self::MESSAGE_LEAVE_NOT_EXIST;
+            $message['text'] = $this->MESSAGES['LEAVE_NOT_EXIST'];
+            $response['messages'][] = $message;
         }else{
-            $this->lineBotDAO->updateRoomList($userLiveRoom['roomId'], $userId, '', self::ROOM_ROLE_STATUS_LEAVE);
-            $this->parent->actionPush(
-                        $userLiveRoom['roomId'], 
-                        $userLiveRoom['displayName'].' 離開遊戲'.PHP_EOL.$this->getRoomRoleStatus($userLiveRoom['roomId'])
-                    );
-            $response['message']['text'] = self::MESSAGE_LEAVE_SUCCESS;
+            // set leave for room
+            $this->lineBotDAO->updateRoomList($userLiveRoom['roomId'], $userId, '', $this->ROLE_STATUS['LEAVE']);
+            // Push message for room
+            $message['text'] = $userLiveRoom['displayName'].$this->MESSAGES['LEAVE_SUCCESS'];
+            $response['messages'][] = $message;
+            $this->parent->actionPushMessages($userLiveRoom['roomId'], $response['messages']);
         }
     }
 
