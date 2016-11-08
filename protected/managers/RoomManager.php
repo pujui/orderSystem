@@ -169,7 +169,7 @@ class RoomManager{
 
     /**
      * Create bot in room by room
-     * @param unknown $userId
+     * @param unknown $roomId
      * @param unknown $command
      * @param unknown $response
      */
