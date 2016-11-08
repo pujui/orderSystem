@@ -15,6 +15,7 @@ class RoomManager{
         'CREATE'    => 'CREATE',
         'OPEN'      => 'OPEN',
         'START'     => 'START',
+        'JOIN'     => 'JOIN',
     ];
 
     protected $ROLE_STATUS = [
@@ -130,14 +131,16 @@ class RoomManager{
             $message['text'] = $this->MESSAGES['JOIN_ROOM_NOT_EXIST'];
             $response['messages'][] = $message;
         }else if($roomInfo['status'] == $this->ROOM_STATUS['OPEN']){
-            $pushMessages = $response;
             $this->lineBotDAO->setRoomList($roomId, $userId, $response['displayName'], $this->ROLE_STATUS['NORMAL'], $this->ROLE_STATUS['JOIN']);
-            $message['text'] = $this->MESSAGES['JOIN_ROOM_SUCCESS'];
-            $response['messages'][] = $message;
-            $this->setRoomRoleStatus($roomId, $response);
+            // Set join message
             $message['text'] = $response['displayName'].$this->MESSAGES['JOIN_ROOM_SUCCESS'];
-            $pushMessages['messages'][] = $message;
-            $this->setRoomStatus($roomId, $roomInfo['status'], $pushMessages);
+            $response['messages'][] = $message;
+            // Set status message on room
+            $this->setRoomStatus($roomId, $this->ROOM_STATUS['JOIN'], $response);
+            $response['messages'][] = $message;
+            // Set role message on room
+            $this->setRoomRoleStatus($roomId, $response);
+            // Push message for room
             $this->parent->actionPushMessages($roomId, $pushMessages['messages']);
         }else if($roomInfo['status'] == $this->ROOM_STATUS['START']){
             $this->setRoomStatus($roomId, $roomInfo['status'], $response);
@@ -245,7 +248,7 @@ class RoomManager{
     }
 
     public function setRoomRoleStatus($roomId, &$response){
-        $message = [ 'type' => 'text', 'text' => '' ];
+        $message = [ 'type' => 'text', 'text' => '目前房間人員'.PHP_EOL ];
         $list = $this->lineBotDAO->findRoomList($roomId);
         foreach ($list as $key=>$user){
             $message['text'] .= sprintf("Player %d - %s(%s) - %s".PHP_EOL, 
@@ -274,6 +277,9 @@ class RoomManager{
                                .PHP_EOL .$this->MESSAGES['JOIN'];
             $response['messages'][] = $message;
             $message['text'] = sprintf($this->MESSAGES['JOIN_COMMAND'], $roomId);
+            $response['messages'][] = $message;
+        }else if($status == $this->ROOM_STATUS['JOIN']){
+            $message['text'] = sprintf($this->MESSAGES['WAITE_STATUS'], $this->ROOM_STATUS['OPEN'], count($list));
             $response['messages'][] = $message;
         }else if($status == $this->ROOM_STATUS['START']){
             $message['text'] = sprintf($this->MESSAGES['START_STATUS'], $status, count($list));
