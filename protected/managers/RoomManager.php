@@ -2,17 +2,35 @@
 class RoomManager{
     
     protected $MESSAGES = [
-        'OPEN'              => "遊戲房間已開啟\n1.請加入我(BOT)為好友\n2.並傳送房間代碼至BOT加入遊戲",
-        'WAITE_STATUS'      => "遊戲房間狀態: %s, 玩家人數: %d\n開始遊戲請在此房間輸入/start",
-        'JOIN'              => "加入遊戲請輸入以下代碼傳送至我(BOT)",
-        'JOIN_COMMAND'      => "/join %s",
-        'START_STATUS'      => "遊戲房間狀態: %s, 玩家人數: %d\n遊戲已開始已無法加入遊戲只能觀看"
+        'OPEN'                  => "遊戲房間已開啟\n1.請加入我(BOT)為好友\n2.並傳送房間代碼至BOT加入遊戲",
+        'WAITE_STATUS'          => "遊戲房間狀態: %s, 玩家人數: %d\n開始遊戲請在此房間輸入/start",
+        'JOIN'                  => "加入遊戲請輸入以下代碼傳送至我(BOT)",
+        'JOIN_COMMAND'          => "/join %s",
+        'START_STATUS'          => "遊戲房間狀態: %s, 玩家人數: %d\n遊戲已開始已無法加入遊戲只能觀看",
+        'JOIN_ROOM_NOT_EXIST'   => "遊戲房間不存在, 請確認是否複製錯誤",
+        'JOIN_ROOM_SUCCESS'     => "已加入遊戲",
     ];
 
     protected $ROOM_STATUS = [
         'CREATE'    => 'CREATE',
         'OPEN'      => 'OPEN',
         'START'     => 'START',
+    ];
+
+    protected $ROLE_STATUS = [
+        'NORMAL'  => 'NORMAL',
+        'DEAD'    => 'DEAD',
+        'HELP'    => 'HELP',
+        'ARREST'  => 'ARREST',
+        'LEAVE'   => 'LEAVE'
+    ];
+
+    protected $ROLES = [
+        'JOIN'      => 'JOIN',
+        'KILLER'    => 'KILLER',
+        'HELPER'    => 'HELPER',
+        'POLICE'    => 'POLICE',
+        'VILLAGER'  => 'VILLAGER'
     ];
 
     const ROOM_EVENT_STOP = 'STOP';
@@ -75,7 +93,7 @@ class RoomManager{
     }
 
     /**
-     * Open the room
+     * Open the room by room
      * 1. Check the room is exist.
      *  1-1 If the room not exist then create this room.
      *  1-2 else return room status.
@@ -99,34 +117,31 @@ class RoomManager{
     }
 
     /**
-     * Join the room
+     * Join the room by user
      * @param unknown $userId
      * @param unknown $command
      * @param unknown $response
      */
     public function join($userId, $command, &$response){
+        $message = [ 'type' => 'text', 'text' => '' ];
         $roomId = $command[1];
         $roomInfo = $this->lineBotDAO->findRoom($roomId);
         if(empty($roomInfo)){
-            $response['message']['text'] = self::MESSAGE_NOT_EXISTS;
+            $message['text'] = $this->MESSAGES['JOIN_ROOM_NOT_EXIST'];
+            $response['messages'][] = $message;
         }else if($roomInfo['status'] == $this->ROOM_STATUS['OPEN']){
-            $this->lineBotDAO->setRoomList(
-                            $roomId, 
-                            $userId, 
-                            $response['displayName'], 
-                            self::ROOM_ROLE_STATUS_NORAML,
-                            self::ROOM_ROLE_JOIN
-                        );
-            $response['message']['text'] = self::MESSAGE_JOIN_SUCCESS;
-            $this->parent->actionPush(
-                                $roomId, 
-                                $response['displayName']
-                                .self::MESSAGE_JOIN_SUCCESS
-                                .$this->getRoomStatus($roomId, $roomInfo['status'], true)
-                                .$this->getRoomRoleStatus($roomId)
-                            );
+            $pushMessages = $response;
+            $this->lineBotDAO->setRoomList($roomId, $userId, $response['displayName'], $this->ROLE_STATUS['NORMAL'], $this->ROLE_STATUS['JOIN']);
+            $message['text'] = $this->MESSAGES['JOIN_ROOM_SUCCESS'];
+            $response['messages'][] = $message;
+            $this->setRoomRoleStatus($roomId, $response);
+
+            $message['text'] = $response['displayName'].$this->MESSAGES['JOIN_ROOM_SUCCESS'];
+            $pushMessages['messages'][] = $message;
+            $this->setRoomStatus($roomId, $roomInfo['status'], $response);
+            $this->parent->actionPushMessages($roomId, $pushMessages['messages']);
         }else if($roomInfo['status'] == $this->ROOM_STATUS['START']){
-            $response['message']['text'] = $this->getRoomStatus($roomId, $roomInfo['status'], true);
+            $this->setRoomStatus($roomId, $roomInfo['status'], $response);
         }
     }
 
@@ -229,7 +244,21 @@ class RoomManager{
         }
         return $message;
     }
-    
+
+    public function setRoomRoleStatus($roomId, &$response){
+        $message = [ 'type' => 'text', 'text' => '' ];
+        $list = $this->lineBotDAO->findRoomList($roomId);
+        foreach ($list as $key=>$user){
+            $message['text'] .= sprintf("Player %d - %s(%s) - %s".PHP_EOL, 
+                                    $key+1
+                                    , $user['displayName']
+                                    , $this->roleStatus[$user['status']]
+                                    , $this->events[$user['event']]
+                                );
+        }
+        $response['messages'][] = $message;
+    }
+
     public function setRoomStatus($roomId, $status, &$response){
         $message = [ 'type' => 'text', 'text' => '' ];
         $list = $this->lineBotDAO->findRoomList($roomId);

@@ -155,9 +155,10 @@ class LineBotController extends FrameController{
                 $roomManager->role($userId, $message, $response);
             }*/
         }
-        /*else if($command[0] == '/join'){
+        else if($command[0] == '/join'){
             $roomManager->join($userId, $command, $response);
-        }else if($command[0] == '/kill'){
+        }
+        /*else if($command[0] == '/kill'){
             $roomManager->kill($userId, $command, $response);
         }else if($command[0] == '/leave'){
             $roomManager->leave($userId, $command, $response);
@@ -175,6 +176,73 @@ class LineBotController extends FrameController{
         }
         $user = ['userId' => $userId, 'mode' => 'test'];
         $lineBotDAO->setUser($user);
+    }
+        $header = [
+            'Content-Type: application/json',
+            self::TOKEN
+        ];
+        /*
+        $postData = [
+            'to' => $id,
+            'messages' => [
+                [
+                    'type' => 'template',
+                    'altText' => 'this is a buttons template',
+                    'template' => [
+                        'type' => 'buttons',
+                        'thumbnailImageUrl' => 'https://example.com/bot/images/image.jpg',
+                        'title' => 'Menu',
+                        'text' => 'Please select',
+                        'actions' => [
+                            ['type' => 'message', 'label' => 'open', 'text' => '/open']
+                        ]
+                    ]
+                ]
+            ]
+        ];*/
+        $postData = [
+            'to' => $id,
+            'messages' => [
+                [
+                    'type' => 'template',
+                    'altText' => 'Are you sure?',
+                    'template' => [
+                        'type' => 'confirm',
+                        'text' => 'Please select',
+                        'actions' => [
+                            ['type' => 'message', 'label' => 'Open', 'text' => '/open'],
+                            ['type' => 'message', 'label' => 'Start', 'text' => '/start'],
+                            ['type' => 'message', 'label' => 'Status', 'text' => '/status']
+                        ]
+                    ]
+                ]
+            ]
+        ];
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, 'https://api.line.me/v2/bot/message/push');
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($postData));
+        $result = curl_exec($ch);
+        curl_close($ch);
+        echo $result;
+    }
+
+    public function actionPushMessages($id = '', $message = []){
+        $header = [
+            'Content-Type: application/json',
+            self::TOKEN
+        ];
+        $postMessages = [ 'to' => $id, 'messages'  => $message ];
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, 'https://api.line.me/v2/bot/message/push');
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($postMessages));
+        $result = curl_exec($ch);
+        curl_close($ch);
     }
 
     private function exitHook($response){
