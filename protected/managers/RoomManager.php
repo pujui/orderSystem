@@ -135,10 +135,9 @@ class RoomManager{
             $message['text'] = $this->MESSAGES['JOIN_ROOM_SUCCESS'];
             $response['messages'][] = $message;
             $this->setRoomRoleStatus($roomId, $response);
-
             $message['text'] = $response['displayName'].$this->MESSAGES['JOIN_ROOM_SUCCESS'];
             $pushMessages['messages'][] = $message;
-            $this->setRoomStatus($roomId, $roomInfo['status'], $response);
+            $this->setRoomStatus($roomId, $roomInfo['status'], $pushMessages);
             $this->parent->actionPushMessages($roomId, $pushMessages['messages']);
         }else if($roomInfo['status'] == $this->ROOM_STATUS['START']){
             $this->setRoomStatus($roomId, $roomInfo['status'], $response);

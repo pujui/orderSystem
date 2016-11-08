@@ -178,12 +178,12 @@ class LineBotController extends FrameController{
         $lineBotDAO->setUser($user);
     }
 
-    public function actionPushMessages($id = '', $message = []){
+    public function actionPushMessages($id = '', $messages = []){
         $header = [
             'Content-Type: application/json',
             self::TOKEN
         ];
-        $postMessages = [ 'to' => $id, 'messages'  => $message ];
+        $postMessages = [ 'to' => $id, 'messages'  => $messages ];
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, 'https://api.line.me/v2/bot/message/push');
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
