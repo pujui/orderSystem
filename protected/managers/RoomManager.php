@@ -343,7 +343,7 @@ class RoomManager{
                         $helpMessage[] = sprintf($this->MESSAGES['HELP_SUCCESS'], $setList[$row['toUserId']]['displayName']);
                     }
                 }
-                $message['text'] = implode(PHP_EOL, $killMessage);
+                $message['text'] = '123'.implode(PHP_EOL, $killMessage);
                 $response['messages'][] = $message;
             }
             $this->parent->actionPushMessages($userLiveRoom['roomId'], $pushMessages);
