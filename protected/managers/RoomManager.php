@@ -244,9 +244,9 @@ class RoomManager{
                 // Set role message on room
                 $message['text'] = $this->MESSAGES['START_ARLEADY'];
                 $response['messages'][] = $message;
+                $this->setRoomRoleStatus($roomId, $response);
                 $message['text'] = $this->MESSAGES['NIGHT_COMING'];
                 $response['messages'][] = $message;
-                $this->setRoomRoleStatus($roomId, $response);
                 // Push message for everyone
                 foreach ($setList as $user){
                     $message['text'] = sprintf($this->MESSAGES['ROLE_CHECKED'], $user['roleName']);
