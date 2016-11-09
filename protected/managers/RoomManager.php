@@ -23,9 +23,9 @@ class RoomManager{
         'KILL_ARLEADY_EXIT'     => "對象已離開遊戲",
         'KILL_ARLEADY_DEAD'     => "對象已死亡",
         'KILL_CHECKED'          => "殺害對象為 - %s",
-        'KILL_SUCCESS'          => "%被殺死了...",
-        'KILL_AGAIN_SUCCESS'    => "%死了後被鞭屍...",
-        'HELP_SUCCESS'          => "%被拯救了...",
+        'KILL_SUCCESS'          => "%s被殺死了...",
+        'KILL_AGAIN_SUCCESS'    => "%s死了後被鞭屍...",
+        'HELP_SUCCESS'          => "%s被拯救了...",
         'DO_NOT_ACTION'         => "你無法執行您角色為 - %s",
         'NIGHT_PERSON_ACTION'   => "已有 %d 名夜貓子在夜間行動",
         'NIGHT_COMING'          => "當黑夜來臨了...",
@@ -326,10 +326,8 @@ class RoomManager{
                 $message['text'] = $this->MESSAGES['MONING_COMING'];
                 $pushMessages[] = $message;
                 $killMessage = $helpMessage = [];
-                $test_message = 'test';
                 foreach ($setList as $key=>$row){
                     if($row['role'] == $this->ROLES['KILLER']){
-                        $test_message .= 'KILL';
                         if($setList[$row['toUserId']]['power'] != $this->ROLES['HELPER']){
                             $this->lineBotDAO->updateRoomList($row['roomId'], $row['toUserId'], '', $this->ROLE_STATUS['DEAD']);
                         }
@@ -338,8 +336,6 @@ class RoomManager{
                         }else{
                             $killMessage[] = sprintf($this->MESSAGES['KILL_AGAIN_SUCCESS'], $setList[$row['toUserId']]['displayName']);
                         }
-
-                        $test_message .= $this->MESSAGES['KILL_AGAIN_SUCCESS'];
                         $row['killCount']++;
                     }else if($row['role'] == $this->ROLES['HELPER']){
                         $setList[$row['toUserId']]['power'] = $this->ROLES['HELPER'];
@@ -347,8 +343,9 @@ class RoomManager{
                         $helpMessage[] = sprintf($this->MESSAGES['HELP_SUCCESS'], $setList[$row['toUserId']]['displayName']);
                     }
                 }
-                $message['text'] = $test_message;
-                $response['messages'][] = $message;
+                $message['text'] = implode(PHP_EOL, $killMessage);
+                $message['text'] .= implode(PHP_EOL, $helpMessage);
+                $pushMessages[] = $message;
             }
             $this->parent->actionPushMessages($userLiveRoom['roomId'], $pushMessages);
 
