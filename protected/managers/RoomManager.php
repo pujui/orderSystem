@@ -309,13 +309,13 @@ class RoomManager{
                 }
                 $row['number'] = $key+1;
                 $setList[$row['userId']] = &$row;
-                unset($row);
                 if($row['event'] == self::ROOM_EVENT_STOP){
                     $actionCount++;
                 }
                 if(in_array($row['role'], [$this->ROLES['KILLER'], $this->ROLES['HELPER']])){
                     $mustActionCount++;
                 }
+                unset($row);
             }
             $this->lineBotDAO->updateRoomList($self['roomId'], $self['userId'], '', '', self::ROOM_EVENT_STOP, $target['userId']);
 
