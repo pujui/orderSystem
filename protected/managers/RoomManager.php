@@ -329,19 +329,19 @@ class RoomManager{
                 foreach ($setList as $key=>$row){
                     if($row['role'] == $this->ROLES['KILLER']){
                         if($row['power'] != $this->ROLES['HELPER']){
-                            $this->lineBotDAO->updateRoomList($row['roomId'], $self['toUserId'], '', $this->ROLE_STATUS['DEAD']);
+                            $this->lineBotDAO->updateRoomList($row['roomId'], $row['toUserId'], '', $this->ROLE_STATUS['DEAD']);
                         }
                         if($row['killCount'] == 0){
-                            $message['text'] = sprintf($this->MESSAGES['KILL_SUCCESS'], $setList[$self['toUserId']]['displayName']);
+                            $message['text'] = sprintf($this->MESSAGES['KILL_SUCCESS'], $setList[$row['toUserId']]['displayName']);
                         }else{
-                            $message['text'] = sprintf($this->MESSAGES['KILL_AGAIN_SUCCESS'], $setList[$self['toUserId']]['displayName']);
+                            $message['text'] = sprintf($this->MESSAGES['KILL_AGAIN_SUCCESS'], $setList[$row['toUserId']]['displayName']);
                         }
                         $killMessage[] = $message;
                         $row['killCount']++;
                     }else if($row['role'] == $this->ROLES['HELPER']){
-                        $setList[$self['toUserId']]['power'] = $this->ROLES['HELPER'];
-                        $this->lineBotDAO->updateRoomList($row['roomId'], $self['toUserId'], '', $this->ROLE_STATUS['NORMAL']);
-                        $message['text'] = sprintf($this->MESSAGES['HELP_SUCCESS'], $setList[$self['toUserId']]['displayName']);
+                        $setList[$row['toUserId']]['power'] = $this->ROLES['HELPER'];
+                        $this->lineBotDAO->updateRoomList($row['roomId'], $row['toUserId'], '', $this->ROLE_STATUS['NORMAL']);
+                        $message['text'] = sprintf($this->MESSAGES['HELP_SUCCESS'], $setList[$row['toUserId']]['displayName']);
                         $helpMessage[] = $message;
                     }
                 }
