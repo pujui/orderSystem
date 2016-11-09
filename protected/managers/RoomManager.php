@@ -326,7 +326,7 @@ class RoomManager{
             if($mustActionCount == $actionCount){
                 $message['text'] = $this->MESSAGES['MONING_COMING'];
                 $pushMessages[] = $message;
-                $killMessage = $helpMessage = [];
+                $mergeMessage = $killMessage = $helpMessage = [];
                 foreach ($setList as $key=>$row){
                     if($row['role'] == $this->ROLES['KILLER']){
                         if($setList[$row['toUserId']]['power'] != $this->ROLES['HELPER']){
@@ -337,15 +337,15 @@ class RoomManager{
                         }else{
                             $killMessage[] = sprintf($this->MESSAGES['KILL_AGAIN_SUCCESS'], $setList[$row['toUserId']]['displayName']);
                         }
-                        $row['killCount']++;
+                        $setList[$row['toUserId']]['killCount']['killCount']++;
                     }else if($row['role'] == $this->ROLES['HELPER']){
                         $setList[$row['toUserId']]['power'] = $this->ROLES['HELPER'];
                         $this->lineBotDAO->updateRoomList($row['roomId'], $row['toUserId'], '', $this->ROLE_STATUS['NORMAL']);
                         $helpMessage[] = sprintf($this->MESSAGES['HELP_SUCCESS'], $setList[$row['toUserId']]['displayName']);
                     }
                 }
-                $message['text'] = implode(PHP_EOL, $killMessage);
-                $message['text'] .= implode(PHP_EOL, $helpMessage);
+                $mergeMessage = array_merge($killMessage, $helpMessage);
+                $message['text'] = implode(PHP_EOL, $mergeMessage);
                 $pushMessages[] = $message;
             }
             $this->parent->actionPushMessages($userLiveRoom['roomId'], $pushMessages);
