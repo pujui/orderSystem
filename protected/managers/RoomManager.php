@@ -23,6 +23,9 @@ class RoomManager{
         'KILL_ARLEADY_EXIT'     => "對象已離開遊戲",
         'KILL_ARLEADY_DEAD'     => "對象已死亡",
         'KILL_CHECKED'          => "殺害對象為 - %s",
+        'KILL_SUCCESS'          => "%被殺死了...",
+        'KILL_AGAIN_SUCCESS'    => "%死了後被鞭屍...",
+        'HELP_SUCCESS'          => "%被拯救了...",
         'DO_NOT_ACTION'         => "你無法執行您角色為 - %s",
         'NIGHT_PERSON_ACTION'   => "已有 %d 名夜貓子在夜間行動",
         'NIGHT_COMING'          => "當黑夜來臨了...",
@@ -78,28 +81,6 @@ class RoomManager{
         'STOP'     => '已動作',
         'START'    => '未動作'
     ];
-
-    const MESSAGE_OPEN = "遊戲房間已開啟\n-------------\n請加入BOT為好友並傳送房間代碼加入遊戲\n\n";
-    const MESSAGE_WAITE_START = "遊戲房間狀態: %s, 玩家人數: %d\n加入房間請輸入代碼傳送至BOT:\n/join %s\n-------------\n開始遊戲請在GAME ROOM輸入\"/start\"\n-------------\n";
-    const MESSAGE_START = "遊戲房間狀態:%s,玩家人數:%d\n已無法加入遊戲只能觀看\n\n";
-    const MESSAGE_NOT_EXISTS = "遊戲房間不存在\n";
-    
-    const MESSAGE_START_PEOPLE_LIMIT = "遊戲人數最少四人\n";
-    const MESSAGE_START_ALREADY = "遊戲已準備好,腳色分配完畢\n";
-
-    const MESSAGE_LEAVE_NOT_EXIST = "你目前無在任何遊戲內\n";
-    const MESSAGE_LEAVE_SUCCESS = "你已離開遊戲\n";
-    const MESSAGE_JOIN_SUCCESS = "已加入遊戲\n";
-    
-    const ROOM_ROLE_JOIN = 'JOIN';
-    const ROOM_ROLE_STATUS_NORAML = 'NORMAL';
-    const ROOM_ROLE_STATUS_LEAVE = 'LEAVE';
-    const ROOM_ROLE_STATUS_DEAD = 'DEAD';
-    
-    const MESSAGE_KILL_NOT_EXIST = "角色不存在\n";
-    const MESSAGE_KILL_ALREADY_DEAD = " 角色已死亡\n";
-    const MESSAGE_KILL_ALREADY_LEAVE = " 角色已逃亡\n";
-    const MESSAGE_KILL_SUCCESS = " 角色已殺死\n";
 
     public function __construct(){
         $this->lineBotDAO = new LineBotDAO;
@@ -205,6 +186,12 @@ class RoomManager{
         }
     }
 
+    /**
+     * start game
+     * @param unknown $roomId
+     * @param unknown $message
+     * @param unknown $response
+     */
     public function start($roomId, $message, &$response){
         $message = [ 'type' => 'text', 'text' => '' ];
         $roomInfo = $this->lineBotDAO->findRoom($roomId);
@@ -309,6 +296,7 @@ class RoomManager{
             $actionCount = ($self['event'] == self::ROOM_EVENT_START)? 1: 0;
             $mustActionCount = 0;
             foreach ($list as $key=>$row){
+                $row['killCount'] = 0;
                 if($key+1 == $command[1]){
                     if($row['status'] == $this->ROLE_STATUS['LEAVE']){
                         $message['text'] = $this->MESSAGES['KILL_ARLEADY_EXIT'];
@@ -320,7 +308,7 @@ class RoomManager{
                     $target = $row;
                 }
                 $row['number'] = $key+1;
-                $setList[$row['id']] = $row;
+                $setList[$row['id']] = &$row;
                 if($row['event'] == self::ROOM_EVENT_STOP){
                     $actionCount++;
                 }
@@ -337,6 +325,27 @@ class RoomManager{
             if($mustActionCount == $actionCount){
                 $message['text'] = $this->MESSAGES['MONING_COMING'];
                 $pushMessages[] = $message;
+                $killMessage = $helpMessage = [];
+                foreach ($setList as $key=>$row){
+                    if($row['role'] == $this->ROLES['KILLER']){
+                        if($row['power'] != $this->ROLES['HELPER']){
+                            $this->lineBotDAO->updateRoomList($row['roomId'], $self['toUserId'], '', $this->ROLE_STATUS['DEAD']);
+                        }
+                        if($row['killCount'] == 0){
+                            $message['text'] = sprintf($this->MESSAGES['KILL_SUCCESS'], $setList[$self['toUserId']]['displayName']);
+                        }else{
+                            $message['text'] = sprintf($this->MESSAGES['KILL_AGAIN_SUCCESS'], $setList[$self['toUserId']]['displayName']);
+                        }
+                        $killMessage[] = $message;
+                        $row['killCount']++;
+                    }else if($row['role'] == $this->ROLES['HELPER']){
+                        $setList[$self['toUserId']]['power'] = $this->ROLES['HELPER'];
+                        $this->lineBotDAO->updateRoomList($row['roomId'], $self['toUserId'], '', $this->ROLE_STATUS['NORMAL']);
+                        $message['text'] = sprintf($this->MESSAGES['HELP_SUCCESS'], $setList[$self['toUserId']]['displayName']);
+                        $helpMessage[] = $message;
+                    }
+                }
+                $pushMessages = array_merge($pushMessages, $killMessage, $helpMessage);
             }
             $this->parent->actionPushMessages($userLiveRoom['roomId'], $pushMessages);
 
@@ -344,20 +353,6 @@ class RoomManager{
             $message['text'] = sprintf($this->MESSAGES['KILL_CHECKED'], $target['displayName']);
             $response['messages'][] = $message;
         }
-    }
-
-    public function getRoomRoleStatus($roomId){
-        $message = '';
-        $list = $this->lineBotDAO->findRoomList($roomId);
-        foreach ($list as $key=>$user){
-            $message .= sprintf("Player %d - %s(%s) - %s".PHP_EOL, 
-                            $key+1
-                            , $user['displayName']
-                            , $this->roleStatus[$user['status']]
-                            , $this->events[$user['event']]
-                        );
-        }
-        return $message;
     }
 
     public function setRoomRoleStatus($roomId, &$response){
@@ -397,20 +392,6 @@ class RoomManager{
         }else if($status == $this->ROOM_STATUS['START']){
             $message['text'] = sprintf($this->MESSAGES['START_STATUS'], $status, count($list));
             $response['messages'][] = $message;
-        }
-    }
-    
-    public function getRoomStatus($roomId, $status, $pass = false){
-        $message = [ 'type' => 'text', 'text' => '' ];
-        if($pass !== true && $status == $this->ROOM_STATUS['OPEN']){
-            $list = [];
-        }else{
-            $list = $this->lineBotDAO->findRoomList($roomId);
-        }
-        if($status == $this->ROOM_STATUS['OPEN']){
-            return sprintf($this->MESSAGES['WAITE_STATUS'], $status, count($list));
-        }else if($status == $this->ROOM_STATUS['START']){
-            return sprintf(self::MESSAGE_START, $status, count($list), $roomId);
         }
     }
 }
