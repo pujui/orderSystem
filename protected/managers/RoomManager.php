@@ -328,10 +328,10 @@ class RoomManager{
                 $killMessage = $helpMessage = [];
                 foreach ($setList as $key=>$row){
                     if($row['role'] == $this->ROLES['KILLER']){
-                        if($row['power'] != $this->ROLES['HELPER']){
+                        if($setList[$row['toUserId']]['power'] != $this->ROLES['HELPER']){
                             $this->lineBotDAO->updateRoomList($row['roomId'], $row['toUserId'], '', $this->ROLE_STATUS['DEAD']);
                         }
-                        if($row['killCount'] == 0){
+                        if($setList[$row['toUserId']]['killCount'] == 0){
                             $killMessage[] = sprintf($this->MESSAGES['KILL_SUCCESS'], $setList[$row['toUserId']]['displayName']);
                         }else{
                             $killMessage[] = sprintf($this->MESSAGES['KILL_AGAIN_SUCCESS'], $setList[$row['toUserId']]['displayName']);
@@ -343,7 +343,7 @@ class RoomManager{
                         $helpMessage[] = sprintf($this->MESSAGES['HELP_SUCCESS'], $setList[$row['toUserId']]['displayName']);
                     }
                 }
-                $message['text'] = '123'.implode(PHP_EOL, $killMessage);
+                $message['text'] = implode(PHP_EOL, $killMessage);
                 $response['messages'][] = $message;
             }
             $this->parent->actionPushMessages($userLiveRoom['roomId'], $pushMessages);
