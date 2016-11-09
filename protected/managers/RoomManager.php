@@ -23,6 +23,7 @@ class RoomManager{
         'KILL_ARLEADY_EXIT'     => "對象已離開遊戲",
         'KILL_ARLEADY_DEAD'     => "對象已死亡",
         'KILL_CHECKED'          => "殺害對象為 - %s",
+        'DO_NOT_ACTION'         => "你無法執行您角色為 - %s",
     ];
 
     protected $ROOM_STATUS = [
@@ -285,6 +286,9 @@ class RoomManager{
         if(empty($userLiveRoom)){
             $message['text'] = $this->MESSAGES['LEAVE_NOT_EXIST'];
             $response['messages'][] = $message;
+        }else if($userLiveRoom['role'] != $this->ROLES['KILLER']){
+            $message['text'] = sprintf($this->MESSAGES['DO_NOT_ACTION'], $userLiveRoom['role']);
+            $response['messages'][] = $message;
         }else if($userLiveRoom['roomStatus'] == $this->ROOM_STATUS['START']){
             $list = $this->lineBotDAO->findRoomList($userLiveRoom['roomId']);
             $totalPeople = count($list);
@@ -295,7 +299,7 @@ class RoomManager{
             $setList = $target = [];
             $self = $userLiveRoom;
             foreach ($list as $key=>$row){
-                if($key == $command[1]){
+                if($key+1 == $command[1]){
                     if($row['status'] == $this->ROLE_STATUS['LEAVE']){
                         $message['text'] = $this->MESSAGES['KILL_ARLEADY_EXIT'];
                         return $response['messages'][] = $message;
