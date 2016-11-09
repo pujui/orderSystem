@@ -336,16 +336,16 @@ class RoomManager{
                         }else{
                             $message['text'] = sprintf($this->MESSAGES['KILL_AGAIN_SUCCESS'], $setList[$row['toUserId']]['displayName']);
                         }
-                        $killMessage[] = $message;
+                        $pushMessages[] = $message;
                         $row['killCount']++;
                     }else if($row['role'] == $this->ROLES['HELPER']){
                         $setList[$row['toUserId']]['power'] = $this->ROLES['HELPER'];
                         $this->lineBotDAO->updateRoomList($row['roomId'], $row['toUserId'], '', $this->ROLE_STATUS['NORMAL']);
                         $message['text'] = sprintf($this->MESSAGES['HELP_SUCCESS'], $setList[$row['toUserId']]['displayName']);
-                        $helpMessage[] = $message;
+                        $pushMessages[] = $message;
                     }
                 }
-                $response['messages'] = array_merge($pushMessages, $killMessage, $helpMessage);
+                //$response['messages'] = array_merge($pushMessages, $killMessage, $helpMessage);
             }
             $this->parent->actionPushMessages($userLiveRoom['roomId'], $pushMessages);
 
