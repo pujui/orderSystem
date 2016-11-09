@@ -337,7 +337,7 @@ class RoomManager{
                         }else{
                             $killMessage[] = sprintf($this->MESSAGES['KILL_AGAIN_SUCCESS'], $setList[$row['toUserId']]['displayName']);
                         }
-                        $setList[$row['toUserId']]['killCount']['killCount']++;
+                        $setList[$row['toUserId']]['killCount']++;
                     }else if($row['role'] == $this->ROLES['HELPER']){
                         $setList[$row['toUserId']]['power'] = $this->ROLES['HELPER'];
                         $this->lineBotDAO->updateRoomList($row['roomId'], $row['toUserId'], '', $this->ROLE_STATUS['NORMAL']);
