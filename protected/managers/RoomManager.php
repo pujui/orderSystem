@@ -24,6 +24,7 @@ class RoomManager{
         'KILL_ARLEADY_DEAD'     => "對象已死亡",
         'KILL_CHECKED'          => "殺害對象為 - %s",
         'DO_NOT_ACTION'         => "你無法執行您角色為 - %s",
+        'NIGHT_PERSON_ACTION'   => "已有%d夜貓子在夜間行動"
     ];
 
     protected $ROOM_STATUS = [
@@ -298,12 +299,13 @@ class RoomManager{
             }
             $setList = $target = [];
             $self = $userLiveRoom;
+            $actionCount = ($self['event'] == self::ROOM_EVENT_START)? 1: 0;
             foreach ($list as $key=>$row){
                 if($key+1 == $command[1]){
                     if($row['status'] == $this->ROLE_STATUS['LEAVE']){
                         $message['text'] = $this->MESSAGES['KILL_ARLEADY_EXIT'];
                         return $response['messages'][] = $message;
-                    }else if($row['status'] == self::ROOM_ROLE_STATUS_DEAD){
+                    }else if($row['status'] == $this->ROLE_STATUS['DEAD']){
                         $message['text'] = $this->MESSAGES['KILL_ARLEADY_DEAD'];
                         return $response['messages'][] = $message;
                     }
@@ -311,10 +313,20 @@ class RoomManager{
                 }
                 $row['number'] = $key+1;
                 $setList[$row['id']] = $row;
+                if($row['event'] == self::ROOM_EVENT_STOP){
+                    $actionCount++;
+                }
             }
+            
             $this->lineBotDAO->updateRoomList($self['roomId'], $self['userId'], '', '', self::ROOM_EVENT_STOP, $target['userId']);
+
+            // Push message for room
+            $message['text'] = sprintf($this->MESSAGES['DO_NOT_ACTION'], $actionCount);
+            $this->parent->actionPushMessages($userLiveRoom['roomId'], [$message]);
+
+            // set return message
             $message['text'] = sprintf($this->MESSAGES['KILL_CHECKED'], $target['displayName']);
-            return $response['messages'][] = $message;
+            $response['messages'][] = $message;
         }
     }
 
