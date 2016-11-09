@@ -24,7 +24,9 @@ class RoomManager{
         'KILL_ARLEADY_DEAD'     => "對象已死亡",
         'KILL_CHECKED'          => "殺害對象為 - %s",
         'DO_NOT_ACTION'         => "你無法執行您角色為 - %s",
-        'NIGHT_PERSON_ACTION'   => "已有 %d 名夜貓子在夜間行動"
+        'NIGHT_PERSON_ACTION'   => "已有 %d 名夜貓子在夜間行動",
+        'NIGHT_COMING'          => "當黑夜來臨了...",
+        'MONING_COMING'         => "當清晨來臨了..."
     ];
 
     protected $ROOM_STATUS = [
@@ -241,6 +243,8 @@ class RoomManager{
                 }
                 // Set role message on room
                 $message['text'] = $this->MESSAGES['START_ARLEADY'];
+                $response['messages'][] = $message;
+                $message['text'] = $this->MESSAGES['NIGHT_COMING'];
                 $response['messages'][] = $message;
                 $this->setRoomRoleStatus($roomId, $response);
                 // Push message for everyone
