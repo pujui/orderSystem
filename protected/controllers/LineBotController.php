@@ -159,10 +159,9 @@ class LineBotController extends FrameController{
             $roomManager->join($userId, $command, $response);
         }else if($command[0] == '/leave'){
             $roomManager->leave($userId, $command, $response);
-        }
-        /*else if($command[0] == '/kill'){
+        }else if($command[0] == '/kill'){
             $roomManager->kill($userId, $command, $response);
-        }else if($command[0] == '/status'){
+        }/*else if($command[0] == '/status'){
             $response['message']['text'] = self::MESSAGE_BOT_SETTING;
         }*/
         $this->exitHook($response);

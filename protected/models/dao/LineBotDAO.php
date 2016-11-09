@@ -107,7 +107,7 @@ class LineBotDAO extends BaseDAO{
         ]);
     }
     
-    public function updateRoomList($roomId, $userId, $role = '', $status = '', $event = ''){
+    public function updateRoomList($roomId, $userId, $role = '', $status = '', $event = '', $toUserId = ''){
         $bind = [
             ':userId'       => (string)$userId,
         ];
@@ -119,6 +119,10 @@ class LineBotDAO extends BaseDAO{
         if($event != ''){
             $set .= ',event=:event'; 
             $bind[':event'] = (string)$event;
+        }
+        if($toUserId != ''){
+            $set .= ',toUserId=:toUserId'; 
+            $bind[':toUserId'] = (string)$toUserId;
         }
         if($status != ''){
             $set .= ',status=:status'; 

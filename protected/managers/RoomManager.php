@@ -1,5 +1,7 @@
 <?php
 class RoomManager{
+    const ROOM_EVENT_STOP = 'STOP';
+    const ROOM_EVENT_START = 'START';
     
     protected $MESSAGES = [
         'OPEN'                  => "遊戲房間已開啟\n1.請加入我(BOT)為好友\n2.並傳送房間代碼至BOT加入遊戲",
@@ -16,7 +18,11 @@ class RoomManager{
         'JOIN_EXIST'            => "已在其他遊戲中, 請/leave後再加入",
         'LEAVE_NOT_EXIST'       => "你目前無在任何遊戲內",
         'LEAVE_SUCCESS'         => "已離開遊戲",
-        'ROLE_CHECKED'          => "您角色為 - %s"
+        'ROLE_CHECKED'          => "您角色為 - %s",
+        'KILL_NOT_EXIST'        => "對象不存在",
+        'KILL_ARLEADY_EXIT'     => "對象已離開遊戲",
+        'KILL_ARLEADY_DEAD'     => "對象已死亡",
+        'KILL_CHECKED'          => "殺害對象為 - %s",
     ];
 
     protected $ROOM_STATUS = [
@@ -42,8 +48,9 @@ class RoomManager{
         'VILLAGER'  => 'VILLAGER'
     ];
     public $parent = null;
-    
+
     private $lineBotDAO;
+
     private $role = [
         ['role' => 'KILLER', 'roleName' => '殺手'],
         ['role' => 'HELPER', 'roleName' => '救援'],
@@ -68,8 +75,6 @@ class RoomManager{
         'START'    => '未動作'
     ];
 
-    const ROOM_EVENT_STOP = 'STOP';
-    const ROOM_EVENT_START = 'START';
     const MESSAGE_OPEN = "遊戲房間已開啟\n-------------\n請加入BOT為好友並傳送房間代碼加入遊戲\n\n";
     const MESSAGE_WAITE_START = "遊戲房間狀態: %s, 玩家人數: %d\n加入房間請輸入代碼傳送至BOT:\n/join %s\n-------------\n開始遊戲請在GAME ROOM輸入\"/start\"\n-------------\n";
     const MESSAGE_START = "遊戲房間狀態:%s,玩家人數:%d\n已無法加入遊戲只能觀看\n\n";
@@ -246,7 +251,7 @@ class RoomManager{
     }
 
     /**
-     * leave the room by user
+     * Leave the room by user
      * @param unknown $userId
      * @param unknown $message
      * @param unknown $response
@@ -267,33 +272,45 @@ class RoomManager{
         }
     }
 
+    /**
+     * Kill by user
+     * @param unknown $userId
+     * @param unknown $command
+     * @param unknown $response
+     * @return string
+     */
     public function kill($userId, $command, &$response){
+        $message = [ 'type' => 'text', 'text' => '' ];
         $userLiveRoom = $this->lineBotDAO->findRoomUserIsLive($userId);
         if(empty($userLiveRoom)){
-            return $response['message']['text'] = self::MESSAGE_LEAVE_NOT_EXIST;
+            $message['text'] = $this->MESSAGES['LEAVE_NOT_EXIST'];
+            $response['messages'][] = $message;
         }else if($userLiveRoom['roomStatus'] == $this->ROOM_STATUS['START']){
             $list = $this->lineBotDAO->findRoomList($userLiveRoom['roomId']);
             $totalPeople = count($list);
             if($command[1] < 1 || $command[1] > $totalPeople){
-                return $response['message']['text'] = self::MESSAGE_KILL_NOT_EXIST;;
+                $message['text'] = $this->MESSAGES['KILL_NOT_EXIST'];
+                return $response['messages'][] = $message;
             }
             $setList = $target = [];
             $self = $userLiveRoom;
             foreach ($list as $key=>$row){
                 if($key == $command[1]){
-                    if($row['status'] == self::ROOM_ROLE_STATUS_LEAVE){
-                        return $response['message']['text'] = $row['displayName'].self::MESSAGE_KILL_ALREADY_LEAVE;
+                    if($row['status'] == $this->ROLE_STATUS['LEAVE']){
+                        $message['text'] = $this->MESSAGES['KILL_ARLEADY_EXIT'];
+                        return $response['messages'][] = $message;
                     }else if($row['status'] == self::ROOM_ROLE_STATUS_DEAD){
-                        return $response['message']['text'] = $row['displayName'].self::MESSAGE_KILL_ALREADY_DEAD;
+                        $message['text'] = $this->MESSAGES['KILL_ARLEADY_DEAD'];
+                        return $response['messages'][] = $message;
                     }
                     $target = $row;
                 }
                 $row['number'] = $key+1;
                 $setList[$row['id']] = $row;
             }
-            $this->lineBotDAO->updateRoomList($target['roomId'], $target['userId'], '', self::ROOM_ROLE_STATUS_DEAD);
-            $this->lineBotDAO->updateRoomList($self['roomId'], $self['userId'], '', '', self::ROOM_EVENT_STOP);
-            $response['message']['text'] = $target['displayName'].self::MESSAGE_KILL_SUCCESS;
+            $this->lineBotDAO->updateRoomList($self['roomId'], $self['userId'], '', '', self::ROOM_EVENT_STOP, $target['userId']);
+            $message['text'] = sprintf($this->MESSAGES['KILL_CHECKED'], $target['displayName']);
+            return $response['messages'][] = $message;
         }
     }
 
