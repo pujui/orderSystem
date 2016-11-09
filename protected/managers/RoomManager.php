@@ -48,7 +48,7 @@ class RoomManager{
         'JOIN'      => 'JOIN',
         'KILLER'    => 'KILLER',
         'HELPER'    => 'HELPER',
-        'POLICE'    => 'POLICE',
+        //'POLICE'    => 'POLICE',
         'VILLAGER'  => 'VILLAGER'
     ];
     public $parent = null;
@@ -307,6 +307,7 @@ class RoomManager{
             $setList = $target = [];
             $self = $userLiveRoom;
             $actionCount = ($self['event'] == self::ROOM_EVENT_START)? 1: 0;
+            $mustActionCount = 0;
             foreach ($list as $key=>$row){
                 if($key+1 == $command[1]){
                     if($row['status'] == $this->ROLE_STATUS['LEAVE']){
@@ -323,13 +324,21 @@ class RoomManager{
                 if($row['event'] == self::ROOM_EVENT_STOP){
                     $actionCount++;
                 }
+                if(in_arry($row['role'], [$this->ROLES['KILLER'], $this->ROLES['HELPER']])){
+                    $mustActionCount++;
+                }
             }
-            
             $this->lineBotDAO->updateRoomList($self['roomId'], $self['userId'], '', '', self::ROOM_EVENT_STOP, $target['userId']);
 
             // Push message for room
+            $pushMessages = [];
             $message['text'] = sprintf($this->MESSAGES['NIGHT_PERSON_ACTION'], $actionCount);
-            $this->parent->actionPushMessages($userLiveRoom['roomId'], [$message]);
+            $pushMessages[] = $message;
+            if($mustActionCount == $actionCount){
+                $message['text'] = $this->MESSAGES['MONING_COMING'];
+                $pushMessages[] = $message;
+            }
+            $this->parent->actionPushMessages($userLiveRoom['roomId'], $pushMessages);
 
             // set return message
             $message['text'] = sprintf($this->MESSAGES['KILL_CHECKED'], $target['displayName']);
