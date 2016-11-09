@@ -345,7 +345,7 @@ class RoomManager{
                         $helpMessage[] = $message;
                     }
                 }
-                $pushMessages = array_merge($pushMessages, $killMessage, $helpMessage);
+                $response['messages'] = array_merge($pushMessages, $killMessage, $helpMessage);
             }
             $this->parent->actionPushMessages($userLiveRoom['roomId'], $pushMessages);
 
