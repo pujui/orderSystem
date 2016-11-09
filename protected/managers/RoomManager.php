@@ -321,7 +321,7 @@ class RoomManager{
             $this->lineBotDAO->updateRoomList($self['roomId'], $self['userId'], '', '', self::ROOM_EVENT_STOP, $target['userId']);
 
             // Push message for room
-            $message['text'] = sprintf($this->MESSAGES['DO_NOT_ACTION'], $actionCount);
+            $message['text'] = sprintf($this->MESSAGES['NIGHT_PERSON_ACTION'], $actionCount);
             $this->parent->actionPushMessages($userLiveRoom['roomId'], [$message]);
 
             // set return message
