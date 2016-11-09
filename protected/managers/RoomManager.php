@@ -308,7 +308,7 @@ class RoomManager{
                     $target = $row;
                 }
                 $row['number'] = $key+1;
-                $setList[$row['id']] = &$row;
+                $setList[$row['userId']] = &$row;
                 if($row['event'] == self::ROOM_EVENT_STOP){
                     $actionCount++;
                 }
