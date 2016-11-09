@@ -24,7 +24,7 @@ class RoomManager{
         'KILL_ARLEADY_DEAD'     => "對象已死亡",
         'KILL_CHECKED'          => "殺害對象為 - %s",
         'DO_NOT_ACTION'         => "你無法執行您角色為 - %s",
-        'NIGHT_PERSON_ACTION'   => "已有%d夜貓子在夜間行動"
+        'NIGHT_PERSON_ACTION'   => "已有 %d 名夜貓子在夜間行動"
     ];
 
     protected $ROOM_STATUS = [
