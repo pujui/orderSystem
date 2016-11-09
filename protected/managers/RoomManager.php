@@ -326,8 +326,10 @@ class RoomManager{
                 $message['text'] = $this->MESSAGES['MONING_COMING'];
                 $pushMessages[] = $message;
                 $killMessage = $helpMessage = [];
+                $test_message = 'test';
                 foreach ($setList as $key=>$row){
                     if($row['role'] == $this->ROLES['KILLER']){
+                        $test_message .= 'KILL';
                         if($setList[$row['toUserId']]['power'] != $this->ROLES['HELPER']){
                             $this->lineBotDAO->updateRoomList($row['roomId'], $row['toUserId'], '', $this->ROLE_STATUS['DEAD']);
                         }
@@ -336,6 +338,8 @@ class RoomManager{
                         }else{
                             $killMessage[] = sprintf($this->MESSAGES['KILL_AGAIN_SUCCESS'], $setList[$row['toUserId']]['displayName']);
                         }
+
+                        $test_message .= $this->MESSAGES['KILL_AGAIN_SUCCESS'];
                         $row['killCount']++;
                     }else if($row['role'] == $this->ROLES['HELPER']){
                         $setList[$row['toUserId']]['power'] = $this->ROLES['HELPER'];
