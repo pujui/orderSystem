@@ -253,6 +253,9 @@ class RoomManager{
                     $this->parent->actionPushMessages($user['userId'], [$message]);
                 }
             }
+        }else if($roomInfo['status'] == $this->ROOM_STATUS['START']){
+            // Set status message on room
+            $this->setRoomStatus($roomId, $roomInfo['status'], $response);
         }
     }
 
