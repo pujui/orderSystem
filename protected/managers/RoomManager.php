@@ -387,6 +387,12 @@ class RoomManager{
             $message['text'] = $this->MESSAGES['LEAVE_NOT_EXIST'];
             $response['messages'][] = $message;
         }else if($userLiveRoom['roomStatus'] == $this->ROOM_STATUS['STOP']){
+            $list = $this->lineBotDAO->findRoomList($userLiveRoom['roomId']);
+            foreach ($list as $row){
+                if($list['status'] == $this->ROLE_STATUS['NORMAL']){
+                    $this->lineBotDAO->updateRoomList($roomId, $list['userId'], '', '', self::ROOM_EVENT_START);
+                }
+            }
             // Change status for this room.
             $this->lineBotDAO->setRoom($userLiveRoom['roomId'], $this->ROOM_STATUS['START']);
             $message['text'] = $this->MESSAGES['NIGHT_COMING'];
