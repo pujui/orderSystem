@@ -280,13 +280,16 @@ class RoomManager{
      * @param unknown $response
      * @return string
      */
-    public function kill($userId, $command, &$response){
+    public function kill($userId, $command, &$response, $action){
         $message = [ 'type' => 'text', 'text' => '' ];
         $userLiveRoom = $this->lineBotDAO->findRoomUserIsLive($userId);
         if(empty($userLiveRoom)){
             $message['text'] = $this->MESSAGES['LEAVE_NOT_EXIST'];
             $response['messages'][] = $message;
-        }else if($userLiveRoom['role'] != $this->ROLES['KILLER']){
+        }else if($action == $this->ROLES['KILLER'] && $userLiveRoom['role'] != $this->ROLES['KILLER']){
+            $message['text'] = sprintf($this->MESSAGES['DO_NOT_ACTION'], $userLiveRoom['role']);
+            $response['messages'][] = $message;
+        }else if($action == $this->ROLES['HELPER'] && $userLiveRoom['role'] != $this->ROLES['HELPER']){
             $message['text'] = sprintf($this->MESSAGES['DO_NOT_ACTION'], $userLiveRoom['role']);
             $response['messages'][] = $message;
         }else if($userLiveRoom['roomStatus'] == $this->ROOM_STATUS['START']){
@@ -339,7 +342,7 @@ class RoomManager{
                 $message['text'] = $this->MESSAGES['MONING_COMING'];
                 $pushMessages[] = $message;
                 $mergeMessage = $killMessage = $helpMessage = [];
-                foreach ($setList as $key=>$row){
+                foreach ($setList as $row){
                     if($row['role'] == $this->ROLES['KILLER']){
                         if($setList[$row['toUserId']]['power'] != $this->ROLES['HELPER']){
                             $this->lineBotDAO->updateRoomList($row['roomId'], $row['toUserId'], '', $this->ROLE_STATUS['DEAD']);
@@ -405,6 +408,23 @@ class RoomManager{
         }else{
             $message['text'] = $this->MESSAGES['DO_NOT_NEXT'];
             $response['messages'][] = $message;
+        }
+    }
+
+    /**
+     * next by room
+     * @param unknown $roomId
+     * @param unknown $message
+     * @param unknown $response
+     */
+    public function status($roomId, $message, &$response){
+        $roomInfo = $this->lineBotDAO->findRoom($roomId);
+        if(empty($roomInfo)){
+            $message['text'] = $this->MESSAGES['START_NOT_EXIST'];
+            $response['messages'][] = $message;
+        }else{
+            $this->setRoomStatus($roomId, $this->ROOM_STATUS['OPEN'],  $response);
+            $this->setRoomRoleStatus($roomId, $response);
         }
     }
 
