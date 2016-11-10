@@ -418,6 +418,7 @@ class RoomManager{
      * @param unknown $response
      */
     public function status($roomId, $message, &$response){
+        $message = [ 'type' => 'text', 'text' => '' ];
         $roomInfo = $this->lineBotDAO->findRoom($roomId);
         if(empty($roomInfo)){
             $message['text'] = $this->MESSAGES['START_NOT_EXIST'];
