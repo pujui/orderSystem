@@ -397,7 +397,9 @@ class RoomManager{
             // Change status for this room.
             $this->lineBotDAO->setRoom($userLiveRoom['roomId'], $this->ROOM_STATUS['START']);
             $message['text'] = $this->MESSAGES['NIGHT_COMING'];
-            $this->parent->actionPushMessages($userLiveRoom['roomId'], [$message]);
+            $pushMessages['messages'] = [$message];
+            $this->setRoomRoleStatus($userLiveRoom['roomId'], $pushMessages);
+            $this->parent->actionPushMessages($userLiveRoom['roomId'], $pushMessages['messages']);
         }else{
             $message['text'] = $this->MESSAGES['DO_NOT_NEXT'];
             $response['messages'][] = $message;
