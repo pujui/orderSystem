@@ -24,7 +24,8 @@ class RoomManager{
         'KILL_ARLEADY_DEAD'     => "對象已死亡",
         'KILL_CHECKED'          => "殺害對象為 - %s",
         'KILL_SUCCESS'          => "%s被殺死了...",
-        'KILL_AGAIN_SUCCESS'    => "%s死了後被鞭屍...",
+        'KILL_AGAIN_SUCCESS'    => "%s被另一個人發現死了後怒鞭屍...",
+        'KILL_AGAIN_FAILED'     => "被%s被鞭屍後的屍體嚇到尿褲子後死亡...",
         'HELP_SUCCESS'          => "%s被拯救了...",
         'DO_NOT_ACTION'         => "你無法執行您角色為 - %s",
         'NIGHT_PERSON_ACTION'   => "已有 %d 名夜貓子在夜間行動",
@@ -334,6 +335,9 @@ class RoomManager{
                         }
                         if($setList[$row['toUserId']]['killCount'] == 0){
                             $killMessage[] = sprintf($this->MESSAGES['KILL_SUCCESS'], $setList[$row['toUserId']]['displayName']);
+                        }else if($setList[$row['toUserId']]['killCount'] > 2){
+                            $this->lineBotDAO->updateRoomList($row['roomId'], $row['userId'], '', $this->ROLE_STATUS['DEAD']);
+                            $killMessage[] = sprintf($this->MESSAGES['KILL_AGAIN_FAILED'], $setList[$row['toUserId']]['displayName']);
                         }else{
                             $killMessage[] = sprintf($this->MESSAGES['KILL_AGAIN_SUCCESS'], $setList[$row['toUserId']]['displayName']);
                         }
