@@ -363,6 +363,9 @@ class RoomManager{
             // set return message
             $message['text'] = sprintf($this->MESSAGES['KILL_CHECKED'], $target['displayName']);
             $response['messages'][] = $message;
+        }else{
+            $message['text'] = $this->MESSAGES['DO_NOT_NEXT'];
+            $response['messages'][] = $message;
         }
     }
 
@@ -382,7 +385,7 @@ class RoomManager{
             // Change status for this room.
             $this->lineBotDAO->setRoom($userLiveRoom['roomId'], $this->ROOM_STATUS['START']);
             $message['text'] = $this->MESSAGES['NIGHT_COMING'];
-            $response['messages'][] = $message;
+            $this->parent->actionPushMessages($userLiveRoom['roomId'], [$message]);
         }else{
             $message['text'] = $this->MESSAGES['DO_NOT_NEXT'];
             $response['messages'][] = $message;
