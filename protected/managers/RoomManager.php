@@ -334,7 +334,7 @@ class RoomManager{
             $pushMessages = [];
             $message['text'] = sprintf($this->MESSAGES['NIGHT_PERSON_ACTION'], $actionCount);
             $pushMessages[] = $message;
-            if($mustActionCount == $actionCount){
+            if($mustActionCount >= $actionCount){
                 $message['text'] = $this->MESSAGES['MONING_COMING'];
                 $pushMessages[] = $message;
                 $mergeMessage = $killMessage = $helpMessage = [];
