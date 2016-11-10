@@ -318,12 +318,13 @@ class RoomManager{
                 }
                 $row['number'] = $key+1;
                 $setList[$row['userId']] = &$row;
-                if($row['event'] == self::ROOM_EVENT_STOP){
-                    $actionCount++;
-                }
-                if($row['status'] == $this->ROLE_STATUS['NORMAL'] 
-                    && in_array($row['role'], [$this->ROLES['KILLER'], $this->ROLES['HELPER']])){
-                    $mustActionCount++;
+                if($row['status'] == $this->ROLE_STATUS['NORMAL']){
+                    if($row['event'] == self::ROOM_EVENT_STOP){
+                        $actionCount++;
+                    }
+                    if(in_array($row['role'], [$this->ROLES['KILLER'], $this->ROLES['HELPER']])){
+                        $mustActionCount++;
+                    }
                 }
                 unset($row);
             }
@@ -334,7 +335,7 @@ class RoomManager{
             $pushMessages = [];
             $message['text'] = sprintf($this->MESSAGES['NIGHT_PERSON_ACTION'], $actionCount);
             $pushMessages[] = $message;
-            if($mustActionCount >= $actionCount){
+            if($mustActionCount <= $actionCount){
                 $message['text'] = $this->MESSAGES['MONING_COMING'];
                 $pushMessages[] = $message;
                 $mergeMessage = $killMessage = $helpMessage = [];
