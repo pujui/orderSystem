@@ -24,19 +24,22 @@ class RoomManager{
         'KILL_ARLEADY_DEAD'     => "對象已死亡",
         'KILL_CHECKED'          => "殺害對象為 - %s",
         'KILL_SUCCESS'          => "%s被殺死了...",
-        'KILL_AGAIN_SUCCESS'    => "%s被另一個人發現死了後怒鞭屍...",
+        'KILL_AGAIN_SUCCESS'    => "%s被另一個人發現後鞭屍...",
         'KILL_AGAIN_FAILED'     => "被%s被鞭屍後的屍體嚇到尿褲子後死亡...",
-        'HELP_SUCCESS'          => "%s被拯救了...",
+        'HELP_SUCCESS'          => "%s被剛上廁所的人拯救了...",
         'DO_NOT_ACTION'         => "你無法執行您角色為 - %s",
         'NIGHT_PERSON_ACTION'   => "已有 %d 名夜貓子在夜間行動",
         'NIGHT_COMING'          => "當黑夜來臨了...",
-        'MONING_COMING'         => "當清晨來臨了..."
+        'MONING_COMING'         => "當清晨來臨了...",
+        'DO_NOT_NEXT'           => "時間還沒到",
     ];
 
     protected $ROOM_STATUS = [
         'CREATE'    => 'CREATE',
         'OPEN'      => 'OPEN',
         'START'     => 'START',
+        'STOP'      => 'STOP',
+        'END'       => 'END',
         'JOIN'      => 'JOIN',
     ];
 
@@ -351,11 +354,29 @@ class RoomManager{
                 $mergeMessage = array_merge($killMessage, $helpMessage);
                 $message['text'] = implode(PHP_EOL, $mergeMessage);
                 $pushMessages[] = $message;
+
+                // Change status for this room.
+                $this->lineBotDAO->setRoom($roomId, $this->ROOM_STATUS['STOP']);
             }
             $this->parent->actionPushMessages($userLiveRoom['roomId'], $pushMessages);
 
             // set return message
             $message['text'] = sprintf($this->MESSAGES['KILL_CHECKED'], $target['displayName']);
+            $response['messages'][] = $message;
+        }
+    }
+
+    public function next($userId, $message, &$response){
+        $message = [ 'type' => 'text', 'text' => '' ];
+        $userLiveRoom = $this->lineBotDAO->findRoomUserIsLive($userId);
+        if(empty($userLiveRoom)){
+            $message['text'] = $this->MESSAGES['LEAVE_NOT_EXIST'];
+            $response['messages'][] = $message;
+        }else if($userLiveRoom['roomStatus'] == $this->ROOM_STATUS['STOP']){
+            // Change status for this room.
+            $this->lineBotDAO->setRoom($roomId, $this->ROOM_STATUS['START']);
+        }else{
+            $message['text'] = $this->MESSAGES['DO_NOT_NEXT'];
             $response['messages'][] = $message;
         }
     }
