@@ -31,7 +31,8 @@ class RoomManager{
         'NIGHT_PERSON_ACTION'   => "已有 %d 名夜貓子在夜間行動",
         'NIGHT_COMING'          => "當黑夜來臨了...",
         'MONING_COMING'         => "當清晨來臨了...",
-        'DO_NOT_NEXT'           => "時間還沒到",
+        'DO_NOT_NEXT'           => "黑夜時間還沒到",
+        'YOU_ARE_DEAD'          => "你已經死了",
     ];
 
     protected $ROOM_STATUS = [
@@ -289,6 +290,10 @@ class RoomManager{
             $message['text'] = sprintf($this->MESSAGES['DO_NOT_ACTION'], $userLiveRoom['role']);
             $response['messages'][] = $message;
         }else if($userLiveRoom['roomStatus'] == $this->ROOM_STATUS['START']){
+            if($userLiveRoom['status'] == $this->ROLE_STATUS['DEAD']){
+                $message['text'] = $this->MESSAGES['YOU_ARE_DEAD'];
+                return $response['messages'][] = $message;
+            }
             $list = $this->lineBotDAO->findRoomList($userLiveRoom['roomId']);
             $totalPeople = count($list);
             if($command[1] < 1 || $command[1] > $totalPeople){
