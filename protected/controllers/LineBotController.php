@@ -145,7 +145,7 @@ class LineBotController extends FrameController{
         $command = explode(' ', trim($message));
         $roomManager = new RoomManager;
         $roomManager->parent = $this;
-        if($type == 'room'){
+        if($type == 'room' || $type == 'group'){
             if($message == '/open'){
                 $roomManager->open($userId, $message, $response);
             }else if($message == '/start'){
