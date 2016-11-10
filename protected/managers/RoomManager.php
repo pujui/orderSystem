@@ -321,7 +321,8 @@ class RoomManager{
                 if($row['event'] == self::ROOM_EVENT_STOP){
                     $actionCount++;
                 }
-                if(in_array($row['role'], [$this->ROLES['KILLER'], $this->ROLES['HELPER']])){
+                if($row['status'] == $this->ROLE_STATUS['NORMAL'] 
+                    && in_array($row['role'], [$this->ROLES['KILLER'], $this->ROLES['HELPER']])){
                     $mustActionCount++;
                 }
                 unset($row);
