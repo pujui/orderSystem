@@ -356,7 +356,7 @@ class RoomManager{
                 $pushMessages[] = $message;
 
                 // Change status for this room.
-                $this->lineBotDAO->setRoom($roomId, $this->ROOM_STATUS['STOP']);
+                $this->lineBotDAO->setRoom($userLiveRoom['roomId'], $this->ROOM_STATUS['STOP']);
             }
             $this->parent->actionPushMessages($userLiveRoom['roomId'], $pushMessages);
 
@@ -366,6 +366,12 @@ class RoomManager{
         }
     }
 
+    /**
+     * next by user
+     * @param unknown $userId
+     * @param unknown $message
+     * @param unknown $response
+     */
     public function next($userId, $message, &$response){
         $message = [ 'type' => 'text', 'text' => '' ];
         $userLiveRoom = $this->lineBotDAO->findRoomUserIsLive($userId);
