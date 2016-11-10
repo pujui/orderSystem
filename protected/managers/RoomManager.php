@@ -409,10 +409,10 @@ class RoomManager{
     }
 
     public function setRoomRoleStatus($roomId, &$response){
-        $message = [ 'type' => 'text', 'text' => '目前房間人員'.PHP_EOL ];
+        $message = [ 'type' => 'text', 'text' => '目前房間人員狀態'.PHP_EOL ];
         $list = $this->lineBotDAO->findRoomList($roomId);
         foreach ($list as $key=>$user){
-            $message['text'] .= sprintf("Player %d - %s(%s)".PHP_EOL, 
+            $message['text'] .= sprintf("Player %d - %s (%s)".PHP_EOL, 
                                     $key+1
                                     , $user['displayName']
                                     , $this->roleStatus[$user['status']]
