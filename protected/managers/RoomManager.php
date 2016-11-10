@@ -2,7 +2,7 @@
 class RoomManager{
     const ROOM_EVENT_STOP = 'STOP';
     const ROOM_EVENT_START = 'START';
-    
+
     protected $MESSAGES = [
         'OPEN'                  => "遊戲房間已開啟\n1.請加入我(BOT)為好友\n2.並傳送房間代碼至BOT加入遊戲",
         'WAITE_STATUS'          => "遊戲房間狀態: %s, 玩家人數: %d\n開始遊戲請在此房間輸入/start",
@@ -380,7 +380,9 @@ class RoomManager{
             $response['messages'][] = $message;
         }else if($userLiveRoom['roomStatus'] == $this->ROOM_STATUS['STOP']){
             // Change status for this room.
-            $this->lineBotDAO->setRoom($roomId, $this->ROOM_STATUS['START']);
+            $this->lineBotDAO->setRoom($userLiveRoom['roomId'], $this->ROOM_STATUS['START']);
+            $message['text'] = $this->MESSAGES['NIGHT_COMING'];
+            $response['messages'][] = $message;
         }else{
             $message['text'] = $this->MESSAGES['DO_NOT_NEXT'];
             $response['messages'][] = $message;
