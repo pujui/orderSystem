@@ -436,6 +436,7 @@ class RoomManager{
                                     $key+1
                                     , $user['displayName']
                                     , $this->roleStatus[$user['status']]
+                                    , $this->events[$user['event']]
                                 );
         }
         $response['messages'][] = $message;
