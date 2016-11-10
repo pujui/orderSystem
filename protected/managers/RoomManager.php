@@ -327,6 +327,7 @@ class RoomManager{
                 unset($row);
             }
             $this->lineBotDAO->updateRoomList($self['roomId'], $self['userId'], '', '', self::ROOM_EVENT_STOP, $target['userId']);
+            $setList[$self['userId']]['toUserId'] = $target['userId'];
 
             // Push message for room
             $pushMessages = [];
